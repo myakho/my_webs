@@ -503,8 +503,10 @@ function favs(){ return ls("st.favs")||[]; }
 function isFav(id){ return favs().indexOf(id)>-1; }
 /* 최애가 먼저, 그다음 방송 중, 그다음 원래 순서 */
 function sorted(list){ var f=favs(); return list.slice().sort(function(a,b){ var fa=f.indexOf(a.id)>-1?0:1, fb=f.indexOf(b.id)>-1?0:1; if(fa!==fb) return fa-fb; var la=a.live?0:1, lb=b.live?0:1; if(la!==lb) return la-lb; return a.order-b.order; }); }
-function lives(){ return sorted(D.members.filter(function(m){ return m.live&&m.id; })); }
-function gens(){ var g=[]; D.members.forEach(function(m){ var k=m.gen||"멤버"; if(g.indexOf(k)<0) g.push(k); }); return g; }
+function lives(){ return sorted(D.members.filter(function(m){ return m.live&&m.id&&!m.graduated; })); }
+function active(){ return D.members.filter(function(m){ return !m.graduated; }); }
+function genOf(m){ return m.graduated?"졸업":(m.gen||"멤버"); }
+function gens(){ var g=[]; active().forEach(function(m){ var k=genOf(m); if(g.indexOf(k)<0) g.push(k); }); if(D.members.some(function(m){ return m.graduated; })) g.push("졸업"); return g; }
 function allClips(){ var a=[]; D.members.forEach(function(m){ a=a.concat(m.clips||[]); }); return a.sort(function(x,y){ return (toDate(y.date)||0)-(toDate(x.date)||0); }); }
 function allVideos(){ var a=[]; D.members.forEach(function(m){ a=a.concat(m.videos||[]); }); return a.sort(function(x,y){ return (toDate(y.date)||0)-(toDate(x.date)||0); }); }
 
@@ -645,8 +647,8 @@ var view=$("#view"), cur="";
 function setView(h){ cleanups.splice(0).forEach(function(f){ try{ f(); }catch(e){} }); if(ro) ro.disconnect(); view.innerHTML=h; }
 function go(h){ location.hash=h; }
 function errBox(e){ return '<div class="empty">스텔라이브 데이터를 아직 불러오지 못했어요.<br><small>'+esc(e&&e.message||"")+' · GitHub Actions가 한 번 돌고 나면 보여요.</small></div>'; }
-function memberTile(m){ var l=m.live; return '<a class="mm '+(l?'on':'off')+'" href="#member/'+(m.id||'')+'">'+avatar(m.image,m.name)+'<b>'+(isFav(m.id)?'<span class="fav-mark">♥ </span>':'')+esc(m.name)+'</b>'+(l?'<small class="lv">LIVE · '+esc(l.category||"방송 중")+'</small>':'<small>'+(m.lastLive?ago(m.lastLive.at)+' 방송':'방송 쉼')+'</small>')+'</a>'; }
-function memberRows(){ return gens().map(function(g){ return '<div class="gen-h">'+esc(g)+'</div><div class="mem-row">'+D.members.filter(function(m){ return (m.gen||"멤버")===g; }).map(memberTile).join("")+'</div>'; }).join(""); }
+function memberTile(m){ var l=m.graduated?null:m.live; return '<a class="mm '+(l?'on':'off')+'" href="#member/'+(m.id||'')+'">'+avatar(m.image,m.name)+'<b>'+(isFav(m.id)?'<span class="fav-mark">♥ </span>':'')+esc(m.name)+'</b>'+(m.graduated?'<small>'+esc(m.gen||"")+' · 졸업</small>':l?'<small class="lv">LIVE · '+esc(l.category||"방송 중")+'</small>':'<small>'+(m.lastLive?ago(m.lastLive.at)+' 방송':'방송 쉼')+'</small>')+'</a>'; }
+function memberRows(){ return gens().map(function(g){ return '<div class="gen-h">'+esc(g)+'</div><div class="mem-row">'+D.members.filter(function(m){ return genOf(m)===g; }).map(memberTile).join("")+'</div>'; }).join(""); }
 
 /* 합방 찾기: 같은 분야로 방송 중인 멤버가 둘 이상이면 묶어요 */
 function collabs(){
@@ -665,7 +667,7 @@ async function viewHome(){
   if(cur!=="home") return;
   var L=lives(), today=allClips().filter(function(c){ var d=toDate(c.date); return d&&Date.now()-d<86400000; }).length;
   $("#qkLive").innerHTML='<b>방송 중</b><em>'+L.length+'명</em><span>'+(L.length?esc(L.slice(0,2).map(function(m){ return m.name; }).join(", "))+(L.length>2?' 외':''):'지금은 다들 쉬는 중')+'</span>';
-  $("#qkMem").textContent=D.members.length+"명"; $("#qkGen").textContent=gens().join(" · "); $("#qkClip").textContent=today+"개";
+  $("#qkMem").textContent=active().length+"명"; $("#qkGen").textContent=gens().filter(function(g){ return g!=="졸업"; }).join(" · "); $("#qkClip").textContent=today+"개";
   var tags={}; L.forEach(function(m){ (m.live.tags||[]).concat(m.live.category?[m.live.category]:[]).forEach(function(t){ tags[t]=(tags[t]||0)+1; }); });
   var tagList=Object.keys(tags).sort(function(a,b){ return tags[b]-tags[a]; }).slice(0,14);
   if(homeTag&&!tags[homeTag]) homeTag="";
@@ -697,24 +699,24 @@ async function viewMembers(id){
   setView('<div class="page-h"><div><h1>멤버</h1><p>방송 중인 멤버는 레코드가 돌아가요. ♥ 최애로 정하면 어디서든 맨 앞에 와요.</p></div></div><div id="mBox"><div class="empty">불러오는 중이에요…</div></div>');
   try{ await load(); }catch(e){ $("#mBox").innerHTML=errBox(e); return; }
   if(cur!=="members"&&cur!=="member") return;
-  var L=sorted(D.members.filter(function(m){ return m.id; })), n=L.length, start=0;
+  var L=sorted(D.members.filter(function(m){ return m.id&&!m.graduated; })).concat(D.members.filter(function(m){ return m.id&&m.graduated; })), n=L.length, start=0;
   if(!n){ $("#mBox").innerHTML='<div class="empty">아직 채널을 찾은 멤버가 없어요. members.json 에 채널 id를 넣어 주세요.</div>'; return; }
   L.forEach(function(m,i){ if(m.id===memKey) start=i; });
   var el=$("#mBox");
-  el.innerHTML='<section class="jb"><div class="jb-bg" id="jbBg"></div><div class="jb-in"><span class="jb-k">STELLIVE · '+n+'명 · 방송 중 '+L.filter(function(m){ return m.live; }).length+'</span>'+
+  el.innerHTML='<section class="jb"><div class="jb-bg" id="jbBg"></div><div class="jb-in"><span class="jb-k">STELLIVE · '+L.filter(function(m){ return !m.graduated; }).length+'명 · 방송 중 '+lives().length+'</span>'+
     '<div class="jb-stage" data-stage tabindex="0" role="listbox" aria-label="멤버 (왼쪽·오른쪽 화살표로 넘겨요)">'+L.map(function(m,i){
-      return '<button type="button" class="jb-it" data-fi="'+i+'" data-live="'+(m.live?1:0)+'" role="option" aria-label="'+esc(m.name)+'"><span class="disc"><span class="lbl">'+(m.image?'<img src="'+esc(m.image)+'" alt="">':'')+'</span></span><span class="jb-cv">'+(m.image?'<img src="'+esc(m.image)+'" alt="">':'<span class="big">'+ini(m.name)+'</span>')+(m.live?'<span class="live-b">LIVE</span>':'')+'</span></button>'; }).join("")+'</div>'+
+      return '<button type="button" class="jb-it" data-fi="'+i+'" data-live="'+(m.live&&!m.graduated?1:0)+'" role="option" aria-label="'+esc(m.name)+'"><span class="disc"><span class="lbl">'+(m.image?'<img src="'+esc(m.image)+'" alt="">':'')+'</span></span><span class="jb-cv">'+(m.image?'<img src="'+esc(m.image)+'" alt="">':'<span class="big">'+ini(m.name)+'</span>')+(m.graduated?'<span class="off-b" style="position:absolute;left:12px;top:12px;z-index:2">졸업</span>':m.live?'<span class="live-b">LIVE</span>':'')+'</span></button>'; }).join("")+'</div>'+
     flowCtl(n,"멤버",false)+'<div class="jb-info" id="jbInfo"></div>'+
-    '<div class="jb-sel">'+L.map(function(m,i){ return '<button type="button" data-pick="'+i+'"><b class="'+(m.live?'on':'')+'">'+(m.live?'LIVE':esc(m.gen||String(i+1)))+'</b><span>'+esc(m.name)+'</span></button>'; }).join("")+'</div></div></section>'+
+    '<div class="jb-sel">'+L.map(function(m,i){ return '<button type="button" data-pick="'+i+'"><b class="'+(m.live&&!m.graduated?'on':'')+'">'+(m.graduated?'졸업':m.live?'LIVE':esc(m.gen||String(i+1)))+'</b><span>'+esc(m.name)+'</span></button>'; }).join("")+'</div></div></section>'+
     '<div id="mMore"></div>';
   var F=flow(el,n,start,"jb",function(i){
-    var m=L[i], l=m.live; memKey=m.id;
+    var m=L[i], l=m.graduated?null:m.live; memKey=m.id;
     if(cur==="member"&&location.hash!=="#member/"+m.id) history.replaceState(null,"","#member/"+m.id);
     var N=$("#fN"); if(N) N.innerHTML='<b>'+esc(m.gen||"ST")+'</b> '+String(i+1).padStart(2,"0")+' / '+String(n).padStart(2,"0");
     var bg=$("#jbBg"); if(bg) bg.style.backgroundImage=m.image?"url('"+m.image+"')":"none";
     $$("[data-pick]",el).forEach(function(b){ b.setAttribute("aria-pressed",String(+b.dataset.pick===i)); });
     var f=isFav(m.id);
-    $("#jbInfo").innerHTML='<h2>'+(f?'<span class="fav-mark">♥ </span>':'')+esc(m.name)+'</h2><p>'+esc(m.gen||"")+(m.followers?' · 팔로워 '+num(m.followers)+'명':'')+(l?' · <b style="color:var(--live)">지금 방송 중</b> · '+num(l.viewers)+'명 시청':(m.lastLive?' · 마지막 방송 '+ago(m.lastLive.at):''))+'</p>'+
+    $("#jbInfo").innerHTML='<h2>'+(f?'<span class="fav-mark">♥ </span>':'')+esc(m.name)+'</h2><p>'+esc(m.gen||"")+(m.graduated?' · <b>졸업한 멤버예요. 함께한 시간 고마웠어요</b>':'')+(m.followers?' · 팔로워 '+num(m.followers)+'명':'')+(l?' · <b style="color:var(--live)">지금 방송 중</b> · '+num(l.viewers)+'명 시청':(m.lastLive?' · 마지막 방송 '+ago(m.lastLive.at):''))+'</p>'+
       (l?'<a class="jb-now" href="#watch/'+m.id+'">'+(l.thumb?'<img src="'+esc(l.thumb)+'" alt="">':'')+'<span style="min-width:0"><b>'+esc(l.title)+'</b><small>'+esc(l.category||"")+(since(l.openDate)?' · '+esc(since(l.openDate)):'')+'</small></span></a>'+(l.tags&&l.tags.length?'<div class="lc-g" style="justify-content:center;margin-top:10px">'+tagChips(l.tags)+'</div>':''):'')+
       '<div class="row">'+(l?'<a class="btn btn-main" href="'+chLive(m.id)+'" target="_blank" rel="noopener">치지직 입장 ↗</a><a class="btn btn-line" href="#watch/'+m.id+'">여기서 보기</a>':'<a class="btn btn-main" href="'+chHome(m.id)+'" target="_blank" rel="noopener">치지직 채널 ↗</a>')+
       '<button class="btn btn-line" type="button" data-mv="'+m.id+'">+ 멀티뷰</button><button class="btn btn-line'+(f?' fav-on':'')+'" type="button" data-fav="'+m.id+'">'+(f?'♥ 최애':'♡ 최애로')+'</button></div>';
@@ -743,7 +745,7 @@ async function viewClips(arg){
   $$("[data-cm]").forEach(function(b){ b.onclick=function(){ clMem=b.dataset.cm; clTab="all"; viewClips(); }; });
 }
 function memberPick(sel,key){
-  return '<div class="mpick" role="group" aria-label="멤버로 거르기"><button type="button" class="all" data-'+key+'="" aria-pressed="'+(!sel)+'">전체</button>'+sorted(D.members.filter(function(m){ return m.id; })).map(function(m){ return '<button type="button" class="'+(m.live?'lv':'')+'" data-'+key+'="'+m.id+'" aria-pressed="'+(sel===m.id)+'">'+avatar(m.image,m.name)+esc(m.name)+'</button>'; }).join("")+'</div>';
+  return '<div class="mpick" role="group" aria-label="멤버로 거르기"><button type="button" class="all" data-'+key+'="" aria-pressed="'+(!sel)+'">전체</button>'+sorted(D.members.filter(function(m){ return m.id&&!m.graduated; })).concat(D.members.filter(function(m){ return m.id&&m.graduated; })).map(function(m){ return '<button type="button" class="'+(m.live&&!m.graduated?'lv':'')+'" data-'+key+'="'+m.id+'" aria-pressed="'+(sel===m.id)+'">'+avatar(m.image,m.name)+esc(m.name)+(m.graduated?' · 졸업':'')+'</button>'; }).join("")+'</div>';
 }
 
 /* ---------- 다시보기 ---------- */
@@ -780,7 +782,7 @@ async function viewMulti(arg){
   var a=mv(), L=D?lives():[];
   setView('<div class="page-h"><div><h1>멀티뷰</h1><p>채팅 없이 영상만 여러 개 같이 봐요. 최대 '+MAXMV+'개까지.</p></div><div class="row"><span class="mv-mode" role="group" aria-label="배치"><button type="button" data-mode="grid" aria-pressed="'+(mvMode==="grid")+'">똑같이</button><button type="button" data-mode="focus" aria-pressed="'+(mvMode==="focus")+'">하나 크게</button></span><button class="btn btn-line btn-sm" type="button" id="mvShare"'+(a.length?'':' disabled')+'>링크 복사</button><button class="btn btn-line btn-sm" type="button" id="mvClear"'+(a.length?'':' disabled')+'>모두 빼기</button></div></div>'+
     (D?'<div class="mv-bar">'+(L.length?'<button class="btn btn-orb btn-sm" type="button" id="mvAllLive">방송 중인 멤버 모두 넣기 ('+Math.min(L.length,MAXMV)+')</button>':'<span class="mute" style="font-size:13px">지금 방송 중인 멤버가 없어요.</span>')+'</div>'+
-      '<div class="pick">'+sorted(D.members.filter(function(m){ return m.id; })).map(function(m){ var on=a.indexOf(m.id)>-1; return '<button type="button" class="'+(on?'on':'')+'" '+(on?'data-mvdel="'+m.id+'"':'data-mv="'+m.id+'"')+'>'+(m.image?'<img src="'+esc(m.image)+'" alt="">':'')+esc(m.name)+(m.live?' · LIVE':'')+'</button>'; }).join("")+'</div>':'')+
+      '<div class="pick">'+sorted(D.members.filter(function(m){ return m.id&&!m.graduated; })).map(function(m){ var on=a.indexOf(m.id)>-1; return '<button type="button" class="'+(on?'on':'')+'" '+(on?'data-mvdel="'+m.id+'"':'data-mv="'+m.id+'"')+'>'+(m.image?'<img src="'+esc(m.image)+'" alt="">':'')+esc(m.name)+(m.live?' · LIVE':'')+'</button>'; }).join("")+'</div>':'')+
     (a.length?'<div class="mv'+(mvMode==="focus"&&a.length>1?' focus':'')+'" data-n="'+a.length+'" style="--rows:'+Math.max(1,a.length-1)+'">'+a.map(function(id,i){ var m=D&&byId(id);
       return '<div class="tile"><span class="tname">'+esc(m?m.name:"방송")+'</span>'+cropBox(id,"방송 "+(i+1))+
         '<div class="tbtn">'+(i?'<button type="button" data-tfirst="'+i+'">크게</button>':'')+'<button type="button" data-traw="'+i+'">전체 화면 보기</button><a href="'+chLive(id)+'" target="_blank" rel="noopener">치지직 ↗</a><button type="button" data-tdel="'+i+'">빼기</button></div></div>'; }).join("")+'</div>'
