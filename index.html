@@ -418,10 +418,10 @@ themeLabel();
 
 /* ==================================================================
    라이브 데이터
-   GitHub Actions가 몇 분마다 치지직 라이브 목록을 받아 data/lives.json 으로 저장해요.
+   GitHub Actions가 몇 분마다 치지직 라이브 목록을 받아 lives.json 으로 저장해요.
    사이트는 그 파일만 읽어요. (비밀키는 GitHub Secrets 에만 있어요)
    ================================================================== */
-var LV_URL=CFG.livesUrl||"data/lives.json", lvData=null, lvAt=0, lvLoading=null;
+var LV_URL=CFG.livesUrl||"lives.json", lvData=null, lvAt=0, lvLoading=null;
 function loadLives(force){
   if(!force&&lvData&&Date.now()-lvAt<120000) return Promise.resolve(lvData);
   if(lvLoading) return lvLoading;
