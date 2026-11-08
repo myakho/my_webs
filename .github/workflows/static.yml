@@ -6,7 +6,7 @@ on:
     branches: ["main"]
   # 10분마다 라이브 목록을 새로 받아서 다시 올려요 (GitHub 사정에 따라 조금 늦을 수 있어요)
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "3,13,23,33,43,53 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -20,6 +20,7 @@ concurrency:
 
 jobs:
   deploy:
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
