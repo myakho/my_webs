@@ -1,7 +1,7 @@
-// 치지직 라이브 목록을 받아 data/lives.json 으로 저장해요.
+// 치지직 라이브 목록을 받아 lives.json 으로 저장해요.
 // GitHub Actions 에서만 돌아요. 비밀키는 저장소 Settings > Secrets 에 넣어 둬요.
 //   CHZZK_CLIENT_ID, CHZZK_CLIENT_SECRET
-import { writeFile, mkdir } from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 
 const ID = process.env.CHZZK_CLIENT_ID, SECRET = process.env.CHZZK_CLIENT_SECRET;
 const PAGES = Number(process.env.LIVE_PAGES || 15); // 20개씩 × 15쪽 = 최대 300개
@@ -23,6 +23,5 @@ for (let p = 0; p < PAGES; p++) {
   for (const l of c.data || []) if (!seen.has(l.liveId)) { seen.add(l.liveId); lives.push(keep(l)); }
   next = c.page && c.page.next; if (!next) break;
 }
-await mkdir("data", { recursive: true });
-await writeFile("data/lives.json", JSON.stringify({ updatedAt: Date.now(), lives }));
+await writeFile("lives.json", JSON.stringify({ updatedAt: Date.now(), lives }));
 console.log("라이브", lives.length, "개 저장");
