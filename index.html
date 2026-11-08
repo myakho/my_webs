@@ -434,6 +434,26 @@ main{flex:1 0 auto;padding-bottom:80px}
 .vd-type.up{background:var(--o2)}
 .fav-mark{color:var(--o4)}
 .hi-up{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--mute)}
+
+/* 멤버 플레이리스트 */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px 14px}
+.pc{display:flex;flex-direction:column;gap:8px;min-width:0;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:pointer;font:inherit}
+.pc[disabled]{opacity:.55;cursor:default}
+.pc-cv{position:relative;display:block;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:var(--card2);border:1px solid var(--line)}
+.pc-cv img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.pc:not([disabled]):hover .pc-cv img{transform:scale(1.04)}
+.pc-ph{position:absolute;inset:0;display:grid;place-items:center;font-size:28px;color:var(--mute)}
+.pc-n{position:absolute;right:8px;bottom:8px;height:22px;padding:0 8px;border-radius:6px;background:rgba(6,8,12,.75);color:#fff;font-size:11.5px;font-weight:700;display:inline-flex;align-items:center}
+.pc-t{font-size:14.5px;font-weight:700;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pc-c{font-size:12.5px;color:var(--ink2)}
+.pt{list-style:none;margin:12px 0 0;padding:0;max-height:300px;overflow:auto;display:grid;gap:2px}
+.pt button{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;align-items:center;width:100%;padding:6px;border:0;border-radius:10px;background:none;color:inherit;text-align:left;font:inherit;cursor:pointer}
+.pt button:hover,.pt button[aria-current="true"]{background:var(--bg2)}
+.pt img{width:96px;aspect-ratio:16/9;object-fit:cover;border-radius:6px;display:block;background:var(--card2)}
+.pt b{font-size:13.5px;font-weight:700;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pt small{display:block;font-size:12px;color:var(--mute);margin-top:2px}
+.pt .nw{color:var(--live);font-weight:800;margin-left:6px}
+.pt-msg{margin:12px 0 0;font-size:13px;color:var(--mute)}
 </style>
 </head>
 <body>
@@ -448,7 +468,7 @@ main{flex:1 0 auto;padding-bottom:80px}
 </div></header>
 <main id="view" class="wrap" tabindex="-1"></main>
 <footer class="gf"><p><b id="siteName2">스타트</b>는 스텔라이브 팬이 만든 <b>비공식</b> 팬사이트예요. 스텔라이브·치지직·네이버의 공식 서비스가 아니에요.</p>
-<p>방송 상태·클립·다시보기는 치지직에서 10분마다 새로 받아 와요. 최애·하트·최근 본 기록은 이 브라우저에만 저장돼요.</p></footer>
+<p>방송 상태·클립·다시보기는 치지직에서 10분마다 새로 받아 와요. 플레이리스트는 유튜브에서 바로 불러와요. 최애·하트·최근 본 기록은 이 브라우저에만 저장돼요.</p></footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="site-config.js"></script>
 <script>
@@ -746,7 +766,7 @@ async function viewMembers(id){
       '<div class="row">'+(l?'<a class="btn btn-main" href="'+chLive(m.id)+'" target="_blank" rel="noopener">치지직 입장 ↗</a><a class="btn btn-line" href="#watch/'+m.id+'">여기서 보기</a>':'<a class="btn btn-main" href="'+chHome(m.id)+'" target="_blank" rel="noopener">치지직 채널 ↗</a>')+
       '<button class="btn btn-line" type="button" data-mv="'+m.id+'">+ 멀티뷰</button><button class="btn btn-line'+(f?' fav-on':'')+'" type="button" data-fav="'+m.id+'">'+(f?'♥ 최애':'♡ 최애로')+'</button></div>';
     $("#mMore").innerHTML='<section class="sec"><div class="sec-h"><h2>'+esc(m.name)+'의 클립</h2><a href="#clips/'+m.id+'">전체 →</a></div>'+clipGrid((m.clips||[]).slice(0,8),"아직 받아 온 클립이 없어요.")+'</section>'+
-      '<section class="sec"><div class="sec-h"><h2>'+esc(m.name)+'의 다시보기</h2><a href="'+chHome(m.id)+'/videos" target="_blank" rel="noopener">치지직에서 전체 ↗</a></div>'+((m.videos||[]).length?'<div class="lgrid">'+m.videos.slice(0,4).map(videoCard).join("")+'</div>':'<div class="empty">아직 받아 온 다시보기가 없어요.</div>')+'</section>';
+      '<section class="sec"><div class="sec-h"><h2>'+esc(m.name)+'의 다시보기</h2><a href="'+chHome(m.id)+'/videos" target="_blank" rel="noopener">치지직에서 전체 ↗</a></div>'+((m.videos||[]).length?'<div class="lgrid">'+m.videos.slice(0,4).map(videoCard).join("")+'</div>':'<div class="empty">아직 받아 온 다시보기가 없어요.</div>')+'</section><div id="mPl"></div>'; fillMemberPl(m);
   });
   $$("[data-pick]",el).forEach(function(b){ b.onclick=function(){ F.sel(+b.dataset.pick); }; });
 }
@@ -823,6 +843,116 @@ async function viewMulti(arg){
   $$("[data-mvdel]").forEach(function(b){ b.onclick=function(){ setMv(mv().filter(function(x){ return x!==b.dataset.mvdel; })); route(); }; });
   $$("[data-tdel]").forEach(function(b){ b.onclick=function(){ var x=mv(); x.splice(+b.dataset.tdel,1); setMv(x); route(); }; });
   $$("[data-tfirst]").forEach(function(b){ b.onclick=function(){ var x=mv(), v=x.splice(+b.dataset.tfirst,1)[0]; x.unshift(v); setMv(x); mvMode="focus"; ls("st.mvmode",mvMode); route(); }; });
+}
+
+/* ---------- 멤버별 유튜브 플레이리스트 ----------
+   members.json 의 멤버마다 "playlists": ["유튜브 재생목록 링크", ...] 를 적으면 돼요 (여러 개 가능).
+   링크는 사이트가 열릴 때 유튜브에서 바로 읽어 와요 → GitHub Actions 를 돌리지 않아도
+   재생목록에 새 영상이 생기면 곧바로 보이고, 새 링크는 members.json 을 올리면 바로 나타나요.
+   site-config.js 의 youtubeApiKeys 가 있으면 제목·표지·영상 목록까지, 없으면 유튜브 플레이어로 보여 줘요. */
+var PL=null, plLoading=null, ytKeyIdx=0;
+function ytKeys(){ var k=CFG.youtubeApiKeys||CFG.youtubeApiKey||[]; if(typeof k==="string") k=[k]; return k.map(function(x){ return String(x||"").trim(); }).filter(Boolean); }
+async function ytApi(path,params){
+  var keys=ytKeys(); if(!keys.length) throw new Error("nokey");
+  var lastErr=null;
+  for(var t=0;t<keys.length;t++){
+    var ki=(ytKeyIdx+t)%keys.length, q=new URLSearchParams();
+    Object.keys(params).forEach(function(k){ if(params[k]!==""&&params[k]!=null) q.set(k,params[k]); }); q.set("key",keys[ki]);
+    var r, j;
+    try{ r=await fetch("https://www.googleapis.com/youtube/v3/"+path+"?"+q.toString()); j=await r.json().catch(function(){ return {}; }); }
+    catch(e){ lastErr=e; continue; }
+    if(r.ok){ ytKeyIdx=ki; return j; }
+    var reason=(((j&&j.error||{}).errors||[])[0]||{}).reason||"";
+    lastErr=new Error(reason||("http"+r.status));
+    if(r.status===404||/NotFound$/.test(reason)) throw lastErr;   /* 없는/비공개 재생목록은 다른 키로 해도 같아요 */
+  }
+  throw lastErr||new Error("api");
+}
+function plId(s){ s=String(s||"").trim(); var m=s.match(/[?&]list=([\w-]+)/); if(m) return m[1]; return /^[\w-]{18,}$/.test(s)?s:""; }
+function cacheGet(k,ttl){ var c=ls(k); return c&&c.at&&Date.now()-c.at<ttl?c.v:null; }
+function cachePut(k,v){ ls(k,{at:Date.now(),v:v}); }
+/* 제목·표지·개수: 재생목록 전부를 API 한 번으로 물어요 (30분 동안 이 브라우저에 기억) */
+async function plMeta(lists){
+  var ids=[]; lists.forEach(function(l){ if(ids.indexOf(l.id)<0) ids.push(l.id); });
+  var meta=cacheGet("st.plmeta",1800000)||{}, need=ids.filter(function(id){ return !meta[id]; });
+  if(need.length&&ytKeys().length){
+    try{
+      for(var i=0;i<need.length;i+=50){
+        var part=need.slice(i,i+50), got={};
+        var j=await ytApi("playlists",{part:"snippet,contentDetails",maxResults:"50",id:part.join(",")});
+        (j.items||[]).forEach(function(p){ var t=(p.snippet&&p.snippet.thumbnails)||{}; meta[p.id]={name:(p.snippet&&p.snippet.title)||"",cover:((t.medium||t.high||t.default)||{}).url||"",count:(p.contentDetails&&p.contentDetails.itemCount)||0}; got[p.id]=1; });
+        part.forEach(function(id){ if(!got[id]) meta[id]={gone:1}; });
+      }
+      cachePut("st.plmeta",meta);
+    }catch(e){}
+  }
+  lists.forEach(function(l){ var m=meta[l.id]||{}; l.gone=!!m.gone; l.title=l.name||m.name||"플레이리스트"; l.cover=m.cover||""; l.count=m.count||0; });
+}
+/* 영상 목록: 열었을 때만 받아요 (10분 동안 기억) */
+async function plItems(id){
+  var c=cacheGet("st.pli."+id,600000); if(c) return c;
+  var out=[], seen={}, tok="", n=0;
+  do{
+    var j=await ytApi("playlistItems",{part:"snippet",maxResults:"50",playlistId:id,pageToken:tok});
+    (j.items||[]).forEach(function(it){ var sn=it.snippet||{}, v=sn.resourceId&&sn.resourceId.videoId; if(!v||seen[v]||/^(Private|Deleted) video$/.test(sn.title||"")) return; seen[v]=1; out.push({id:v,title:sn.title||"",ch:String(sn.videoOwnerChannelTitle||"").replace(/ - Topic$/,""),at:sn.publishedAt||""}); });
+    tok=j.nextPageToken||"";
+  }while(tok&&++n<20);
+  cachePut("st.pli."+id,out); return out;
+}
+function loadPl(){
+  if(PL) return Promise.resolve(PL);
+  if(plLoading) return plLoading;
+  plLoading=fetch("members.json?t="+Date.now(),{cache:"no-store"}).then(function(r){ if(!r.ok) throw new Error("none"); return r.json(); }).catch(function(){ return {members:[]}; })
+    .then(async function(j){
+      var lists=[], seen={};
+      (j.members||[]).forEach(function(m){ (m.playlists||[]).forEach(function(s){
+        var o=typeof s==="string"?{url:s}:(s||{}), id=plId(o.url||o.id), k=m.name+"|"+id;
+        if(!id||seen[k]) return; seen[k]=1; lists.push({member:m.name,id:id,name:String(o.name||"").trim()}); }); });
+      await plMeta(lists);
+      PL=lists; return PL;
+    })
+    .finally(function(){ plLoading=null; });
+  return plLoading;
+}
+function plThumb(id){ return "https://i.ytimg.com/vi/"+encodeURIComponent(id)+"/mqdefault.jpg"; }
+function plCard(L){
+  return '<button type="button" class="pc" data-plist="'+esc(L.member)+'|'+esc(L.id)+'"'+(L.gone?' disabled':'')+'><span class="pc-cv">'+(L.cover?'<img src="'+esc(L.cover)+'" alt="" loading="lazy">':'<span class="pc-ph" aria-hidden="true">▶</span>')+(L.count?'<span class="pc-n">'+num(L.count)+'개</span>':'')+'</span>'+
+    '<span class="pc-t">'+esc(L.title)+'</span>'+(L.gone?'<span class="pc-c">비공개이거나 삭제된 재생목록이에요</span>':'')+'</button>';
+}
+function openPl(pk){
+  var k=String(pk).split("|"), L=(PL||[]).filter(function(x){ return x.member===k[0]&&x.id===k[1]; })[0]; if(!L||L.gone) return;
+  var list=encodeURIComponent(L.id), hasKey=ytKeys().length>0;
+  function src(vid){ return "https://www.youtube-nocookie.com/embed/"+(vid?encodeURIComponent(vid)+"?list="+list:"videoseries?list="+list)+"&autoplay=1&rel=0"; }
+  var box=document.createElement("div"); box.className="modal"; box.setAttribute("role","dialog"); box.setAttribute("aria-modal","true");
+  box.innerHTML='<div class="modal-in"><div class="modal-h"><div><h2>'+esc(L.title)+'</h2><p class="mute" style="font-size:13px">'+esc(L.member)+(L.count?' · '+num(L.count)+'개':'')+'</p></div><button class="btn btn-line btn-sm" type="button" data-x>닫기</button></div>'+
+    '<div class="frame player"><iframe src="'+src("")+'" title="'+esc(L.title)+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>'+
+    '<div id="plTr">'+(hasKey?'<p class="pt-msg">영상 목록을 불러오는 중이에요…</p>':'')+'</div>'+
+    '<div class="row" style="margin-top:12px"><a class="btn btn-line btn-sm" href="https://www.youtube.com/playlist?list='+list+'" target="_blank" rel="noopener">유튜브에서 보기 ↗</a></div></div>';
+  document.body.appendChild(box);
+  var prev=document.activeElement, fr=$("iframe",box);
+  function close(){ box.remove(); document.removeEventListener("keydown",onKey); if(prev&&prev.focus) prev.focus(); }
+  function onKey(e){ if(e.key==="Escape") close(); }
+  document.addEventListener("keydown",onKey);
+  box.onclick=function(e){
+    if(e.target===box||e.target.closest("[data-x]")){ close(); return; }
+    var t=e.target.closest("[data-pt]"); if(!t||!fr) return;
+    fr.src=src(t.dataset.pt); $$("[data-pt]",box).forEach(function(b){ b.removeAttribute("aria-current"); }); t.setAttribute("aria-current","true");
+  };
+  $("[data-x]",box).focus();
+  if(hasKey) plItems(L.id).then(function(items){
+    var el=$("#plTr",box); if(!el||!box.isConnected) return;
+    el.innerHTML=items.length?'<ol class="pt">'+items.map(function(it){ var d=toDate(it.at), nw=d&&Date.now()-d<3*86400000;
+      return '<li><button type="button" data-pt="'+esc(it.id)+'"><img src="'+plThumb(it.id)+'" alt="" loading="lazy"><span><b>'+esc(it.title||"제목 없음")+'</b><small>'+esc(it.ch||"")+(nw?'<span class="nw">NEW</span>':'')+'</small></span></button></li>'; }).join("")+'</ol>':'';
+  }).catch(function(){ var el=$("#plTr",box); if(el) el.innerHTML='<p class="pt-msg">영상 목록은 지금 못 불러왔어요. 위 플레이어에서 그대로 볼 수 있어요.</p>'; });
+}
+document.addEventListener("click",function(e){ var b=e.target.closest("[data-plist]"); if(b&&!b.disabled) openPl(b.dataset.plist); });
+function fillMemberPl(m){
+  loadPl().then(function(){
+    if((cur!=="member"&&cur!=="members")||memKey!==m.id) return;
+    var el=$("#mPl"); if(!el) return;
+    var ls2=(PL||[]).filter(function(l){ return l.member===m.name; });
+    el.innerHTML=ls2.length?'<section class="sec"><div class="sec-h"><h2>'+esc(m.name)+'의 플레이리스트</h2></div><div class="pgrid">'+ls2.map(plCard).join("")+'</div></section>':'';
+  });
 }
 
 /* ---------- 길 찾기 ---------- */
