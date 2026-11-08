@@ -5,12 +5,12 @@
 <script>try{var t=localStorage.getItem("cz.theme");if(t!=="dark"&&t!=="light")t="dark";document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme="dark"}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0C0E14">
-<title>마음별</title>
+<title>스타트</title>
 <meta name="description" content="스텔라이브 비공식 팬 라운지: 지금 방송 중인 멤버, 합방 멀티뷰, 새 클립과 다시보기">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 /* ==================================================================
-   마음별 — 스텔라이브 팬 라운지 (비공식)
+   스타트 — 스텔라이브 팬 라운지 (비공식)
    바탕: 푸른 기 도는 검정 · 포인트: 구슬 색(라벤더·분홍·복숭아·민트)
    아이콘 대신 글자로 꾸며요
    ================================================================== */
@@ -436,7 +436,7 @@ main{flex:1 0 auto;padding-bottom:80px}
 </head>
 <body>
 <header class="gh"><div class="gh-in">
-  <a class="brand" href="#home"><span id="siteName">마음별</span><i aria-hidden="true"></i></a>
+  <a class="brand" href="#home"><span id="siteName">스타트</span><i aria-hidden="true"></i></a>
   <nav class="nav" aria-label="메뉴">
     <a href="#home" data-r="home">홈</a><a href="#members" data-r="members">멤버</a><a href="#clips" data-r="clips">클립</a><a href="#videos" data-r="videos">다시보기</a><a href="#multi" data-r="multi">멀티뷰<span class="cnt" id="mvCnt"></span></a>
   </nav>
@@ -445,7 +445,7 @@ main{flex:1 0 auto;padding-bottom:80px}
   <button class="theme" type="button" id="themeBtn">밝게</button>
 </div></header>
 <main id="view" class="wrap" tabindex="-1"></main>
-<footer class="gf"><p><b id="siteName2">마음별</b>은 스텔라이브 팬이 만든 <b>비공식</b> 팬사이트예요. 스텔라이브·치지직·네이버의 공식 서비스가 아니에요.</p>
+<footer class="gf"><p><b id="siteName2">스타트</b>는 스텔라이브 팬이 만든 <b>비공식</b> 팬사이트예요. 스텔라이브·치지직·네이버의 공식 서비스가 아니에요.</p>
 <p>방송 상태·클립·다시보기는 치지직에서 10분마다 새로 받아 와요. 최애·하트·최근 본 기록은 이 브라우저에만 저장돼요.</p></footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="site-config.js"></script>
@@ -470,7 +470,7 @@ function since(t){ var d=toDate(t); if(!d) return ""; var m=Math.max(0,Math.floo
 function ini(name){ return esc(String(name||"?").trim().charAt(0)||"?"); }
 function avatar(url,name){ return url?'<img class="av" src="'+esc(url)+'" alt="" loading="lazy">':'<span class="av ini" aria-hidden="true">'+ini(name)+'</span>'; }
 function hsh(s){ var h=0; s=String(s||""); for(var i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h; }
-var SITE=(CFG.siteName||"마음별").trim(); $("#siteName").textContent=SITE; $("#siteName2").textContent=SITE; document.title=SITE;
+var SITE=(CFG.siteName||"스타트").trim(); $("#siteName").textContent=SITE; $("#siteName2").textContent=SITE; document.title=SITE;
 function chLive(id){ return "https://chzzk.naver.com/live/"+id; }
 function chHome(id){ return "https://chzzk.naver.com/"+id; }
 
