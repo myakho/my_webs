@@ -20,6 +20,12 @@ async function get(path) {
   return null;
 }
 
+// livePlaybackJson 안에서 HLS 영상 주소를 꺼내요 (일반 HLS 먼저, 없으면 저지연 LLHLS)
+function hlsOf(pb) {
+  try { const media = (typeof pb === "string" ? JSON.parse(pb) : pb || {}).media || []; const m = media.find(x => x.mediaId === "HLS") || media.find(x => x.mediaId === "LLHLS"); return m ? m.path : ""; }
+  catch (e) { return ""; }
+}
+
 const cfg = JSON.parse(await readFile("members.json", "utf8"));
 // 지난번 결과: 지금 올라가 있는 사이트에서 가져와요 (API가 잠깐 실패해도 클립이 사라지지 않게)
 let old = {};
@@ -56,8 +62,10 @@ for (const m of cfg.members || []) {
     mem.live = {
       title: pick(lv, ["liveTitle"]), thumb: String(pick(lv, ["liveImageUrl", "defaultThumbnailImageUrl"])).replace("{type}", "720"),
       viewers: pick(lv, ["concurrentUserCount"], 0), openDate: pick(lv, ["openDate"]), category: pick(lv, ["liveCategoryValue"]),
-      tags: (lv.tags || []).slice(0, 8), adult: !!lv.adult
+      tags: (lv.tags || []).slice(0, 8), adult: !!lv.adult, hls: hlsOf(lv.livePlaybackJson)
     };
+    if (mem.live.hls) { const exp = Number((mem.live.hls.match(/exp=(\d{10})/) || [])[1]); console.log("  영상 주소 받음" + (exp ? " (" + Math.round((exp * 1000 - Date.now()) / 60000) + "분 뒤 만료)" : "")); }
+    else console.log("  영상 주소 없음");
     mem.lastLive = { title: mem.live.title, category: mem.live.category, at: Date.now() };
   }
 
