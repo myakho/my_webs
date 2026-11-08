@@ -850,7 +850,7 @@ async function viewMulti(arg){
    링크는 사이트가 열릴 때 유튜브에서 바로 읽어 와요 → GitHub Actions 를 돌리지 않아도
    재생목록에 새 영상이 생기면 곧바로 보이고, 새 링크는 members.json 을 올리면 바로 나타나요.
    site-config.js 의 youtubeApiKeys 가 있으면 제목·표지·영상 목록까지, 없으면 유튜브 플레이어로 보여 줘요. */
-var PL=null, plLoading=null, ytKeyIdx=0;
+var PL=null, plLoading=null, ytKeyIdx=(function(){ var c=ls("st.ytk"); return c&&c.at&&Date.now()-c.at<10800000?(+c.i||0):0; })();
 function ytKeys(){ var k=CFG.youtubeApiKeys||CFG.youtubeApiKey||[]; if(typeof k==="string") k=[k]; return k.map(function(x){ return String(x||"").trim(); }).filter(Boolean); }
 async function ytApi(path,params){
   var keys=ytKeys(); if(!keys.length) throw new Error("nokey");
@@ -861,7 +861,7 @@ async function ytApi(path,params){
     var r, j;
     try{ r=await fetch("https://www.googleapis.com/youtube/v3/"+path+"?"+q.toString()); j=await r.json().catch(function(){ return {}; }); }
     catch(e){ lastErr=e; continue; }
-    if(r.ok){ ytKeyIdx=ki; return j; }
+    if(r.ok){ if(ki!==ytKeyIdx) ls("st.ytk",{at:Date.now(),i:ki}); ytKeyIdx=ki; return j; }
     var reason=(((j&&j.error||{}).errors||[])[0]||{}).reason||"";
     lastErr=new Error(reason||("http"+r.status));
     if(r.status===404||/NotFound$/.test(reason)) throw lastErr;   /* 없는/비공개 재생목록은 다른 키로 해도 같아요 */
