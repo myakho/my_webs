@@ -6,11 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0C0E14">
 <title>마음별</title>
-<meta name="description" content="치지직 로그인으로 라이브 모아 보기, 멀티뷰, 즐겨찾는 채널, 클립 정리, 내 방송 채팅·후원 보기">
+<meta name="description" content="스텔라이브 비공식 팬 라운지: 지금 방송 중인 멤버, 합방 멀티뷰, 새 클립과 다시보기">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 /* ==================================================================
-   마음별 — 치지직 라이브 모아 보기
+   마음별 — 스텔라이브 팬 라운지 (비공식)
    바탕: 푸른 기 도는 검정 · 포인트: 구슬 색(라벤더·분홍·복숭아·민트)
    아이콘 대신 글자로 꾸며요
    ================================================================== */
@@ -157,6 +157,10 @@ main{flex:1 0 auto;padding-bottom:80px}
 
 /* 한 채널 보기 · 멀티뷰 */
 .watch{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:14px;margin-top:16px}
+.wfull{height:calc(100vh - var(--gh) - 120px);min-height:520px;margin-top:12px}
+.w-login{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin-top:12px}
+.w-login > span:first-child{flex:1 1 420px}
+@media (max-width:760px){.wfull{height:auto;aspect-ratio:9/14;min-height:0}}
 .frame{position:relative;border-radius:14px;overflow:hidden;background:#000;border:1px solid var(--line)}
 .frame iframe{display:block;width:100%;height:100%;border:0}
 .frame.player{aspect-ratio:16/9}
@@ -378,21 +382,71 @@ main{flex:1 0 auto;padding-bottom:80px}
 @media (hover:hover){.cc:hover .cc-cv .disc{transform:translateX(12%)}.cc:hover .lbl{animation:spin 3.2s linear infinite}.cc:hover .play{opacity:1;transform:none}}
 @media (hover:none){.cc-art .play{opacity:1;transform:none}}
 .cc-f{padding:10px 2px 0}
+
+/* ==================================================================
+   스텔라이브 팬 라운지 추가 꾸밈
+   ================================================================== */
+.cf{position:relative;overflow:hidden;background:#000;min-width:0;min-height:0}
+.cf iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0}
+.cf.raw iframe{width:100%!important;height:100%!important;transform:none!important}
+.wv{aspect-ratio:16/9;max-height:calc(100vh - var(--gh) - 170px);margin:12px auto 0;border-radius:14px;border:1px solid var(--line)}
+.tile .cf{flex:1}
+.mem-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:14px 10px}
+.mm{display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:inherit;text-align:center;min-width:0}
+.mm .av{width:72px;height:72px;font-size:24px;transition:transform .25s}
+.mm.on .av{box-shadow:0 0 0 3px var(--page),0 0 0 5px var(--live)}
+.mm.off .av{filter:grayscale(.6);opacity:.75}
+.mm b{font-size:13.5px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mm small{font-size:11.5px;color:var(--mute);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mm small.lv{color:var(--live);font-weight:800}
+@media (hover:hover){.mm:hover .av{transform:translateY(-3px)}}
+.gen-h{display:flex;align-items:center;gap:10px;margin:18px 0 10px;font-size:12px;font-weight:900;letter-spacing:.16em;color:var(--mute)}
+.gen-h::after{content:"";flex:1;border-top:1px dashed var(--line2)}
+.collab{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 16px;border-radius:16px;border:1px solid color-mix(in srgb,var(--o4) 45%,transparent);background:linear-gradient(100deg,color-mix(in srgb,var(--o1) 14%,transparent),color-mix(in srgb,var(--o4) 12%,transparent));margin-bottom:16px}
+.collab .avs{display:flex}
+.collab .avs .av{width:38px;height:38px;margin-left:-8px;box-shadow:0 0 0 2px var(--page)}
+.collab .avs .av:first-child{margin-left:0}
+.collab b{font-size:15px}
+.collab small{display:block;font-size:12.5px;color:var(--ink2)}
+.collab .sp{flex:1}
+.tagbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tagbar button{height:30px;padding:0 12px;border-radius:999px;border:1px solid var(--line2);background:var(--bg2);font-size:12.5px;font-weight:600;color:var(--ink2)}
+.tagbar button[aria-pressed="true"]{background:var(--ink);color:var(--page);border-color:transparent}
+.chip.tg{cursor:pointer}
+.cc-art.ph{background-size:cover;background-position:center}
+.cc-art.ph::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,8,12,.55) 0%,transparent 35%,transparent 45%,rgba(6,8,12,.85) 100%)}
+.cc-art.ph > *{position:relative;z-index:1}
+.cc-art.ph small,.cc-art.ph em{color:rgba(255,255,255,.8)}
+.cc-art.ph b{color:#fff}
+.cc-f .who{display:inline-flex;align-items:center;gap:6px;min-width:0;font-size:12.5px;font-weight:700;color:var(--ink2);text-decoration:none}
+.cc-f .who .av{width:22px;height:22px;font-size:10px}
+.mpick{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:16px;padding:2px}
+.mpick::-webkit-scrollbar{display:none}
+.mpick button{flex:none;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px 0 4px;border-radius:999px;border:1px solid var(--line2);background:var(--bg2);font-size:12.5px;font-weight:600;color:var(--ink2)}
+.mpick button.all{padding:0 12px}
+.mpick .av{width:26px;height:26px;font-size:11px}
+.mpick button[aria-pressed="true"]{background:var(--ink);color:var(--page);border-color:transparent}
+.mpick button.lv .av{box-shadow:0 0 0 2px var(--live)}
+.vd-dur{position:absolute;right:8px;bottom:8px;height:22px;padding:0 8px;border-radius:6px;background:rgba(6,8,12,.75);color:#fff;font-size:11.5px;font-weight:700;display:inline-flex;align-items:center}
+.vd-type{position:absolute;left:8px;top:8px;height:22px;padding:0 8px;border-radius:6px;background:var(--o1);color:#0C0E14;font-size:11px;font-weight:900;display:inline-flex;align-items:center;letter-spacing:.04em}
+.vd-type.up{background:var(--o2)}
+.fav-mark{color:var(--o4)}
+.hi-up{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--mute)}
 </style>
 </head>
 <body>
 <header class="gh"><div class="gh-in">
-  <a class="brand" href="#home" id="brand"><span id="siteName">마음별</span><i aria-hidden="true"></i></a>
+  <a class="brand" href="#home"><span id="siteName">마음별</span><i aria-hidden="true"></i></a>
   <nav class="nav" aria-label="메뉴">
-    <a href="#home" data-r="home">홈</a><a href="#live" data-r="live">라이브</a><a href="#multi" data-r="multi">멀티뷰<span class="cnt" id="mvCnt"></span></a>
-    <a href="#channels" data-r="channels">즐겨찾는 채널</a><a href="#clips" data-r="clips">클립</a>
+    <a href="#home" data-r="home">홈</a><a href="#members" data-r="members">멤버</a><a href="#clips" data-r="clips">클립</a><a href="#videos" data-r="videos">다시보기</a><a href="#multi" data-r="multi">멀티뷰<span class="cnt" id="mvCnt"></span></a>
   </nav>
   <span class="g-sp"></span>
+  <span class="hi-up" id="upStamp"></span>
   <button class="theme" type="button" id="themeBtn">밝게</button>
 </div></header>
 <main id="view" class="wrap" tabindex="-1"></main>
-<footer class="gf"><p><b id="siteName2">마음별</b>은 치지직(CHZZK) Open API로 만든 팬 사이트예요. 치지직이나 네이버의 공식 서비스가 아니에요.</p>
-<p>라이브 목록은 몇 분마다 새로 받아 와요. 로그인은 없어요. 즐겨찾는 채널·클립·하트·최근 본 기록은 이 브라우저에만 저장돼요.</p></footer>
+<footer class="gf"><p><b id="siteName2">마음별</b>은 스텔라이브 팬이 만든 <b>비공식</b> 팬사이트예요. 스텔라이브·치지직·네이버의 공식 서비스가 아니에요.</p>
+<p>방송 상태·클립·다시보기는 치지직에서 10분마다 새로 받아 와요. 최애·하트·최근 본 기록은 이 브라우저에만 저장돼요.</p></footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="site-config.js"></script>
 <script>
@@ -400,16 +454,25 @@ main{flex:1 0 auto;padding-bottom:80px}
 "use strict";
 var CFG=window.SITE_CONFIG||{};
 var MAXMV=Math.max(2,Math.min(6,CFG.maxMultiView||4));
+/* 치지직 화면에서 영상 부분만 잘라 보여 주는 값 (치지직 화면 배치가 바뀌면 site-config.js 에서 고쳐요) */
+var CROP=Object.assign({width:1440,height:900,left:240,top:60,right:352},CFG.crop||{});
 var $=function(s,r){ return (r||document).querySelector(s); }, $$=function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
 function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
 function ls(k,v){ try{ if(arguments.length===1){ var x=localStorage.getItem(k); return x==null?null:JSON.parse(x); } if(v==null) localStorage.removeItem(k); else localStorage.setItem(k,JSON.stringify(v)); }catch(e){ return null; } }
 var tt=0; function toast(m){ var t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(tt); tt=setTimeout(function(){ t.classList.remove("on"); },2600); }
 function num(n){ n=+n||0; if(n>=10000) return (Math.round(n/1000)/10)+"만"; if(n>=1000) return n.toLocaleString("ko-KR"); return String(n); }
-function ago(t){ var d=(Date.now()-new Date(t).getTime())/1000; if(!isFinite(d)) return ""; if(d<60) return "방금"; if(d<3600) return Math.floor(d/60)+"분 전"; if(d<86400) return Math.floor(d/3600)+"시간 전"; return Math.floor(d/86400)+"일 전"; }
-function dateK(t){ var d=new Date(t); return d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0"); }
+function toDate(t){ if(!t) return null; if(typeof t==="number") return new Date(t); var d=new Date(String(t).replace(" ","T")+(/[zZ]|[+-]\d\d:?\d\d$/.test(t)?"":"+09:00")); return isNaN(d)?null:d; }
+function ago(t){ var d=toDate(t); if(!d) return ""; var s=(Date.now()-d)/1000; if(s<60) return "방금"; if(s<3600) return Math.floor(s/60)+"분 전"; if(s<86400) return Math.floor(s/3600)+"시간 전"; if(s<86400*30) return Math.floor(s/86400)+"일 전"; return dateK(d); }
+function dateK(t){ var d=toDate(t); if(!d) return ""; return d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0"); }
+function hhmm(d){ d=toDate(d); return d?String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"):"-"; }
+function dur(s){ s=Math.round(+s||0); var h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60; return (h?h+":"+String(m).padStart(2,"0"):m)+":"+String(x).padStart(2,"0"); }
+function since(t){ var d=toDate(t); if(!d) return ""; var m=Math.max(0,Math.floor((Date.now()-d)/60000)); return m<60?m+"분째":Math.floor(m/60)+"시간 "+(m%60)+"분째"; }
 function ini(name){ return esc(String(name||"?").trim().charAt(0)||"?"); }
-function avatar(url,name,cls){ return url?'<img class="av'+(cls?' '+cls:'')+'" src="'+esc(url)+'" alt="" loading="lazy">':'<span class="av ini'+(cls?' '+cls:'')+'" aria-hidden="true">'+ini(name)+'</span>'; }
+function avatar(url,name){ return url?'<img class="av" src="'+esc(url)+'" alt="" loading="lazy">':'<span class="av ini" aria-hidden="true">'+ini(name)+'</span>'; }
+function hsh(s){ var h=0; s=String(s||""); for(var i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h; }
 var SITE=(CFG.siteName||"마음별").trim(); $("#siteName").textContent=SITE; $("#siteName2").textContent=SITE; document.title=SITE;
+function chLive(id){ return "https://chzzk.naver.com/live/"+id; }
+function chHome(id){ return "https://chzzk.naver.com/"+id; }
 
 /* ---------- 화면 밝기 ---------- */
 function themeLabel(){ $("#themeBtn").textContent=document.documentElement.dataset.theme==="dark"?"밝게":"어둡게"; }
@@ -417,126 +480,91 @@ $("#themeBtn").onclick=function(){ var n=document.documentElement.dataset.theme=
 themeLabel();
 
 /* ==================================================================
-   라이브 데이터
-   GitHub Actions가 몇 분마다 치지직 라이브 목록을 받아 lives.json 으로 저장해요.
-   사이트는 그 파일만 읽어요. (비밀키는 GitHub Secrets 에만 있어요)
+   데이터 — GitHub Actions가 10분마다 stellive.json 을 새로 만들어요
    ================================================================== */
-var LV_URL=CFG.livesUrl||"lives.json", lvData=null, lvAt=0, lvLoading=null;
-function loadLives(force){
-  if(!force&&lvData&&Date.now()-lvAt<120000) return Promise.resolve(lvData);
-  if(lvLoading) return lvLoading;
-  lvLoading=fetch(LV_URL+"?t="+Date.now(),{cache:"no-store"})
-    .then(function(r){ if(!r.ok) throw {status:r.status,message:"아직 라이브 파일이 없어요. Actions가 한 번 돌고 나면 보여요"}; return r.json(); })
-    .then(function(j){ lvData={updatedAt:j.updatedAt||0,lives:j.lives||[]}; lvAt=Date.now(); lvData.lives.forEach(remember); saveInfo(); return lvData; })
-    .finally(function(){ lvLoading=null; });
-  return lvLoading;
+var D=null, DAt=0, loading=null;
+function load(force){
+  if(!force&&D&&Date.now()-DAt<120000) return Promise.resolve(D);
+  if(loading) return loading;
+  loading=fetch((CFG.dataUrl||"stellive.json")+"?t="+Date.now(),{cache:"no-store"})
+    .then(function(r){ if(!r.ok) throw new Error("데이터 파일이 아직 없어요"); return r.json(); })
+    .then(function(j){
+      var ms=(j.members||[]).filter(function(m){ return m&&m.name; });
+      ms.forEach(function(m,i){ m.order=i; (m.clips||[]).forEach(function(c){ c.m=m; }); (m.videos||[]).forEach(function(v){ v.m=m; }); });
+      D={updatedAt:j.updatedAt||0,members:ms}; DAt=Date.now();
+      $("#upStamp").textContent=D.updatedAt?ago(D.updatedAt)+" 업데이트":"";
+      return D;
+    })
+    .finally(function(){ loading=null; });
+  return loading;
 }
-/* 예전 API 모양 그대로 써요: /open/v1/lives?size=20&next=40 */
-async function api(path){
-  var u=new URL(path,"https://x.x"), d=await loadLives(), size=+u.searchParams.get("size")||20, from=+u.searchParams.get("next")||0;
-  return {data:d.lives.slice(from,from+size),page:{next:from+size<d.lives.length?String(from+size):null}};
-}
-function apiErr(e){ return (e&&e.message)||"라이브 파일을 불러오지 못했어요"; }
-function upText(){ if(!lvData||!lvData.updatedAt) return "업데이트 기록이 없어요"; return ago(lvData.updatedAt)+" 업데이트"; }
-
-/* ---------- 이 브라우저에 저장하는 것 ---------- */
-function uk(k){ return "cz.my."+k; }
-function getL(k){ return ls(uk(k))||[]; }
-function setL(k,v){ ls(uk(k),v); }
-
-/* ==================================================================
-   치지직 데이터
-   ================================================================== */
-function chIdFrom(s){ s=String(s||"").trim(); var m=s.match(/([0-9a-f]{32})/i); return m?m[1].toLowerCase():""; }
-function clipIdFrom(s){ s=String(s||"").trim(); var m=s.match(/clips?\/([A-Za-z0-9_-]{6,})/)||s.match(/embed\/clip\/([A-Za-z0-9_-]{6,})/); if(m) return m[1]; return /^[A-Za-z0-9_-]{8,}$/.test(s)?s:""; }
-function thumb(l){ var u=l.liveThumbnailImageUrl; return u?u.replace("{type}","720"):""; }
-/* 채널 이름·사진: 방송 중일 때 본 걸 기억해 둬요 (즐겨찾기·멀티뷰 채널만 저장) */
-var chCache=ls("cz.chinfo")||{};
-function remember(l){ chCache[l.channelId]={channelId:l.channelId,channelName:l.channelName,channelImageUrl:l.channelImageUrl||""}; }
-function nameChannel(id,name){ if(!id||!name) return; if(!chCache[id]) chCache[id]={channelId:id,channelName:name,channelImageUrl:""}; saveInfo(); }
-function saveInfo(){ var keep={}; getL("favs").concat(getL("mv")).forEach(function(id){ if(chCache[id]) keep[id]=chCache[id]; }); ls("cz.chinfo",keep); }
-async function channels(ids){
-  try{ await loadLives(); }catch(e){}
-  return ids.map(function(id){ return chCache[id]||{channelId:id,channelName:"채널 "+id.slice(0,6),channelImageUrl:""}; });
-}
-/* 즐겨찾기가 방송 중인지: 파일에 있는 라이브 전체에서 찾아요 */
-async function scanLives(){
-  var d=await loadLives(), m={}; d.lives.forEach(function(l){ m[l.channelId]=l; }); m.__list=d.lives; return m;
-}
-
-/* ==================================================================
-   즐겨찾기 · 멀티뷰 · 클립 저장
-   ================================================================== */
-function favs(){ return getL("favs"); }
+function byId(id){ return D&&D.members.filter(function(m){ return m.id===id; })[0]; }
+function favs(){ return ls("st.favs")||[]; }
 function isFav(id){ return favs().indexOf(id)>-1; }
-function toggleFav(id,name){ var f=favs(), i=f.indexOf(id); if(i>-1){ f.splice(i,1); toast((name||"채널")+" 즐겨찾기를 뺐어요"); } else { f.unshift(id); toast((name||"채널")+"을(를) 즐겨찾기했어요"); } setL("favs",f); if(name) nameChannel(id,name); saveInfo(); }
-function mv(){ return getL("mv"); }
-function setMv(a){ setL("mv",a.slice(0,MAXMV)); $("#mvCnt").textContent=a.length?a.length:""; }
-function addMv(id,name){ var a=mv(); if(a.indexOf(id)>-1){ toast("이미 멀티뷰에 있어요"); return; } if(a.length>=MAXMV){ toast("멀티뷰는 "+MAXMV+"개까지 볼 수 있어요"); return; } a.push(id); setMv(a); if(name) nameChannel(id,name); saveInfo(); toast((name||"채널")+"을(를) 멀티뷰에 넣었어요 ("+a.length+"/"+MAXMV+")"); }
-function clips(){ return getL("clips"); }
-function saveClips(c){ setL("clips",c); }
-function recentClips(){ return getL("recent"); }
-function seenClip(id){ var r=recentClips().filter(function(x){ return x.id!==id; }); r.unshift({id:id,at:Date.now()}); setL("recent",r.slice(0,60)); }
+/* 최애가 먼저, 그다음 방송 중, 그다음 원래 순서 */
+function sorted(list){ var f=favs(); return list.slice().sort(function(a,b){ var fa=f.indexOf(a.id)>-1?0:1, fb=f.indexOf(b.id)>-1?0:1; if(fa!==fb) return fa-fb; var la=a.live?0:1, lb=b.live?0:1; if(la!==lb) return la-lb; return a.order-b.order; }); }
+function lives(){ return sorted(D.members.filter(function(m){ return m.live&&m.id; })); }
+function gens(){ var g=[]; D.members.forEach(function(m){ var k=m.gen||"멤버"; if(g.indexOf(k)<0) g.push(k); }); return g; }
+function allClips(){ var a=[]; D.members.forEach(function(m){ a=a.concat(m.clips||[]); }); return a.sort(function(x,y){ return (toDate(y.date)||0)-(toDate(x.date)||0); }); }
+function allVideos(){ var a=[]; D.members.forEach(function(m){ a=a.concat(m.videos||[]); }); return a.sort(function(x,y){ return (toDate(y.date)||0)-(toDate(x.date)||0); }); }
+
+/* ---------- 멀티뷰 목록 ---------- */
+function mv(){ return ls("st.mv")||[]; }
+function setMv(a){ a=a.slice(0,MAXMV); ls("st.mv",a); $("#mvCnt").textContent=a.length||""; }
+function addMv(id){ var a=mv(), m=byId(id), nm=m?m.name:"방송"; if(a.indexOf(id)>-1){ toast("이미 멀티뷰에 있어요"); return; } if(a.length>=MAXMV){ toast("멀티뷰는 "+MAXMV+"개까지 볼 수 있어요"); return; } a.push(id); setMv(a); toast(nm+" 방송을 멀티뷰에 넣었어요 ("+a.length+"/"+MAXMV+")"); }
 
 /* ==================================================================
-   화면 공통
+   영상만 보이게 자르기
+   치지직은 영상만 따로 붙이는 주소가 없어서, 치지직 화면을 정해진 크기로 띄운 뒤
+   왼쪽 메뉴·위쪽 머리글·오른쪽 채팅을 잘라 내고 영상 부분만 칸에 맞춰 보여 줘요.
    ================================================================== */
-var view=$("#view"), cur="", cleanups=[];
-function setView(h){ cleanups.splice(0).forEach(function(f){ try{ f(); }catch(e){} }); view.innerHTML=h; }
-function go(h){ location.hash=h; }
-/* ---------- 표(티켓) 꾸밈 도구 ---------- */
+var ro=("ResizeObserver" in window)?new ResizeObserver(function(es){ es.forEach(function(e){ fit(e.target); }); }):null;
+function cropBox(id,title,cls){ return '<div class="cf'+(cls?' '+cls:'')+'" data-cf><iframe src="'+chLive(id)+'" title="'+esc(title||"방송")+'" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen scrolling="no" style="width:'+CROP.width+'px;height:'+CROP.height+'px"></iframe></div>'; }
+function fit(box){
+  var f=box.querySelector("iframe"); if(!f) return;
+  var w=box.clientWidth, h=box.clientHeight; if(!w||!h) return;
+  var pw=CROP.width-CROP.left-CROP.right, ph=pw*9/16, s=Math.max(w/pw,h/ph);
+  var x=-CROP.left*s+(w-pw*s)/2, y=-CROP.top*s+(h-ph*s)/2;
+  f.style.transform="translate("+x+"px,"+y+"px) scale("+s+")";
+}
+function fitAll(root){ $$("[data-cf]",root).forEach(function(b){ fit(b); if(ro) ro.observe(b); }); }
+window.addEventListener("resize",function(){ fitAll(document); });
+
+/* ==================================================================
+   표(티켓) · 앨범 도구
+   ================================================================== */
 function barcode(seed){
   var s=String(seed||"maumbyeol"), x=0, bars="";
   for(var i=0;i<34;i++){ var c=s.charCodeAt(i%s.length)+i*7, w=1+(c%3); bars+='<rect x="'+x+'" y="0" width="'+w+'" height="30"/>'; x+=w+1+((c>>2)%2); }
   return '<svg class="bc" viewBox="0 0 '+x+' 30" preserveAspectRatio="none" aria-hidden="true">'+bars+'</svg>';
 }
-function openAt(l){ var d=new Date(String(l.openDate||"").replace(" ","T")+"+09:00"); return isNaN(d)?null:d; }
-function since(l){ var d=openAt(l); if(!d) return ""; var m=Math.max(0,Math.floor((Date.now()-d)/60000)); return m<60?m+"분째":Math.floor(m/60)+"시간 "+(m%60)+"분째"; }
-function hhmm(d){ return d?String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"):"-"; }
-function ticketNo(l){ var d=openAt(l)||new Date(); return "MB-"+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+"-"+String(l.liveId||0).slice(-5).padStart(5,"0"); }
-function liveCard(l){
-  var ch=l.channelId, f=isFav(ch);
-  return '<article class="lc"><a class="lc-th" href="#watch/'+ch+'">'+(l.adult&&!thumb(l)?'<span class="adult">19</span>':thumb(l)?'<img src="'+esc(thumb(l))+'" alt="" loading="lazy">':'')+'<span class="live-b">LIVE</span><span class="vw">'+num(l.concurrentUserCount)+'명 시청</span></a>'+
-    '<div class="lc-perf" aria-hidden="true"></div>'+
-    '<div class="lc-b">'+avatar(l.channelImageUrl,l.channelName)+'<div style="min-width:0"><a class="lc-t" href="#watch/'+ch+'" style="text-decoration:none">'+esc(l.liveTitle)+'</a><div class="lc-c">'+esc(l.channelName)+(l.liveCategoryValue?' · '+esc(l.liveCategoryValue):'')+'</div>'+
-    ((l.tags&&l.tags.length)?'<div class="lc-g">'+l.tags.slice(0,3).map(function(t){ return '<span class="chip">'+esc(t)+'</span>'; }).join("")+'</div>':'')+'</div></div>'+
-    '<div class="lc-no"><div><small>ADMIT ONE · '+esc(hhmm(openAt(l)))+' 입장</small><b>'+ticketNo(l)+'</b></div>'+barcode(l.liveId+ch)+'</div>'+
-    '<div class="lc-a"><button class="btn btn-line btn-sm" type="button" data-mv="'+ch+'" data-nm="'+esc(l.channelName)+'">+ 멀티뷰</button><button class="btn btn-line btn-sm'+(f?' fav-on':'')+'" type="button" data-fav="'+ch+'" data-nm="'+esc(l.channelName)+'">'+(f?'즐겨찾기 됨':'즐겨찾기')+'</button></div></article>';
+function ticketNo(m){ var d=toDate(m.live&&m.live.openDate)||new Date(); return "ST-"+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+"-"+String(hsh(m.id)%100000).padStart(5,"0"); }
+function tagChips(tags){ return (tags||[]).slice(0,5).map(function(t){ return '<button type="button" class="chip tg" data-tag="'+esc(t)+'">#'+esc(t)+'</button>'; }).join(""); }
+function passCard(m,i){
+  var l=m.live, f=isFav(m.id);
+  return '<article class="pass" aria-label="'+esc(m.name)+' 방송">'+
+    '<div class="ps-l"><a class="ps-cover" href="#watch/'+m.id+'">'+(l.thumb?'<img src="'+esc(l.thumb)+'" alt="">':'')+'<span class="live-b">LIVE</span><span class="vw">'+num(l.viewers)+'명 시청</span></a>'+
+      '<div class="ps-tk"><div><small>TICKET NO.</small><b>'+ticketNo(m)+'</b></div>'+barcode(m.id+l.openDate)+'</div></div>'+
+    '<div class="ps-r"><div class="ps-top"><span>'+esc(m.gen||"STELLIVE")+' · LIVE '+String(i+1).padStart(2,"0")+'</span><time>'+esc(since(l.openDate))+'</time></div>'+
+      '<h3>'+esc(l.title)+'</h3>'+
+      '<div class="ps-who">'+avatar(m.image,m.name)+'<b>'+esc(m.name)+'</b>'+(f?'<span class="chip fav-mark">♥ 최애</span>':'')+'</div>'+
+      '<div class="ps-grid"><div><small>입장</small><b>'+esc(hhmm(l.openDate))+'</b></div><div><small>관객</small><b>'+num(l.viewers)+'명</b></div><div><small>분야</small><b>'+esc(l.category||"-")+'</b></div></div>'+
+      (l.tags&&l.tags.length?'<div class="lc-g">'+tagChips(l.tags)+'</div>':'')+
+      '<div class="ps-foot"><a class="btn btn-main btn-sm" href="'+chLive(m.id)+'" target="_blank" rel="noopener">치지직 입장 ↗</a><a class="btn btn-line btn-sm" href="#watch/'+m.id+'">여기서 보기</a><button class="btn btn-line btn-sm" type="button" data-mv="'+m.id+'">+ 멀티뷰</button></div></div></article>';
 }
-/* 큰 입장권 (처음 화면에서 넘겨 봐요) */
-function passCard(l,i,fav){
-  var ch=l.channelId, f=isFav(ch);
-  return '<article class="pass" aria-label="'+esc(l.channelName)+' 방송">'+
-    '<div class="ps-l"><a class="ps-cover" href="#watch/'+ch+'">'+(thumb(l)?'<img src="'+esc(thumb(l))+'" alt="">':'')+'<span class="live-b">LIVE</span><span class="vw">'+num(l.concurrentUserCount)+'명 시청</span></a>'+
-      '<div class="ps-tk"><div><small>TICKET NO.</small><b>'+ticketNo(l)+'</b></div>'+barcode(l.liveId+ch)+'</div></div>'+
-    '<div class="ps-r"><div class="ps-top"><span>'+(fav?'MY CHANNEL':'LIVE PASS')+' '+String(i+1).padStart(2,"0")+'</span><time>'+esc(since(l))+'</time></div>'+
-      '<h3>'+esc(l.liveTitle)+'</h3>'+
-      '<div class="ps-who">'+avatar(l.channelImageUrl,l.channelName)+'<b>'+esc(l.channelName)+'</b>'+(fav?'<span class="chip">즐겨찾기</span>':'')+'</div>'+
-      '<div class="ps-grid"><div><small>입장</small><b>'+esc(hhmm(openAt(l)))+'</b></div><div><small>관객</small><b>'+num(l.concurrentUserCount)+'명</b></div><div><small>분야</small><b>'+esc(l.liveCategoryValue||"-")+'</b></div></div>'+
-      '<div class="ps-foot"><a class="btn btn-main btn-sm" href="#watch/'+ch+'">입장하기</a><button class="btn btn-line btn-sm" type="button" data-mv="'+ch+'" data-nm="'+esc(l.channelName)+'">+ 멀티뷰</button><span class="sp"></span>'+
-        '<button class="btn btn-line btn-sm'+(f?' fav-on':'')+'" type="button" data-fav="'+ch+'" data-nm="'+esc(l.channelName)+'">'+(f?'즐겨찾기 됨':'즐겨찾기')+'</button></div></div></article>';
-}
-
-/* ---------- 넘기기 (티켓·앨범 같이 써요) ---------- */
+/* 넘기기 (티켓·앨범 같이 써요) */
+var cleanups=[];
 function flow(root,n,start,kind,onSel){
   var st=$("[data-stage]",root), idx=Math.min(Math.max(0,start||0),Math.max(0,n-1));
   function lay(){
-    var items=$$("[data-fi]",st);
-    if(kind==="tk"){
-      var cur=items[idx]; if(cur) st.style.height=cur.offsetHeight+"px";
-      var w=cur?cur.offsetWidth:600, sw=st.clientWidth, step=Math.min(w*.62,(sw-w)/2+w*.18);
-    } else { var W=st.clientWidth||1000, jstep=Math.min(220,W*.24), deep=window.innerWidth<620?.62:1; }
+    var items=$$("[data-fi]",st), cur=items[idx], step, jstep, deep;
+    if(kind==="tk"){ if(cur) st.style.height=cur.offsetHeight+"px"; var w=cur?cur.offsetWidth:600, sw=st.clientWidth; step=Math.min(w*.62,(sw-w)/2+w*.18); }
+    else { var W=st.clientWidth||1000; jstep=Math.min(220,W*.24); deep=window.innerWidth<620?.62:1; }
     items.forEach(function(el){
       var i=+el.dataset.fi, o=i-idx; if(n>2){ if(o>n/2) o-=n; if(o<-n/2) o+=n; }
       var a=Math.abs(o), on=o===0;
-      if(kind==="tk"){
-        el.style.transform=on?"translateX(-50%)":"translateX(calc(-50% + "+(o*step)+"px)) translateZ("+(-120-a*40)+"px) rotateY("+(o>0?-18:18)+"deg) scale(.9)";
-        el.style.opacity=a>1?"0":on?"1":".5"; el.style.pointerEvents=a>1?"none":"";
-      } else {
-        el.style.transform=on?"translateX(-50%)":"translateX(calc(-50% + "+(o*jstep*deep+(o>0?150:-60)*deep)+"px)) translateZ("+(-140-a*40)+"px) rotateY("+(o>0?-42:42)+"deg)";
-        el.style.opacity=a>2?"0":a===2?".45":"1"; el.style.pointerEvents=a>2?"none":"";
-        el.classList.toggle("spin",on&&el.dataset.live==="1");
-      }
+      if(kind==="tk"){ el.style.transform=on?"translateX(-50%)":"translateX(calc(-50% + "+(o*step)+"px)) translateZ("+(-120-a*40)+"px) rotateY("+(o>0?-18:18)+"deg) scale(.9)"; el.style.opacity=a>1?"0":on?"1":".5"; el.style.pointerEvents=a>1?"none":""; }
+      else { el.style.transform=on?"translateX(-50%)":"translateX(calc(-50% + "+(o*jstep*deep+(o>0?150:-60)*deep)+"px)) translateZ("+(-140-a*40)+"px) rotateY("+(o>0?-42:42)+"deg)"; el.style.opacity=a>2?"0":a===2?".45":"1"; el.style.pointerEvents=a>2?"none":""; el.classList.toggle("spin",on&&el.dataset.live==="1"); }
       el.style.zIndex=String(100-a); el.classList.toggle("on",on); el.setAttribute("aria-selected",String(on));
       $$("a,button",el).forEach(function(x){ x.tabIndex=on?0:-1; });
     });
@@ -554,267 +582,240 @@ function flow(root,n,start,kind,onSel){
   window.addEventListener("resize",lay); cleanups.push(function(){ window.removeEventListener("resize",lay); });
   lay(); setTimeout(lay,250); $$("img",st).forEach(function(im){ if(!im.complete) im.addEventListener("load",lay,{once:true}); });
   if(onSel) onSel(idx);
-  return {sel:sel,lay:lay,get:function(){ return idx; }};
+  return {sel:sel};
 }
 function flowCtl(n,label,dots){ return n>1?'<div class="f-ctl"><button type="button" class="f-arr" data-go="-1" aria-label="이전 '+label+'">‹</button>'+(dots?'<span class="f-dots">'+Array.apply(null,{length:n}).map(function(_,i){ return '<button type="button" data-dot="'+i+'" aria-label="'+(i+1)+'번째 '+label+'"></button>'; }).join("")+'</span>':'<span class="f-n" id="fN"></span>')+'<button type="button" class="f-arr" data-go="1" aria-label="다음 '+label+'">›</button></div>':''; }
+
+/* ---------- 클립(앨범) · 다시보기(입장권) 카드 ---------- */
+var CLC=["#A99BFF","#F3A6C6","#F5BE8F","#8FD9C4"];
+function hearts(){ return ls("st.hearts")||[]; }
+function recent(){ return ls("st.recent")||[]; }
+function clipCard(c,i){
+  var h=hsh(c.id), m=c.m||{}, on=hearts().some(function(x){ return x.id===c.id; });
+  return '<div class="cc"><button type="button" class="cc-cv" data-clip="'+esc(c.id)+'" style="--c:'+CLC[h%4]+';--x:'+(20+h%60)+'%" aria-label="'+esc(c.title||"클립")+' 보기"><span class="disc" aria-hidden="true"><span class="lbl">'+(m.image?'<img src="'+esc(m.image)+'" alt="">':'')+'</span></span>'+
+    '<span class="cc-art'+(c.thumb?' ph':'')+'"'+(c.thumb?' style="background-image:url(\''+esc(c.thumb)+'\')"':'')+'><small>CLIP '+String((i||0)+1).padStart(2,"0")+(c.duration?' · '+dur(c.duration):'')+'</small><span><b>'+esc(c.title||"클립")+'</b><em>'+(c.views?'조회 '+num(c.views)+' · ':'')+esc(ago(c.date))+'</em></span><span class="play" aria-hidden="true">▶</span></span></button>'+
+    '<div class="cc-f">'+(m.id?'<a class="who" href="#member/'+m.id+'">'+avatar(m.image,m.name)+'<span>'+esc(m.name)+'</span></a>':'<small></small>')+'<span class="sp"></span><button type="button" class="heart" data-heart="'+esc(c.id)+'" aria-pressed="'+on+'">'+(on?'♥ 하트':'♡ 하트')+'</button></div></div>';
+}
+function clipGrid(list,empty){ return list.length?'<div class="cgrid">'+list.map(clipCard).join("")+'</div>':'<div class="empty">'+empty+'</div>'; }
+function findClip(id){ if(!D) return null; var a=allClips(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; var h=hearts().concat(recent()); for(var k=0;k<h.length;k++) if(h[k].id===id&&h[k].c) return h[k].c; return null; }
+function slim(c){ return {id:c.id,title:c.title,thumb:c.thumb,duration:c.duration,views:c.views,date:c.date,mid:c.m&&c.m.id}; }
+function unslim(x){ var c=Object.assign({},x.c||{id:x.id}); c.m=byId(c.mid)||{}; return c; }
+function openClip(id){
+  var c=findClip(id)||{id:id,m:{}}, m=c.m||{};
+  var r=recent().filter(function(x){ return x.id!==id; }); r.unshift({id:id,at:Date.now(),c:slim(c)}); ls("st.recent",r.slice(0,60));
+  var box=document.createElement("div"); box.className="modal"; box.setAttribute("role","dialog"); box.setAttribute("aria-modal","true");
+  box.innerHTML='<div class="modal-in"><div class="modal-h"><div><h2>'+esc(c.title||"클립")+'</h2><p class="mute" style="font-size:13px">'+esc(m.name||"")+(c.date?' · '+esc(dateK(c.date)):'')+(c.views?' · 조회 '+num(c.views):'')+'</p></div><button class="btn btn-line btn-sm" type="button" data-x>닫기</button></div>'+
+    '<div class="frame clip-frame"><iframe src="https://chzzk.naver.com/embed/clip/'+encodeURIComponent(id)+'" title="클립" allow="autoplay; fullscreen; encrypted-media" allowfullscreen style="width:100%;height:100%"></iframe></div>'+
+    '<div class="row" style="margin-top:12px"><a class="btn btn-line btn-sm" href="https://chzzk.naver.com/clips/'+encodeURIComponent(id)+'" target="_blank" rel="noopener">치지직에서 보기 ↗</a>'+(m.id?'<a class="btn btn-line btn-sm" href="#member/'+m.id+'" data-x>'+esc(m.name)+' 클립 더 보기</a>':'')+'</div></div>';
+  document.body.appendChild(box);
+  var prev=document.activeElement;
+  function close(){ box.remove(); document.removeEventListener("keydown",key); if(prev&&prev.focus) prev.focus(); }
+  function key(e){ if(e.key==="Escape") close(); }
+  document.addEventListener("keydown",key);
+  box.onclick=function(e){ if(e.target===box||e.target.closest("[data-x]")) close(); };
+  $("[data-x]",box).focus();
+}
+function videoCard(v){
+  var m=v.m||{}, up=String(v.type).toUpperCase()==="UPLOAD";
+  return '<article class="lc"><a class="lc-th" href="https://chzzk.naver.com/video/'+esc(v.no)+'" target="_blank" rel="noopener">'+(v.thumb?'<img src="'+esc(v.thumb)+'" alt="" loading="lazy">':'')+'<span class="vd-type'+(up?' up':'')+'">'+(up?'업로드':'다시보기')+'</span>'+(v.duration?'<span class="vd-dur">'+dur(v.duration)+'</span>':'')+'</a>'+
+    '<div class="lc-perf" aria-hidden="true"></div>'+
+    '<div class="lc-b">'+avatar(m.image,m.name)+'<div style="min-width:0"><a class="lc-t" href="https://chzzk.naver.com/video/'+esc(v.no)+'" target="_blank" rel="noopener" style="text-decoration:none">'+esc(v.title)+'</a><div class="lc-c">'+esc(m.name||"")+(v.category?' · '+esc(v.category):'')+'</div></div></div>'+
+    '<div class="lc-no"><div><small>VOD · '+esc(dateK(v.date))+(v.views?' · 조회 '+num(v.views):'')+'</small><b>NO. '+esc(v.no)+'</b></div>'+barcode("v"+v.no)+'</div>'+
+    '<div class="lc-a"><a class="btn btn-line btn-sm" href="https://chzzk.naver.com/video/'+esc(v.no)+'" target="_blank" rel="noopener">치지직에서 보기 ↗</a></div></article>';
+}
+
+/* ---------- 공통 클릭 ---------- */
 document.addEventListener("click",function(e){
-  var b=e.target.closest("[data-mv]"); if(b){ addMv(b.dataset.mv,b.dataset.nm); return; }
-  var f=e.target.closest("[data-fav]"); if(f){ toggleFav(f.dataset.fav,f.dataset.nm); var on=isFav(f.dataset.fav); $$('[data-fav="'+f.dataset.fav+'"]').forEach(function(x){ x.classList.toggle("fav-on",on); if(x.classList.contains("btn")) x.textContent=on?"즐겨찾기 됨":"즐겨찾기"; }); if(cur==="channels"||cur==="home") route(); return; }
+  var b=e.target.closest("[data-mv]"); if(b){ addMv(b.dataset.mv); if(cur==="multi") setTimeout(route,30); return; }
+  var t=e.target.closest("[data-tag]"); if(t){ homeTag=t.dataset.tag; if(cur!=="home") go("home"); else route(); setTimeout(function(){ var s=$("#hLive"); if(s) s.scrollIntoView({behavior:"smooth",block:"start"}); },60); return; }
+  var c=e.target.closest("[data-clip]"); if(c){ openClip(c.dataset.clip); return; }
+  var h=e.target.closest("[data-heart]"); if(h){
+    var id=h.dataset.heart, a=hearts(), i=-1; a.forEach(function(x,k){ if(x.id===id) i=k; });
+    if(i>-1){ a.splice(i,1); toast("하트를 뺐어요"); } else { var cl=findClip(id)||{id:id}; a.unshift({id:id,at:Date.now(),c:slim(cl)}); toast("하트 목록에 넣었어요"); }
+    ls("st.hearts",a); var on=i<0; $$('[data-heart="'+id+'"]').forEach(function(x){ x.setAttribute("aria-pressed",String(on)); x.textContent=on?"♥ 하트":"♡ 하트"; });
+    return;
+  }
+  var f=e.target.closest("[data-fav]"); if(f){ var fl=favs(), id2=f.dataset.fav, k2=fl.indexOf(id2), m=byId(id2); if(k2>-1){ fl.splice(k2,1); toast((m?m.name:"멤버")+" 최애를 풀었어요"); } else { fl.unshift(id2); toast((m?m.name:"멤버")+"을(를) 최애로 정했어요 ♥"); } ls("st.favs",fl); route(); }
 });
+
 /* ==================================================================
-   홈
+   화면
    ================================================================== */
+var view=$("#view"), cur="";
+function setView(h){ cleanups.splice(0).forEach(function(f){ try{ f(); }catch(e){} }); if(ro) ro.disconnect(); view.innerHTML=h; }
+function go(h){ location.hash=h; }
+function errBox(e){ return '<div class="empty">스텔라이브 데이터를 아직 불러오지 못했어요.<br><small>'+esc(e&&e.message||"")+' · GitHub Actions가 한 번 돌고 나면 보여요.</small></div>'; }
+function memberTile(m){ var l=m.live; return '<a class="mm '+(l?'on':'off')+'" href="#member/'+(m.id||'')+'">'+avatar(m.image,m.name)+'<b>'+(isFav(m.id)?'<span class="fav-mark">♥ </span>':'')+esc(m.name)+'</b>'+(l?'<small class="lv">LIVE · '+esc(l.category||"방송 중")+'</small>':'<small>'+(m.lastLive?ago(m.lastLive.at)+' 방송':'방송 쉼')+'</small>')+'</a>'; }
+function memberRows(){ return gens().map(function(g){ return '<div class="gen-h">'+esc(g)+'</div><div class="mem-row">'+D.members.filter(function(m){ return (m.gen||"멤버")===g; }).map(memberTile).join("")+'</div>'; }).join(""); }
+
+/* 합방 찾기: 같은 분야로 방송 중인 멤버가 둘 이상이면 묶어요 */
+function collabs(){
+  var g={}; lives().forEach(function(m){ var k=(m.live.category||"").trim(); if(!k) return; (g[k]=g[k]||[]).push(m); });
+  return Object.keys(g).filter(function(k){ return g[k].length>1; }).map(function(k){ return {cat:k,ms:g[k]}; });
+}
+function collabBox(c){ return '<div class="collab"><span class="avs">'+c.ms.map(function(m){ return avatar(m.image,m.name); }).join("")+'</span><div><b>합방 중일지도? '+c.ms.map(function(m){ return esc(m.name); }).join(" · ")+'</b><small>모두 ‘'+esc(c.cat)+'’ 방송 중이에요</small></div><span class="sp"></span><a class="btn btn-orb btn-sm" href="#multi/'+c.ms.slice(0,MAXMV).map(function(m){ return m.id; }).join(",")+'">멀티뷰로 같이 보기</a></div>'; }
+
+/* ---------- 홈 ---------- */
+var homeTag="", passKey="";
 async function viewHome(){
-  var f=favs(), c=clips(), r=recentClips();
-  setView('<section class="hero"><div class="hero-l"><small class="orbt">LIVE · MULTIVIEW · CLIPS</small>'+
-      '<h1>오늘은 누구 방송 볼까요?</h1><p>즐겨찾는 채널이 방송 중인지 한눈에 보고, 여러 방송을 한 화면에서 같이 보고, 좋아하는 클립을 앨범처럼 모아 둬요. 로그인 없이 바로 써요.</p><div class="row"><a class="btn btn-main" href="#live">라이브 보러 가기</a><a class="btn btn-line" href="#multi">멀티뷰 열기</a></div>'+
-    '</div><div class="hero-r">'+
-      '<a class="qk" href="#channels"><b>즐겨찾는 채널</b><em id="qkFav">'+f.length+'</em><span id="qkLive">방송 중인지 확인하는 중…</span></a>'+
-      '<a class="qk" href="#multi"><b>멀티뷰</b><em>'+mv().length+' / '+MAXMV+'</em><span>여러 방송 동시에 보기</span></a>'+
-      '<a class="qk" href="#clips"><b>모은 클립</b><em>'+c.length+'</em><span>하트 '+c.filter(function(x){ return x.heart; }).length+'개</span></a>'+
-      '<a class="qk" href="#live"><b>지금 라이브</b><em id="qkLv">-</em><span id="qkUp">불러오는 중…</span></a>'+
-    '</div></section>'+
-    '<section class="sec"><div class="sec-h"><h2><span class="orbt">LIVE PASS</span> 지금 입장할 수 있는 방송</h2><a href="#live">전체 →</a></div><div id="hPass"></div></section>'+
-    '<section class="sec"><div class="sec-h"><h2>즐겨찾는 채널</h2><a href="#channels">앨범으로 보기 →</a></div><div id="hFav"></div></section>'+
-    '<section class="sec"><div class="sec-h"><h2>최근 본 클립</h2><a href="#clips/recent">전체 →</a></div><div id="hRecent"></div></section>');
-  $("#hRecent").innerHTML=clipGrid(r.slice(0,6).map(function(x){ return clipById(x.id)||{id:x.id,title:"",at:x.at}; }),"아직 본 클립이 없어요. 클립 메뉴에서 클립 링크를 모아 보세요.");
-  bindClipGrid($("#hRecent"));
-  renderFavRow($("#hFav"),true);
-  $("#hPass").innerHTML='<div class="empty">입장권을 뽑는 중이에요…</div>';
-  var top=[];
-  try{ var c2=await api("/open/v1/lives?size=10"); if(cur!=="home") return; top=c2.data||[]; drawPass(top,{}); $("#qkLv").textContent=lvData.lives.length; $("#qkUp").textContent=upText(); }
-  catch(e){ if($("#hPass")) $("#hPass").innerHTML='<div class="empty">라이브 목록을 불러오지 못했어요. '+esc(apiErr(e))+'</div>'; return; }
-  if(!f.length) return;
-  try{ var lm=await scanLives(); if(cur!=="home"||!$("#hPass")) return;
-    var mine=f.map(function(id){ return lm[id]; }).filter(Boolean); if(!mine.length) return;
-    var fs={}; mine.forEach(function(l){ fs[l.channelId]=1; });
-    drawPass(mine.concat(top.filter(function(l){ return !fs[l.channelId]; })).slice(0,12),fs);
-  }catch(e){}
+  setView('<section class="hero"><div class="hero-l"><small class="orbt">STELLIVE FAN LOUNGE</small><h1>오늘은 누구 방송 볼까요?</h1><p>스텔라이브 멤버가 지금 방송 중인지, 합방은 누구랑 하는지, 새 클립과 다시보기까지 한곳에서 봐요. 10분마다 새로 받아 와요.</p><div class="row"><a class="btn btn-main" href="#multi">멀티뷰 열기</a><a class="btn btn-line" href="#members">멤버 보기</a></div></div>'+
+    '<div class="hero-r"><a class="qk" href="#home" id="qkLive"><b>방송 중</b><em>-</em><span>불러오는 중…</span></a><a class="qk" href="#members"><b>멤버</b><em id="qkMem">-</em><span id="qkGen">&nbsp;</span></a><a class="qk" href="#clips"><b>새 클립</b><em id="qkClip">-</em><span>오늘 올라온 클립</span></a><a class="qk" href="#multi"><b>멀티뷰</b><em>'+mv().length+' / '+MAXMV+'</em><span>영상만 여러 개 같이 보기</span></a></div></section>'+
+    '<div id="hBody"><div class="empty" style="margin-top:30px">불러오는 중이에요…</div></div>');
+  try{ await load(); }catch(e){ $("#hBody").innerHTML=errBox(e); return; }
+  if(cur!=="home") return;
+  var L=lives(), today=allClips().filter(function(c){ var d=toDate(c.date); return d&&Date.now()-d<86400000; }).length;
+  $("#qkLive").innerHTML='<b>방송 중</b><em>'+L.length+'명</em><span>'+(L.length?esc(L.slice(0,2).map(function(m){ return m.name; }).join(", "))+(L.length>2?' 외':''):'지금은 다들 쉬는 중')+'</span>';
+  $("#qkMem").textContent=D.members.length+"명"; $("#qkGen").textContent=gens().join(" · "); $("#qkClip").textContent=today+"개";
+  var tags={}; L.forEach(function(m){ (m.live.tags||[]).concat(m.live.category?[m.live.category]:[]).forEach(function(t){ tags[t]=(tags[t]||0)+1; }); });
+  var tagList=Object.keys(tags).sort(function(a,b){ return tags[b]-tags[a]; }).slice(0,14);
+  if(homeTag&&!tags[homeTag]) homeTag="";
+  var LL=homeTag?L.filter(function(m){ return (m.live.tags||[]).indexOf(homeTag)>-1||m.live.category===homeTag; }):L;
+  $("#hBody").innerHTML=
+    '<section class="sec" id="hLive"><div class="sec-h"><h2><span class="orbt">LIVE PASS</span> 지금 방송 중인 멤버</h2><a href="#multi/'+L.slice(0,MAXMV).map(function(m){ return m.id; }).join(",")+'">모두 멀티뷰로 →</a></div>'+
+      collabs().map(collabBox).join("")+
+      (tagList.length?'<div class="tagbar" role="group" aria-label="태그로 거르기"><button type="button" data-ht="" aria-pressed="'+(!homeTag)+'">전체 '+L.length+'</button>'+tagList.map(function(t){ return '<button type="button" data-ht="'+esc(t)+'" aria-pressed="'+(homeTag===t)+'">#'+esc(t)+' '+tags[t]+'</button>'; }).join("")+'</div>':'')+
+      '<div id="hPass"></div></section>'+
+    '<section class="sec"><div class="sec-h"><h2>멤버</h2><a href="#members">앨범으로 보기 →</a></div>'+memberRows()+'</section>'+
+    '<section class="sec"><div class="sec-h"><h2>새 클립</h2><a href="#clips">전체 →</a></div>'+clipGrid(allClips().slice(0,8),"아직 받아 온 클립이 없어요.")+'</section>'+
+    '<section class="sec"><div class="sec-h"><h2>최근 다시보기</h2><a href="#videos">전체 →</a></div>'+(allVideos().length?'<div class="lgrid">'+allVideos().slice(0,4).map(videoCard).join("")+'</div>':'<div class="empty">아직 받아 온 다시보기가 없어요.</div>')+'</section>';
+  $$("[data-ht]").forEach(function(b){ b.onclick=function(){ homeTag=b.dataset.ht; viewHomeBody(); }; });
+  drawPass(LL);
+  function viewHomeBody(){ route(); }
 }
-var passKey="";
-function drawPass(list,favSet){
+function drawPass(list){
   var el=$("#hPass"); if(!el) return;
-  if(!list.length){ el.innerHTML='<div class="empty">지금 방송 중인 채널이 없어요.</div>'; return; }
-  var n=list.length, start=0; list.forEach(function(l,i){ if(l.channelId===passKey) start=i; });
-  el.innerHTML='<div class="tkf'+(n>1?'':' solo')+'"><div class="tkf-stage" data-stage tabindex="0" role="listbox" aria-label="방송 입장권 (왼쪽·오른쪽 화살표로 넘겨요)">'+
-    list.map(function(l,i){ return '<div class="tkf-it" data-fi="'+i+'" role="option">'+passCard(l,i,favSet[l.channelId])+'</div>'; }).join("")+'</div>'+flowCtl(n,"입장권",true)+'</div>';
-  flow(el,n,start,"tk",function(i){ passKey=list[i].channelId; });
-}
-async function renderFavRow(el,compact){
-  var f=favs();
-  if(!f.length){ el.innerHTML='<div class="empty">아직 즐겨찾는 채널이 없어요. 라이브 목록에서 <b>즐겨찾기</b>를 누르거나, 즐겨찾는 채널 메뉴에서 채널 주소로 넣어 보세요.</div>'; var q=$("#qkLive"); if(q) q.textContent="채널을 넣어 보세요"; return; }
-  el.innerHTML='<div class="fav-row">'+f.slice(0,compact?8:999).map(function(id){ return '<div class="fc" data-fc="'+id+'"><span class="av ini">…</span><div><b>불러오는 중…</b><small>&nbsp;</small></div></div>'; }).join("")+'</div>';
-  try{
-    var info=await channels(f), m={}; info.forEach(function(x){ m[x.channelId]=x; });
-    var lm={}; try{ lm=await scanLives(); }catch(e){}
-    var liveN=0;
-    f.slice(0,compact?8:999).forEach(function(id){
-      var c=m[id]||{channelId:id,channelName:"알 수 없는 채널"}, l=lm[id]; if(l) liveN++;
-      var box=el.querySelector('[data-fc="'+id+'"]'); if(!box) return;
-      box.className="fc"+(l?" on":"");
-      box.innerHTML=avatar(c.channelImageUrl,c.channelName)+'<div style="min-width:0"><b>'+esc(c.channelName)+'</b><small>'+(l?'<span class="live-b">LIVE</span> '+num(l.concurrentUserCount)+'명 · '+esc(l.liveTitle):(compact?'지금은 방송 중이 아니에요':'지금은 방송 중이 아니거나 목록에 없어요'))+'</small></div>'+
-        '<div class="row"><a class="btn btn-line btn-sm" href="#watch/'+id+'">'+(l?'보기':'채널')+'</a><button class="btn btn-line btn-sm" type="button" data-mv="'+id+'" data-nm="'+esc(c.channelName)+'">+ 멀티뷰</button>'+(compact?'':'<button class="btn btn-line btn-sm fav-on" type="button" data-fav="'+id+'" data-nm="'+esc(c.channelName)+'">빼기</button>')+'</div>';
-    });
-    var q=$("#qkLive"); if(q) q.textContent=liveN?liveN+"명 방송 중":"지금 방송 중인 채널 없음";
-  }catch(e){ var q2=$("#qkLive"); if(q2) q2.textContent="확인하지 못했어요"; }
+  if(!list.length){ el.innerHTML='<div class="empty">'+(homeTag?'#'+esc(homeTag)+' 로 방송 중인 멤버가 없어요.':'지금은 방송 중인 멤버가 없어요. 아래에서 클립과 다시보기를 구경해 보세요.')+'</div>'; return; }
+  var n=list.length, start=0; list.forEach(function(m,i){ if(m.id===passKey) start=i; });
+  el.innerHTML='<div class="tkf'+(n>1?'':' solo')+'"><div class="tkf-stage" data-stage tabindex="0" role="listbox" aria-label="방송 입장권 (왼쪽·오른쪽 화살표로 넘겨요)">'+list.map(function(m,i){ return '<div class="tkf-it" data-fi="'+i+'" role="option">'+passCard(m,i)+'</div>'; }).join("")+'</div>'+flowCtl(n,"입장권",true)+'</div>';
+  flow(el,n,start,"tk",function(i){ passKey=list[i].id; });
 }
 
-/* ==================================================================
-   라이브 목록
-   ================================================================== */
-var LV={items:[],next:"",q:"",cat:""};
-async function viewLive(){
-  setView('<div class="page-h"><div><h1>지금 라이브</h1><p>치지직에서 시청자가 많은 방송이에요. <span id="lvUp"></span></p></div></div>'+
-    '<div class="tbar"><label class="sr" for="lvQ">찾기</label><input class="inp" id="lvQ" placeholder="방송 제목, 채널 이름, 카테고리로 찾기" value="'+esc(LV.q)+'"><button class="btn btn-line" type="button" id="lvRe">새로고침</button></div>'+
-    '<div class="cats" id="lvCats"></div><div class="lgrid" id="lvGrid"></div><div class="more"><button class="btn btn-line" type="button" id="lvMore" hidden>20개 더 보기</button></div>');
-  $("#lvQ").oninput=function(){ LV.q=this.value; drawLive(); };
-  $("#lvRe").onclick=function(){ LV.items=[]; LV.next=""; loadLives(true).then(loadLive,function(e){ toast(apiErr(e)); }); };
-  $("#lvMore").onclick=loadLive;
-  if(!LV.items.length) loadLive(); else drawLive();
-}
-async function loadLive(){
-  var b=$("#lvMore"); if(b){ b.disabled=true; b.textContent="불러오는 중…"; }
-  try{ var c=await api("/open/v1/lives?size=20"+(LV.next?"&next="+encodeURIComponent(LV.next):"")); var have={}; LV.items.forEach(function(l){ have[l.liveId]=1; });
-    (c.data||[]).forEach(function(l){ if(!have[l.liveId]) LV.items.push(l); }); LV.next=(c.page&&c.page.next)||""; }
-  catch(e){ toast("라이브 목록을 불러오지 못했어요: "+apiErr(e)); }
-  if(cur==="live"){ drawLive(); var u=$("#lvUp"); if(u&&lvData) u.textContent=upText()+" · 몇 분마다 새로 받아 와요"; }
-}
-function drawLive(){
-  var cats={}; LV.items.forEach(function(l){ if(l.liveCategoryValue) cats[l.liveCategoryValue]=(cats[l.liveCategoryValue]||0)+1; });
-  var top=Object.keys(cats).sort(function(a,b){ return cats[b]-cats[a]; }).slice(0,12);
-  $("#lvCats").innerHTML=['<button type="button" data-cat="" aria-pressed="'+(!LV.cat)+'">전체 '+LV.items.length+'</button>'].concat(top.map(function(k){ return '<button type="button" data-cat="'+esc(k)+'" aria-pressed="'+(LV.cat===k)+'">'+esc(k)+' '+cats[k]+'</button>'; })).join("");
-  $$("[data-cat]",$("#lvCats")).forEach(function(b){ b.onclick=function(){ LV.cat=b.dataset.cat; drawLive(); }; });
-  var q=LV.q.trim().toLowerCase();
-  var list=LV.items.filter(function(l){ return (!LV.cat||l.liveCategoryValue===LV.cat)&&(!q||[l.liveTitle,l.channelName,l.liveCategoryValue,(l.tags||[]).join(" ")].join(" ").toLowerCase().indexOf(q)>-1); });
-  $("#lvGrid").innerHTML=list.map(liveCard).join("")||'<div class="empty">'+(LV.items.length?"찾는 방송이 불러온 목록에 없어요. 아래 ‘더 보기’로 더 불러와 보세요.":"불러오는 중이에요…")+'</div>';
-  var b=$("#lvMore"); b.hidden=!LV.next; b.disabled=false; b.textContent="20개 더 보기";
-}
-
-/* ==================================================================
-   한 채널 보기
-   ================================================================== */
-function playerSrc(id){ return "https://chzzk.naver.com/live/"+id; }
-function chatSrc(id){ return "https://chzzk.naver.com/live/"+id+"/chat"; }
-async function viewWatch(id){
-  if(!/^[0-9a-f]{32}$/.test(id)){ go("live"); return; }
-  setView('<div class="watch"><div><div class="frame player"><iframe src="'+playerSrc(id)+'" title="방송" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>'+
-    '<div class="w-info" id="wInfo"><span class="av ini">…</span><div><b>채널 정보를 불러오는 중…</b></div></div></div>'+
-    '<div class="frame chat"><iframe src="'+chatSrc(id)+'" title="채팅"></iframe></div></div>'+
-    '<p class="note" style="margin-top:14px">영상이나 채팅이 안 보이면 치지직이 다른 사이트 안에서 보여 주는 걸 막은 경우예요. <a href="'+playerSrc(id)+'" target="_blank" rel="noopener">치지직에서 열기 ↗</a> · 채팅을 치려면 이 브라우저에서 치지직(네이버)에 로그인돼 있어야 해요.</p>');
-  try{
-    var c=(await channels([id]))[0]||{channelId:id,channelName:"채널"}, lm={}; try{ lm=await scanLives(); }catch(e){}
-    var l=lm[id], f=isFav(id);
-    $("#wInfo").innerHTML=avatar(c.channelImageUrl,c.channelName)+'<div style="min-width:0;flex:1"><b>'+esc(c.channelName)+'</b><div class="mute" style="font-size:13px">'+(l?'<span class="live-b">LIVE</span> '+esc(l.liveTitle)+' · '+num(l.concurrentUserCount)+'명':'지금은 방송 중이 아니거나 목록에 없어요')+'</div></div>'+
-      '<div class="row"><button class="btn btn-line btn-sm'+(f?' fav-on':'')+'" type="button" data-fav="'+id+'" data-nm="'+esc(c.channelName)+'">'+(f?'즐겨찾기 됨':'즐겨찾기')+'</button><button class="btn btn-line btn-sm" type="button" data-mv="'+id+'" data-nm="'+esc(c.channelName)+'">+ 멀티뷰</button><a class="btn btn-line btn-sm" href="'+playerSrc(id)+'" target="_blank" rel="noopener">치지직에서 열기 ↗</a></div>';
-    document.title=c.channelName+" · "+SITE;
-  }catch(e){ $("#wInfo").innerHTML='<div class="mute">채널 정보를 불러오지 못했어요.</div>'; }
-}
-
-/* ==================================================================
-   멀티뷰 (동시 시청)
-   ================================================================== */
-var mvMode=ls("cz.mvmode")||"grid";
-async function viewMulti(arg){
-  if(arg){ var ids=arg.split(",").map(chIdFrom).filter(Boolean); if(ids.length){ setMv(ids); history.replaceState(null,"","#multi"); } }
-  var a=mv();
-  setView('<div class="page-h"><div><h1>멀티뷰</h1><p>여러 방송을 한 화면에서 같이 봐요. 최대 '+MAXMV+'개까지.</p></div><div class="row"><span class="mv-mode" role="group" aria-label="배치"><button type="button" data-mode="grid" aria-pressed="'+(mvMode==="grid")+'">똑같이</button><button type="button" data-mode="focus" aria-pressed="'+(mvMode==="focus")+'">하나 크게</button></span><button class="btn btn-line btn-sm" type="button" id="mvShare"'+(a.length?'':' disabled')+'>링크 복사</button><button class="btn btn-line btn-sm" type="button" id="mvClear"'+(a.length?'':' disabled')+'>모두 빼기</button></div></div>'+
-    '<div class="mv-bar"><label class="sr" for="mvIn">채널 주소</label><input class="inp" id="mvIn" placeholder="치지직 채널 주소나 채널 ID를 붙여 넣어요 (예: https://chzzk.naver.com/live/…)"><button class="btn btn-main" type="button" id="mvAdd">넣기</button></div>'+
-    '<div class="pick" id="mvPick"></div>'+
-    (a.length?'<div class="mv'+(mvMode==="focus"&&a.length>1?' focus':'')+'" data-n="'+a.length+'" style="--rows:'+Math.max(1,a.length-1)+'" id="mvGrid">'+a.map(function(id,i){
-      return '<div class="tile" data-tile="'+id+'"><span class="tname" id="tn'+i+'">…</span><iframe src="'+playerSrc(id)+'" title="방송 '+(i+1)+'" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe><iframe class="tchat" src="about:blank" data-src="'+chatSrc(id)+'" title="채팅 '+(i+1)+'" hidden></iframe>'+
-        '<div class="tbtn"><button type="button" data-tchat="'+i+'">채팅</button>'+(i?'<button type="button" data-tfirst="'+i+'">크게</button>':'')+'<a href="'+playerSrc(id)+'" target="_blank" rel="noopener">새 창</a><button type="button" data-tdel="'+i+'">빼기</button></div></div>'; }).join("")+'</div>'
-     :'<div class="empty">아직 넣은 방송이 없어요. 위에 채널 주소를 붙여 넣거나, 즐겨찾는 채널·라이브 목록에서 <b>+ 멀티뷰</b>를 눌러요.<br><a class="btn btn-line" href="#live">라이브 목록 보기</a></div>')+
-    '<p class="note" style="margin-top:14px">영상이 안 보이면 치지직이 다른 사이트 안에서 보여 주는 걸 막은 경우예요. 그럴 땐 칸 위의 <b>새 창</b>을 눌러 주세요. 소리는 칸마다 플레이어에서 따로 조절해요.</p>');
-  function add(){ var id=chIdFrom($("#mvIn").value); if(!id){ toast("채널 주소에서 채널 ID(32자리)를 찾지 못했어요"); return; } addMv(id); route(); }
-  $("#mvAdd").onclick=add; $("#mvIn").onkeydown=function(e){ if(e.key==="Enter") add(); };
-  $$("[data-mode]").forEach(function(b){ b.onclick=function(){ mvMode=b.dataset.mode; ls("cz.mvmode",mvMode); route(); }; });
-  $("#mvShare").onclick=function(){ var u=location.href.replace(/#.*$/,"")+"#multi/"+mv().join(","); (navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){ toast("멀티뷰 링크를 복사했어요"); },function(){ prompt("이 링크를 복사해 주세요",u); }); };
-  $("#mvClear").onclick=function(){ setMv([]); route(); };
-  $$("[data-tdel]").forEach(function(b){ b.onclick=function(){ var x=mv(); x.splice(+b.dataset.tdel,1); setMv(x); route(); }; });
-  $$("[data-tfirst]").forEach(function(b){ b.onclick=function(){ var x=mv(), i=+b.dataset.tfirst, v=x.splice(i,1)[0]; x.unshift(v); setMv(x); mvMode="focus"; ls("cz.mvmode",mvMode); route(); }; });
-  $$("[data-tchat]").forEach(function(b){ b.onclick=function(){ var t=b.closest(".tile").querySelector(".tchat"); if(t.hidden&&t.src==="about:blank") t.src=t.dataset.src; t.hidden=!t.hidden; b.textContent=t.hidden?"채팅":"채팅 닫기"; }; });
-  /* 고르기 쉽게: 즐겨찾기 */
-  var f=favs();
-  if(f.length){ try{ var info=await channels(f); if(cur!=="multi") return; $("#mvPick").innerHTML='<span class="mute" style="font-size:12.5px;align-self:center">즐겨찾기에서 넣기</span>'+info.map(function(c){ var on=mv().indexOf(c.channelId)>-1; return '<button type="button" class="'+(on?'on':'')+'" data-mv="'+c.channelId+'" data-nm="'+esc(c.channelName)+'">'+(c.channelImageUrl?'<img src="'+esc(c.channelImageUrl)+'" alt="">':'')+esc(c.channelName)+'</button>'; }).join(""); $$("#mvPick [data-mv]").forEach(function(b){ b.addEventListener("click",function(){ setTimeout(route,50); }); }); }catch(e){} }
-  if(a.length){ try{ var inf=await channels(a); if(cur!=="multi") return; a.forEach(function(id,i){ var c=chCache[id], el=$("#tn"+i); if(el) el.textContent=c?c.channelName:"채널"; }); }catch(e){} }
-}
-
-/* ==================================================================
-   즐겨찾는 채널
-   ================================================================== */
-var favKey="";
-function viewChannels(){
-  setView('<div class="page-h"><div><h1>즐겨찾는 채널</h1><p>이 브라우저에 저장돼요. 방송 중인 채널은 레코드가 돌아가요.</p></div></div>'+
-    '<div class="mv-bar"><label class="sr" for="fvIn">채널 주소</label><input class="inp" id="fvIn" placeholder="치지직 채널 주소나 채널 ID를 붙여 넣어요"><label class="sr" for="fvNm">채널 이름</label><input class="inp" id="fvNm" placeholder="채널 이름 (선택)" style="flex:0 1 220px"><button class="btn btn-main" type="button" id="fvAdd">즐겨찾기에 넣기</button></div>'+
-    '<div id="fvList"></div>'+
-    '<p class="note" style="margin-top:16px"><b>‘내가 팔로우한 채널’을 자동으로 가져올 수는 없어요.</b> 치지직 공식 API가 팔로우 목록을 주지 않아서, 보고 싶은 채널을 여기에 직접 넣어 둬요. 방송 중인지는 몇 분마다 받아 오는 라이브 목록(시청자 많은 순 최대 300개) 안에서 찾아요. 그래서 작은 방송은 방송 중이어도 안 보일 수 있어요.</p>');
-  function add(){ var id=chIdFrom($("#fvIn").value); if(!id){ toast("채널 주소에서 채널 ID(32자리)를 찾지 못했어요"); return; } if(isFav(id)){ toast("이미 즐겨찾기에 있어요"); return; } toggleFav(id,$("#fvNm").value.trim()||(chCache[id]&&chCache[id].channelName)||""); favKey=id; $("#fvIn").value=""; $("#fvNm").value=""; drawFavJB(); }
-  $("#fvAdd").onclick=add; $("#fvIn").onkeydown=function(e){ if(e.key==="Enter") add(); };
-  drawFavJB();
-}
-async function drawFavJB(){
-  var el=$("#fvList"), f=favs(); if(!el) return;
-  if(!f.length){ el.innerHTML='<div class="empty">아직 즐겨찾는 채널이 없어요. 위에 채널 주소를 붙여 넣거나, 라이브 목록에서 <b>즐겨찾기</b>를 눌러 보세요.<br><a class="btn btn-line" href="#live">라이브 목록 보기</a></div>'; return; }
-  el.innerHTML='<div class="empty">앨범을 꺼내는 중이에요…</div>';
-  var m={}, lm={};
-  (await channels(f)).forEach(function(x){ m[x.channelId]=x; }); try{ lm=await scanLives(); }catch(e){}
-  if(cur!=="channels") return;
-  var L=f.map(function(id){ return {id:id,c:m[id]||{channelId:id,channelName:"채널 "+id.slice(0,6)},l:lm[id]}; });
-  var n=L.length, start=0; L.forEach(function(x,i){ if(x.id===favKey) start=i; });
-  el.innerHTML='<section class="jb"><div class="jb-bg" id="jbBg"></div><div class="jb-in"><span class="jb-k">MY CHANNELS · '+n+'장 · 방송 중 '+L.filter(function(x){ return x.l; }).length+'</span>'+
-    '<div class="jb-stage" data-stage tabindex="0" role="listbox" aria-label="즐겨찾는 채널 (왼쪽·오른쪽 화살표로 넘겨요)">'+L.map(function(x,i){
-      var img=x.c.channelImageUrl;
-      return '<button type="button" class="jb-it" data-fi="'+i+'" data-live="'+(x.l?1:0)+'" role="option" aria-label="'+esc(x.c.channelName)+'"><span class="disc"><span class="lbl">'+(img?'<img src="'+esc(img)+'" alt="">':'')+'</span></span>'+
-        '<span class="jb-cv">'+(img?'<img src="'+esc(img)+'" alt="">':'<span class="big">'+ini(x.c.channelName)+'</span>')+(x.l?'<span class="live-b">LIVE</span>':'')+'</span></button>'; }).join("")+'</div>'+
-    flowCtl(n,"채널",false)+'<div class="jb-info" id="jbInfo"></div>'+
-    '<div class="jb-sel">'+L.map(function(x,i){ return '<button type="button" data-pick="'+i+'"><b class="'+(x.l?'on':'')+'">'+(x.l?'LIVE':String(i+1).padStart(2,"0"))+'</b><span>'+esc(x.c.channelName)+'</span></button>'; }).join("")+'</div></div></section>';
+/* ---------- 멤버 (앨범 주크박스) ---------- */
+var memKey="";
+async function viewMembers(id){
+  if(id) memKey=id;
+  setView('<div class="page-h"><div><h1>멤버</h1><p>방송 중인 멤버는 레코드가 돌아가요. ♥ 최애로 정하면 어디서든 맨 앞에 와요.</p></div></div><div id="mBox"><div class="empty">불러오는 중이에요…</div></div>');
+  try{ await load(); }catch(e){ $("#mBox").innerHTML=errBox(e); return; }
+  if(cur!=="members"&&cur!=="member") return;
+  var L=sorted(D.members.filter(function(m){ return m.id; })), n=L.length, start=0;
+  if(!n){ $("#mBox").innerHTML='<div class="empty">아직 채널을 찾은 멤버가 없어요. members.json 에 채널 id를 넣어 주세요.</div>'; return; }
+  L.forEach(function(m,i){ if(m.id===memKey) start=i; });
+  var el=$("#mBox");
+  el.innerHTML='<section class="jb"><div class="jb-bg" id="jbBg"></div><div class="jb-in"><span class="jb-k">STELLIVE · '+n+'명 · 방송 중 '+L.filter(function(m){ return m.live; }).length+'</span>'+
+    '<div class="jb-stage" data-stage tabindex="0" role="listbox" aria-label="멤버 (왼쪽·오른쪽 화살표로 넘겨요)">'+L.map(function(m,i){
+      return '<button type="button" class="jb-it" data-fi="'+i+'" data-live="'+(m.live?1:0)+'" role="option" aria-label="'+esc(m.name)+'"><span class="disc"><span class="lbl">'+(m.image?'<img src="'+esc(m.image)+'" alt="">':'')+'</span></span><span class="jb-cv">'+(m.image?'<img src="'+esc(m.image)+'" alt="">':'<span class="big">'+ini(m.name)+'</span>')+(m.live?'<span class="live-b">LIVE</span>':'')+'</span></button>'; }).join("")+'</div>'+
+    flowCtl(n,"멤버",false)+'<div class="jb-info" id="jbInfo"></div>'+
+    '<div class="jb-sel">'+L.map(function(m,i){ return '<button type="button" data-pick="'+i+'"><b class="'+(m.live?'on':'')+'">'+(m.live?'LIVE':esc(m.gen||String(i+1)))+'</b><span>'+esc(m.name)+'</span></button>'; }).join("")+'</div></div></section>'+
+    '<div id="mMore"></div>';
   var F=flow(el,n,start,"jb",function(i){
-    var x=L[i], c=x.c, l=x.l; favKey=x.id;
-    var N=$("#fN"); if(N) N.innerHTML='<b>CH-'+String(i+1).padStart(2,"0")+'</b> '+String(i+1).padStart(2,"0")+' / '+String(n).padStart(2,"0");
-    var bg=$("#jbBg"); if(bg) bg.style.backgroundImage=c.channelImageUrl?"url('"+c.channelImageUrl+"')":"var(--orb)";
+    var m=L[i], l=m.live; memKey=m.id;
+    if(cur==="member"&&location.hash!=="#member/"+m.id) history.replaceState(null,"","#member/"+m.id);
+    var N=$("#fN"); if(N) N.innerHTML='<b>'+esc(m.gen||"ST")+'</b> '+String(i+1).padStart(2,"0")+' / '+String(n).padStart(2,"0");
+    var bg=$("#jbBg"); if(bg) bg.style.backgroundImage=m.image?"url('"+m.image+"')":"none";
     $$("[data-pick]",el).forEach(function(b){ b.setAttribute("aria-pressed",String(+b.dataset.pick===i)); });
-    $("#jbInfo").innerHTML='<h2>'+esc(c.channelName)+'</h2><p>'+(l?'<b style="color:var(--live)">지금 방송 중</b> · '+num(l.concurrentUserCount)+'명 시청':'지금은 쉬는 중이거나 목록에 없어요')+'</p>'+
-      (l?'<a class="jb-now" href="#watch/'+x.id+'">'+(thumb(l)?'<img src="'+esc(thumb(l))+'" alt="">':'')+'<span style="min-width:0"><b>'+esc(l.liveTitle)+'</b><small>'+esc(l.liveCategoryValue||"")+(since(l)?' · '+esc(since(l)):'')+'</small></span></a>':'')+
-      '<div class="row"><a class="btn btn-main" href="#watch/'+x.id+'">'+(l?'지금 보기':'채널 열기')+'</a><button class="btn btn-line" type="button" data-mv="'+x.id+'" data-nm="'+esc(c.channelName)+'">+ 멀티뷰</button><button class="btn btn-line" type="button" id="fvDel">즐겨찾기 빼기</button><a class="btn btn-line" href="https://chzzk.naver.com/'+x.id+'" target="_blank" rel="noopener">치지직 ↗</a></div>';
-    $("#fvDel").onclick=function(){ var a=favs(); a.splice(a.indexOf(x.id),1); setL("favs",a); toast(c.channelName+" 즐겨찾기를 뺐어요"); favKey=(L[i+1]||L[i-1]||{}).id||""; drawFavJB(); };
+    var f=isFav(m.id);
+    $("#jbInfo").innerHTML='<h2>'+(f?'<span class="fav-mark">♥ </span>':'')+esc(m.name)+'</h2><p>'+esc(m.gen||"")+(m.followers?' · 팔로워 '+num(m.followers)+'명':'')+(l?' · <b style="color:var(--live)">지금 방송 중</b> · '+num(l.viewers)+'명 시청':(m.lastLive?' · 마지막 방송 '+ago(m.lastLive.at):''))+'</p>'+
+      (l?'<a class="jb-now" href="#watch/'+m.id+'">'+(l.thumb?'<img src="'+esc(l.thumb)+'" alt="">':'')+'<span style="min-width:0"><b>'+esc(l.title)+'</b><small>'+esc(l.category||"")+(since(l.openDate)?' · '+esc(since(l.openDate)):'')+'</small></span></a>'+(l.tags&&l.tags.length?'<div class="lc-g" style="justify-content:center;margin-top:10px">'+tagChips(l.tags)+'</div>':''):'')+
+      '<div class="row">'+(l?'<a class="btn btn-main" href="'+chLive(m.id)+'" target="_blank" rel="noopener">치지직 입장 ↗</a><a class="btn btn-line" href="#watch/'+m.id+'">여기서 보기</a>':'<a class="btn btn-main" href="'+chHome(m.id)+'" target="_blank" rel="noopener">치지직 채널 ↗</a>')+
+      '<button class="btn btn-line" type="button" data-mv="'+m.id+'">+ 멀티뷰</button><button class="btn btn-line'+(f?' fav-on':'')+'" type="button" data-fav="'+m.id+'">'+(f?'♥ 최애':'♡ 최애로')+'</button></div>';
+    $("#mMore").innerHTML='<section class="sec"><div class="sec-h"><h2>'+esc(m.name)+'의 클립</h2><a href="#clips/'+m.id+'">전체 →</a></div>'+clipGrid((m.clips||[]).slice(0,8),"아직 받아 온 클립이 없어요.")+'</section>'+
+      '<section class="sec"><div class="sec-h"><h2>'+esc(m.name)+'의 다시보기</h2><a href="'+chHome(m.id)+'/videos" target="_blank" rel="noopener">치지직에서 전체 ↗</a></div>'+((m.videos||[]).length?'<div class="lgrid">'+m.videos.slice(0,4).map(videoCard).join("")+'</div>':'<div class="empty">아직 받아 온 다시보기가 없어요.</div>')+'</section>';
   });
   $$("[data-pick]",el).forEach(function(b){ b.onclick=function(){ F.sel(+b.dataset.pick); }; });
 }
 
-/* ==================================================================
-   클립 정리 — 링크로 모으고, 폴더·하트·최근 본 기록
-   ================================================================== */
-var CLC=["#A99BFF","#F3A6C6","#F5BE8F","#8FD9C4"];
-function clipById(id){ return clips().filter(function(x){ return x.id===id; })[0]; }
-function clipCard(c,i){
-  var h=0; for(var k=0;k<c.id.length;k++) h=(h*31+c.id.charCodeAt(k))>>>0;
-  return '<div class="cc"><button type="button" class="cc-cv" data-clip="'+esc(c.id)+'" style="--c:'+CLC[h%4]+';--x:'+(20+h%60)+'%" aria-label="'+esc(c.title||"클립")+' 보기"><span class="disc" aria-hidden="true"><span class="lbl"></span></span>'+
-    '<span class="cc-art"><small>CLIP '+String((i||0)+1).padStart(2,"0")+(c.folder?' · '+esc(c.folder):'')+'</small><span><b>'+esc(c.title||"제목 없는 클립")+'</b>'+(c.channel?'<em>'+esc(c.channel)+'</em>':'')+'</span><span class="play" aria-hidden="true">▶</span></span></button>'+
-    '<div class="cc-f"><small>'+(c.at?dateK(c.at):'')+'</small><span class="sp"></span><button type="button" class="heart" data-heart="'+esc(c.id)+'" aria-pressed="'+(!!c.heart)+'">'+(c.heart?'♥ 하트':'♡ 하트')+'</button></div></div>';
+/* ---------- 클립 ---------- */
+var clMem="", clSort="new", clTab="all";
+async function viewClips(arg){
+  if(arg) clMem=arg;
+  setView('<div class="page-h"><div><h1>클립</h1><p>멤버들 채널에 올라온 클립을 모아 봐요. 누르면 바로 재생돼요.</p></div><div class="row"><span class="mv-mode" role="group" aria-label="정렬"><button type="button" data-sort="new" aria-pressed="'+(clSort==="new")+'">최신</button><button type="button" data-sort="view" aria-pressed="'+(clSort==="view")+'">조회수</button></span></div></div><div id="cBox"><div class="empty">불러오는 중이에요…</div></div>');
+  $$("[data-sort]").forEach(function(b){ b.onclick=function(){ clSort=b.dataset.sort; viewClips(); }; });
+  try{ await load(); }catch(e){ $("#cBox").innerHTML=errBox(e); return; }
+  if(cur!=="clips") return;
+  var hs=hearts(), rc=recent();
+  var tabs='<div class="cl-tabs" role="group" aria-label="보기"><button type="button" data-ct="all" aria-pressed="'+(clTab==="all")+'">전체</button><button type="button" data-ct="heart" aria-pressed="'+(clTab==="heart")+'">하트<small>'+hs.length+'</small></button><button type="button" data-ct="recent" aria-pressed="'+(clTab==="recent")+'">최근 본<small>'+rc.length+'</small></button></div>';
+  var list;
+  if(clTab==="heart") list=hs.map(unslim); else if(clTab==="recent") list=rc.map(unslim);
+  else { list=allClips(); if(clMem) list=list.filter(function(c){ return c.m&&c.m.id===clMem; }); }
+  if(clTab==="all"&&clSort==="view") list=list.slice().sort(function(a,b){ return (b.views||0)-(a.views||0); });
+  $("#cBox").innerHTML=tabs+(clTab==="all"?memberPick(clMem,"cm"):'')+clipGrid(list.slice(0,96),clTab==="heart"?"아직 하트를 누른 클립이 없어요.":clTab==="recent"?"아직 본 클립이 없어요.":"아직 받아 온 클립이 없어요.");
+  $$("[data-ct]").forEach(function(b){ b.onclick=function(){ clTab=b.dataset.ct; viewClips(); }; });
+  $$("[data-cm]").forEach(function(b){ b.onclick=function(){ clMem=b.dataset.cm; clTab="all"; viewClips(); }; });
 }
-function clipGrid(list,emptyMsg){ return list.length?'<div class="cgrid">'+list.map(clipCard).join("")+'</div>':'<div class="empty">'+emptyMsg+'</div>'; }
-function bindClipGrid(root){
-  $$("[data-clip]",root).forEach(function(b){ b.onclick=function(){ openClip(b.dataset.clip); }; });
-  $$("[data-heart]",root).forEach(function(b){ b.onclick=function(){ var all=clips(), c=all.filter(function(x){ return x.id===b.dataset.heart; })[0]; if(!c){ c={id:b.dataset.heart,title:"",at:Date.now()}; all.unshift(c); } c.heart=!c.heart; saveClips(all); b.setAttribute("aria-pressed",String(c.heart)); b.textContent=c.heart?"♥ 하트":"♡ 하트"; toast(c.heart?"하트 목록에 넣었어요":"하트를 뺐어요"); }; });
-}
-function openClip(id){
-  seenClip(id);
-  var c=clipById(id)||{id:id};
-  var m=document.createElement("div"); m.className="modal"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true");
-  m.innerHTML='<div class="modal-in"><div class="modal-h"><div><h2>'+esc(c.title||"클립")+'</h2><p class="mute" style="font-size:13px">'+esc(c.channel||"")+(c.folder?' · '+esc(c.folder):'')+'</p></div><button class="btn btn-line btn-sm" type="button" data-x>닫기</button></div>'+
-    '<div class="frame clip-frame"><iframe src="https://chzzk.naver.com/embed/clip/'+encodeURIComponent(id)+'" title="클립" allow="autoplay; fullscreen; encrypted-media" allowfullscreen style="width:100%;height:100%"></iframe></div>'+
-    (c.memo?'<p class="note" style="margin-top:12px">'+esc(c.memo)+'</p>':'')+
-    '<div class="row" style="margin-top:12px"><a class="btn btn-line btn-sm" href="https://chzzk.naver.com/clips/'+encodeURIComponent(id)+'" target="_blank" rel="noopener">치지직에서 열기 ↗</a>'+(clipById(id)?'<button class="btn btn-line btn-sm" type="button" data-del>목록에서 빼기</button>':'')+'</div></div>';
-  document.body.appendChild(m);
-  var prev=document.activeElement;
-  function close(){ m.remove(); document.removeEventListener("keydown",key); if(prev&&prev.focus) prev.focus(); if(/^clips|^home/.test(cur)) route(); }
-  function key(e){ if(e.key==="Escape") close(); }
-  document.addEventListener("keydown",key);
-  m.onclick=function(e){ if(e.target===m||e.target.closest("[data-x]")) close(); if(e.target.closest("[data-del]")){ saveClips(clips().filter(function(x){ return x.id!==id; })); toast("목록에서 뺐어요"); close(); } };
-  $("[data-x]",m).focus();
-}
-var clTab="all";
-function viewClips(arg){
-  if(arg) clTab=arg;
-  var all=clips(), folders={}; all.forEach(function(c){ if(c.folder) folders[c.folder]=(folders[c.folder]||0)+1; });
-  var rec=recentClips(), hearts=all.filter(function(c){ return c.heart; });
-  var tabs=[["all","전체",all.length],["heart","하트",hearts.length],["recent","최근 본",rec.length]].concat(Object.keys(folders).sort().map(function(k){ return ["f:"+k,k,folders[k]]; }));
-  setView('<div class="page-h"><div><h1>클립 정리</h1><p>치지직 클립 링크를 붙여 넣어 폴더별로 모아요. 하트와 최근 본 기록도 여기에 쌓여요.</p></div></div>'+
-    '<div class="cl-add"><label class="sr" for="clU">클립 주소</label><input class="inp" id="clU" placeholder="클립 주소 (https://chzzk.naver.com/clips/…)"><label class="sr" for="clT">제목</label><input class="inp" id="clT" placeholder="제목 (선택)"><label class="sr" for="clF">폴더</label><input class="inp" id="clF" list="clFs" placeholder="폴더 (선택)"><datalist id="clFs">'+Object.keys(folders).map(function(k){ return '<option value="'+esc(k)+'">'; }).join("")+'</datalist><button class="btn btn-main" type="button" id="clAdd">모으기</button></div>'+
-    '<div class="row" style="margin-bottom:18px"><label class="sr" for="clC">채널</label><input class="inp" id="clC" placeholder="채널 이름 (선택)" style="flex:1 1 200px"><label class="sr" for="clM">메모</label><input class="inp" id="clM" placeholder="메모 (선택)" style="flex:2 1 300px"></div>'+
-    '<div class="cl-tabs" role="group" aria-label="보기">'+tabs.map(function(t){ return '<button type="button" data-tab="'+esc(t[0])+'" aria-pressed="'+(clTab===t[0])+'">'+esc(t[1])+'<small>'+t[2]+'</small></button>'; }).join("")+'</div><div id="clList"></div>'+
-    '<p class="note" style="margin-top:18px"><b>치지직에서 내가 본 클립이나 누른 하트를 자동으로 가져올 수는 없어요.</b> 치지직 공식 API가 그 기록을 주지 않아서, 이 사이트에서 연 클립과 이 사이트에서 누른 하트만 모여요.</p>');
-  var list = clTab==="heart"?hearts : clTab==="recent"?rec.map(function(x){ var c=clipById(x.id); return c?Object.assign({},c,{at:x.at}):{id:x.id,at:x.at}; }) : /^f:/.test(clTab)?all.filter(function(c){ return c.folder===clTab.slice(2); }) : all;
-  $("#clList").innerHTML=clipGrid(list,clTab==="heart"?"아직 하트를 누른 클립이 없어요.":clTab==="recent"?"아직 이 사이트에서 본 클립이 없어요.":"아직 모은 클립이 없어요. 위에 클립 주소를 붙여 넣어 보세요.");
-  bindClipGrid($("#clList"));
-  $$("[data-tab]").forEach(function(b){ b.onclick=function(){ clTab=b.dataset.tab; viewClips(); }; });
-  $("#clAdd").onclick=function(){
-    var id=clipIdFrom($("#clU").value); if(!id){ toast("클립 주소를 알아보지 못했어요"); return; }
-    var a=clips(); if(a.some(function(x){ return x.id===id; })){ toast("이미 모은 클립이에요"); return; }
-    a.unshift({id:id,title:$("#clT").value.trim(),folder:$("#clF").value.trim(),channel:$("#clC").value.trim(),memo:$("#clM").value.trim(),at:Date.now(),heart:false});
-    saveClips(a); toast("클립을 모았어요"); viewClips();
-  };
+function memberPick(sel,key){
+  return '<div class="mpick" role="group" aria-label="멤버로 거르기"><button type="button" class="all" data-'+key+'="" aria-pressed="'+(!sel)+'">전체</button>'+sorted(D.members.filter(function(m){ return m.id; })).map(function(m){ return '<button type="button" class="'+(m.live?'lv':'')+'" data-'+key+'="'+m.id+'" aria-pressed="'+(sel===m.id)+'">'+avatar(m.image,m.name)+esc(m.name)+'</button>'; }).join("")+'</div>';
 }
 
-/* ==================================================================
-   길 찾기
-   ================================================================== */
+/* ---------- 다시보기 ---------- */
+var vdMem="", vdType="";
+async function viewVideos(){
+  setView('<div class="page-h"><div><h1>다시보기</h1><p>멤버들의 지난 방송과 업로드 영상이에요. 누르면 치지직에서 열려요.</p></div><div class="row"><span class="mv-mode" role="group" aria-label="종류"><button type="button" data-vt="" aria-pressed="'+(!vdType)+'">전체</button><button type="button" data-vt="REPLAY" aria-pressed="'+(vdType==="REPLAY")+'">다시보기</button><button type="button" data-vt="UPLOAD" aria-pressed="'+(vdType==="UPLOAD")+'">업로드</button></span></div></div><div id="vBox"><div class="empty">불러오는 중이에요…</div></div>');
+  $$("[data-vt]").forEach(function(b){ b.onclick=function(){ vdType=b.dataset.vt; viewVideos(); }; });
+  try{ await load(); }catch(e){ $("#vBox").innerHTML=errBox(e); return; }
+  if(cur!=="videos") return;
+  var list=allVideos().filter(function(v){ return (!vdMem||(v.m&&v.m.id===vdMem))&&(!vdType||String(v.type).toUpperCase()===vdType); });
+  $("#vBox").innerHTML=memberPick(vdMem,"vm")+(list.length?'<div class="lgrid">'+list.slice(0,60).map(videoCard).join("")+'</div>':'<div class="empty">조건에 맞는 영상이 없어요.</div>');
+  $$("[data-vm]").forEach(function(b){ b.onclick=function(){ vdMem=b.dataset.vm; viewVideos(); }; });
+}
+
+/* ---------- 여기서 보기 (영상만) ---------- */
+async function viewWatch(id){
+  if(!/^[0-9a-f]{32}$/.test(id)){ go("home"); return; }
+  setView('<div class="w-info" id="wInfo" style="margin-top:18px"><span class="av ini">…</span><div><b>불러오는 중…</b></div></div>'+cropBox(id,"방송","wv")+
+    '<p class="note" style="margin-top:12px">채팅 없이 영상만 보여 줘요. 채팅·후원은 <a href="'+chLive(id)+'" target="_blank" rel="noopener">치지직에서</a> 해 주세요. 소리는 영상 위에 마우스를 올리면 나오는 치지직 플레이어 버튼으로 켜요.</p>');
+  fitAll(view);
+  try{ await load(); }catch(e){}
+  var m=byId(id)||{id:id,name:"방송"}, l=m.live, f=isFav(id);
+  $("#wInfo").innerHTML=avatar(m.image,m.name)+'<div style="min-width:0;flex:1 1 220px"><b>'+esc(m.name)+'</b><div class="mute" style="font-size:13px">'+(l?'<span class="live-b">LIVE</span> '+esc(l.title)+' · '+num(l.viewers)+'명':'지금은 방송 중이 아닐 수 있어요')+'</div></div>'+
+    '<div class="row"><a class="btn btn-main btn-sm" href="'+chLive(id)+'" target="_blank" rel="noopener">치지직 입장 ↗</a><button class="btn btn-line btn-sm" type="button" data-mv="'+id+'">+ 멀티뷰</button>'+(byId(id)?'<button class="btn btn-line btn-sm'+(f?' fav-on':'')+'" type="button" data-fav="'+id+'">'+(f?'♥ 최애':'♡ 최애로')+'</button>':'')+'</div>';
+  if(m.name) document.title=m.name+" · "+SITE;
+}
+
+/* ---------- 멀티뷰 (영상만) ---------- */
+var mvMode=ls("st.mvmode")||"grid";
+async function viewMulti(arg){
+  if(arg){ var ids=arg.split(",").filter(function(x){ return /^[0-9a-f]{32}$/.test(x); }); if(ids.length){ setMv(ids); history.replaceState(null,"","#multi"); } }
+  try{ await load(); }catch(e){}
+  if(cur!=="multi") return;
+  var a=mv(), L=D?lives():[];
+  setView('<div class="page-h"><div><h1>멀티뷰</h1><p>채팅 없이 영상만 여러 개 같이 봐요. 최대 '+MAXMV+'개까지.</p></div><div class="row"><span class="mv-mode" role="group" aria-label="배치"><button type="button" data-mode="grid" aria-pressed="'+(mvMode==="grid")+'">똑같이</button><button type="button" data-mode="focus" aria-pressed="'+(mvMode==="focus")+'">하나 크게</button></span><button class="btn btn-line btn-sm" type="button" id="mvShare"'+(a.length?'':' disabled')+'>링크 복사</button><button class="btn btn-line btn-sm" type="button" id="mvClear"'+(a.length?'':' disabled')+'>모두 빼기</button></div></div>'+
+    (D?'<div class="mv-bar">'+(L.length?'<button class="btn btn-orb btn-sm" type="button" id="mvAllLive">방송 중인 멤버 모두 넣기 ('+Math.min(L.length,MAXMV)+')</button>':'<span class="mute" style="font-size:13px">지금 방송 중인 멤버가 없어요.</span>')+'</div>'+
+      '<div class="pick">'+sorted(D.members.filter(function(m){ return m.id; })).map(function(m){ var on=a.indexOf(m.id)>-1; return '<button type="button" class="'+(on?'on':'')+'" '+(on?'data-mvdel="'+m.id+'"':'data-mv="'+m.id+'"')+'>'+(m.image?'<img src="'+esc(m.image)+'" alt="">':'')+esc(m.name)+(m.live?' · LIVE':'')+'</button>'; }).join("")+'</div>':'')+
+    (a.length?'<div class="mv'+(mvMode==="focus"&&a.length>1?' focus':'')+'" data-n="'+a.length+'" style="--rows:'+Math.max(1,a.length-1)+'">'+a.map(function(id,i){ var m=D&&byId(id);
+      return '<div class="tile"><span class="tname">'+esc(m?m.name:"방송")+'</span>'+cropBox(id,"방송 "+(i+1))+
+        '<div class="tbtn">'+(i?'<button type="button" data-tfirst="'+i+'">크게</button>':'')+'<button type="button" data-traw="'+i+'">전체 화면 보기</button><a href="'+chLive(id)+'" target="_blank" rel="noopener">치지직 ↗</a><button type="button" data-tdel="'+i+'">빼기</button></div></div>'; }).join("")+'</div>'
+     :'<div class="empty">아직 넣은 방송이 없어요. 위에서 멤버를 누르거나 ‘방송 중인 멤버 모두 넣기’를 눌러요.</div>')+
+    '<p class="note" style="margin-top:14px">치지직 화면에서 영상 부분만 잘라 보여 줘요. 화면이 이상하게 잘리면 칸 위의 <b>전체 화면 보기</b>를 눌러 주세요. 소리는 칸마다 치지직 플레이어에서 따로 조절해요.</p>');
+  fitAll(view);
+  if(a.length===0&&L.length===0&&!D) return;
+  var allBtn=$("#mvAllLive"); if(allBtn) allBtn.onclick=function(){ setMv(L.map(function(m){ return m.id; })); route(); };
+  $$("[data-mode]").forEach(function(b){ b.onclick=function(){ mvMode=b.dataset.mode; ls("st.mvmode",mvMode); route(); }; });
+  $("#mvShare").onclick=function(){ var u=location.href.replace(/#.*$/,"")+"#multi/"+mv().join(","); (navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){ toast("멀티뷰 링크를 복사했어요"); },function(){ prompt("이 링크를 복사해 주세요",u); }); };
+  $("#mvClear").onclick=function(){ setMv([]); route(); };
+  $$("[data-mvdel]").forEach(function(b){ b.onclick=function(){ setMv(mv().filter(function(x){ return x!==b.dataset.mvdel; })); route(); }; });
+  $$("[data-tdel]").forEach(function(b){ b.onclick=function(){ var x=mv(); x.splice(+b.dataset.tdel,1); setMv(x); route(); }; });
+  $$("[data-tfirst]").forEach(function(b){ b.onclick=function(){ var x=mv(), v=x.splice(+b.dataset.tfirst,1)[0]; x.unshift(v); setMv(x); mvMode="focus"; ls("st.mvmode",mvMode); route(); }; });
+  $$("[data-traw]").forEach(function(b){ b.onclick=function(){ var c=b.closest(".tile").querySelector(".cf"); c.classList.toggle("raw"); b.textContent=c.classList.contains("raw")?"영상만 보기":"전체 화면 보기"; if(!c.classList.contains("raw")) fit(c); }; });
+}
+
+/* ---------- 길 찾기 ---------- */
 function route(){
-  var h=(location.hash||"#home").slice(1); if(/^login/.test(h)) h="home";
-  var parts=h.split("/"), r=parts[0]||"home", arg=parts.slice(1).join("/");
+  var h=(location.hash||"#home").slice(1), parts=h.split("/"), r=parts[0]||"home", arg=parts.slice(1).join("/");
   cur=r; document.title=SITE;
-  $$(".nav a").forEach(function(a){ if(a.dataset.r===r||(r==="watch"&&a.dataset.r==="live")) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  $$(".nav a").forEach(function(a){ var on=a.dataset.r===r||(r==="member"&&a.dataset.r==="members")||(r==="watch"&&a.dataset.r==="home"); if(on) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
   window.scrollTo(0,0);
-  if(r==="live") return viewLive();
-  if(r==="watch") return viewWatch(arg);
+  if(r==="members"||r==="member") return viewMembers(arg);
+  if(r==="clips") return viewClips(arg);
+  if(r==="videos") return viewVideos();
   if(r==="multi") return viewMulti(arg);
-  if(r==="channels") return viewChannels();
-  if(r==="clips") return viewClips(arg||null);
+  if(r==="watch") return viewWatch(arg);
   return viewHome();
 }
 window.addEventListener("hashchange",route);
 $("#mvCnt").textContent=mv().length||"";
 route();
+/* 열어 둔 채로 있으면 5분마다 새 데이터를 확인해요 (멀티뷰·보기 화면은 영상이 끊기지 않게 그대로 둬요) */
+setInterval(function(){ var before=D&&D.updatedAt; load(true).then(function(d){ if(d.updatedAt!==before&&(cur==="home"||cur==="clips"||cur==="videos")) route(); }).catch(function(){}); },300000);
 })();
 </script>
 </body>
