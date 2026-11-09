@@ -387,12 +387,9 @@ main{flex:1 0 auto;padding-bottom:80px}
    스텔라이브 팬 라운지 추가 꾸밈
    ================================================================== */
 .pl{position:relative;overflow:hidden;background:#000;min-width:0;min-height:0}
-.pl video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;display:block}
-.pl-msg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:16px;color:#d6d8e0;font-size:13.5px;background:rgba(6,8,12,.72);z-index:2}
-.pl-snd{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:3;height:32px;padding:0 14px;border-radius:999px;border:0;background:rgba(255,255,255,.92);color:#111;font-size:12.5px;font-weight:800}
-.pl-snd[hidden]{display:none}
+.pl-cut{position:absolute;overflow:hidden;background:#000}
+.pl-cut iframe{position:absolute;left:0;top:0;border:0;display:block;transform-origin:0 0;background:#000}
 .tile .pl{flex:1}
-.wv{width:100%;aspect-ratio:16/9;max-height:calc(100vh - var(--gh) - 170px);margin:12px auto 0;border-radius:14px;border:1px solid var(--line)}
 .mem-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:14px 10px}
 .mm{display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:inherit;text-align:center;min-width:0}
 .mm .av{width:72px;height:72px;font-size:24px;transition:transform .25s}
@@ -539,6 +536,38 @@ main{flex:1 0 auto;padding-bottom:80px}
 @media (max-width:1100px){.ls-grid{grid-template-columns:minmax(0,1fr) 340px}.ls-ol button{grid-template-columns:24px 92px minmax(0,1fr)}.ls-ol .th img{width:92px}}
 @media (max-width:900px){.ls-grid{grid-template-columns:minmax(0,1fr)}.ls-side{position:static;max-height:none}.ls-ol{max-height:440px;flex:none}}
 @media (prefers-reduced-motion:reduce){.eq b{animation:none}}
+/* ---------- 방송 보기 ---------- */
+.wv{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start;margin-top:18px}
+.wv-main{min-width:0}
+.wv-scr{position:relative;aspect-ratio:16/9;max-height:calc(100vh - var(--gh) - 60px);border-radius:18px;overflow:hidden;background:#000;border:1px solid var(--line);box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.wv-scr .pl{position:absolute;inset:0}
+.wv-info{margin-top:16px;padding:20px 24px}
+.wv-top{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;font-size:13px;color:var(--mute)}
+.wv-top span+span:not(.live-b)::before{content:"·";margin-right:10px;color:var(--line2)}
+.wv-top .live-b+span::before{display:none}
+.wv-info h1{margin-top:10px;font-size:clamp(20px,2.3vw,26px);font-weight:900;letter-spacing:-.04em;line-height:1.3;word-break:keep-all}
+.wv-who{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:16px}
+.wv-who .sp{flex:1}
+.wv-who .ls-ch small{font-size:12px;color:var(--mute);font-weight:700}
+.wv-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.wv-side{position:sticky;top:80px;padding:18px;border-radius:22px;max-height:calc(100vh - 100px);display:flex;flex-direction:column;min-width:0}
+.wv-sh{display:flex;align-items:baseline;gap:8px}
+.wv-sh h2{font-size:16px;font-weight:900}
+.wv-sh small{font-size:12.5px;font-weight:800;color:var(--live)}
+.wv-ol{list-style:none;margin:10px -8px 0;padding:0;overflow:auto;min-height:0}
+.wv-ol a{display:grid;grid-template-columns:132px minmax(0,1fr);gap:12px;align-items:center;padding:8px;border-radius:12px;color:inherit;text-decoration:none}
+.wv-ol a:hover{background:var(--bg2)}
+.wv-ol a[aria-current]{background:rgba(255,77,109,.1);box-shadow:inset 0 0 0 1px rgba(255,77,109,.35)}
+.wv-ol .th{position:relative;display:block;aspect-ratio:16/9;border-radius:9px;overflow:hidden;background:var(--card2)}
+.wv-ol .th img{width:100%;height:100%;object-fit:cover;display:block}
+.wv-ol .th em{position:absolute;left:6px;bottom:6px;height:20px;padding:0 6px;border-radius:5px;background:rgba(8,9,13,.75);color:#fff;font-size:11px;font-weight:800;font-style:normal;display:inline-flex;align-items:center;gap:4px}
+.wv-ol .th em::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--live)}
+.wv-ol .tx b{display:block;font-size:14px;font-weight:800}
+.wv-ol .tx span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12.5px;line-height:1.4;color:var(--ink2);margin-top:2px}
+.wv-ol .tx small{display:block;font-size:11.5px;color:var(--mute);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wv-ol a[aria-current] .tx b{color:var(--live)}
+@media (max-width:1100px){.wv{grid-template-columns:minmax(0,1fr) 300px}.wv-ol a{grid-template-columns:104px minmax(0,1fr)}}
+@media (max-width:900px){.wv{grid-template-columns:minmax(0,1fr)}.wv-side{position:static;max-height:none}.wv-scr{border-radius:14px}}
 </style>
 </head>
 <body>
@@ -562,7 +591,6 @@ main{flex:1 0 auto;padding-bottom:80px}
 "use strict";
 var CFG=window.SITE_CONFIG||{};
 var MAXMV=Math.max(2,Math.min(6,CFG.maxMultiView||4));
-var HLS_JS=CFG.hlsJs||"https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js";
 var $=function(s,r){ return (r||document).querySelector(s); }, $$=function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
 function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
 function ls(k,v){ try{ if(arguments.length===1){ var x=localStorage.getItem(k); return x==null?null:JSON.parse(x); } if(v==null) localStorage.removeItem(k); else localStorage.setItem(k,JSON.stringify(v)); }catch(e){ return null; } }
@@ -630,43 +658,33 @@ function setMv(a){ a=a.slice(0,MAXMV); ls("st.mv",a); $("#mvCnt").textContent=a.
 function addMv(id){ var a=mv(), m=byId(id), nm=m?m.name:"방송"; if(a.indexOf(id)>-1){ toast("이미 멀티뷰에 있어요"); return; } if(a.length>=MAXMV){ toast("멀티뷰는 "+MAXMV+"개까지 볼 수 있어요"); return; } a.push(id); setMv(a); toast(nm+" 방송을 멀티뷰에 넣었어요 ("+a.length+"/"+MAXMV+")"); }
 
 /* ==================================================================
-   영상만 재생하기
-   치지직 화면은 다른 사이트 안에 띄우는 걸 막아서, GitHub가 받아 온 영상 주소(HLS)를
-   hls.js 로 직접 재생해요. 채팅은 없어요.
+   방송 보기 — 치지직 방송 화면을 그대로 가져와서, 채팅·메뉴는 잘라 내고 영상 부분만 보여 줘요.
+   (m3u8 영상 주소는 안 써요)
+   치지직 화면을 정해진 크기(1280px)로 띄운 다음, 영상이 있는 칸만 잘라서 우리 칸 크기에 맞춰 키워요.
+   치지직 화면 배치가 바뀌어서 채팅이 삐져나오면 site-config.js 에 chzzkCrop 으로 숫자만 고치면 돼요.
+     chzzkCrop: { w: 1280, top: 60, left: 0, right: 353 }
+       w     = 치지직 화면을 띄울 너비      top   = 위쪽 메뉴 높이
+       left  = 왼쪽 메뉴 너비              right = 오른쪽 채팅창 너비
    ================================================================== */
-var hlsLib=null;
-function loadHlsLib(){
-  if(window.Hls) return Promise.resolve();
-  if(!hlsLib) hlsLib=new Promise(function(res,rej){ var sc=document.createElement("script"); sc.src=HLS_JS; sc.onload=res; sc.onerror=function(){ hlsLib=null; rej(new Error("hls.js")); }; document.head.appendChild(sc); });
-  return hlsLib;
+var CROP=Object.assign({w:1280,top:60,left:0,right:353},CFG.chzzkCrop||{});
+function liveFor(m){ var l=m&&m.live; return {l:l, up:l?since(l.openDate):""}; }
+function playerBox(id,cls){ return '<div class="pl'+(cls?' '+cls:'')+'" data-pl="'+id+'"></div>'; }
+var plRO=window.ResizeObserver?new ResizeObserver(function(es){ es.forEach(function(e){ plFit(e.target); }); }):null;
+function plFit(box){
+  var wrap=box.querySelector(".pl-cut"), f=wrap&&wrap.querySelector("iframe"); if(!f) return;
+  var W=box.clientWidth, H=box.clientHeight; if(!W||!H) return;
+  var vw=CROP.w-CROP.left-CROP.right, vh=vw*9/16, s=Math.min(W/vw,H/vh);
+  wrap.style.cssText="left:"+((W-vw*s)/2)+"px;top:"+((H-vh*s)/2)+"px;width:"+(vw*s)+"px;height:"+(vh*s)+"px";
+  f.style.width=CROP.w+"px"; f.style.height=Math.round(CROP.top+vh+420)+"px";
+  f.style.transform="scale("+s+") translate("+(-CROP.left)+"px,"+(-CROP.top)+"px)";
 }
-function playerBox(id,cls){ return '<div class="pl'+(cls?' '+cls:'')+'" data-pl="'+id+'"><video muted autoplay playsinline controls></video><button type="button" class="pl-snd">소리 켜기</button><div class="pl-msg" hidden></div></div>'; }
-function plMsg(box,text,link){ var el=box.querySelector(".pl-msg"); if(!text){ el.hidden=true; return; } el.hidden=false; el.innerHTML='<div>'+esc(text)+(link?'<br><a class="btn btn-line btn-sm" style="margin-top:10px" href="'+chLive(box.dataset.pl)+'" target="_blank" rel="noopener">치지직에서 보기 ↗</a>':'')+'</div>'; }
-function plStop(box){ if(box._hls){ try{ box._hls.destroy(); }catch(e){} box._hls=null; } var v=box.querySelector("video"); if(v){ try{ v.pause(); v.removeAttribute("src"); v.load(); }catch(e){} } clearTimeout(box._t); }
-async function plStart(box){
-  var id=box.dataset.pl, m=D&&byId(id), src=m&&m.live&&!m.graduated&&m.live.hls, v=box.querySelector("video");
-  plStop(box);
-  if(!src){ plMsg(box,m&&m.live?"영상 주소를 아직 못 받았어요. 몇 분 뒤 자동으로 다시 해 볼게요.":"지금은 방송 중이 아니에요.",true); return; }
-  plMsg(box,"영상을 불러오는 중…"); box._src=src;
-  var snd=box.querySelector(".pl-snd"); snd.onclick=function(){ v.muted=false; v.play().catch(function(){}); snd.hidden=true; };
-  v.onvolumechange=function(){ snd.hidden=!v.muted; };
-  v.onplaying=function(){ plMsg(box,""); box._tries=0; };
-  if(!window.MediaSource&&v.canPlayType("application/vnd.apple.mpegurl")){ v.src=src; v.onerror=function(){ plRetry(box); }; v.play().catch(function(){}); return; }
-  try{ await loadHlsLib(); }catch(e){ plMsg(box,"재생기를 불러오지 못했어요.",true); return; }
-  if(!window.Hls||!Hls.isSupported()){ plMsg(box,"이 브라우저는 영상 재생을 지원하지 않아요.",true); return; }
-  if(!box.isConnected) return;
-  var h=new Hls({capLevelToPlayerSize:true,liveSyncDurationCount:3,maxBufferLength:20});
-  box._hls=h; h.loadSource(src); h.attachMedia(v);
-  h.on(Hls.Events.MANIFEST_PARSED,function(){ v.play().catch(function(){}); });
-  h.on(Hls.Events.ERROR,function(_,d){ if(!d.fatal) return; if(d.type===Hls.ErrorTypes.MEDIA_ERROR){ h.recoverMediaError(); return; } plRetry(box); });
+function plStart(box){
+  if(box._on) return; box._on=1;
+  var id=box.dataset.pl, m=D&&byId(id);
+  box.innerHTML='<div class="pl-cut"><iframe src="'+chLive(id)+'" title="'+esc((m&&m.name)||"방송")+' 방송" scrolling="no" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen></iframe></div>';
+  plFit(box); if(plRO) plRO.observe(box); else window.addEventListener("resize",function(){ plFit(box); });
 }
-/* 영상 주소가 만료되면 새 데이터를 받아 다시 시도해요 */
-function plRetry(box){
-  plStop(box); box._tries=(box._tries||0)+1;
-  if(box._tries>4){ plMsg(box,"영상을 불러오지 못했어요.",true); return; }
-  plMsg(box,"영상을 다시 불러오는 중…");
-  box._t=setTimeout(function(){ if(!box.isConnected) return; load(true).then(function(){ plStart(box); },function(){ plStart(box); }); },2000*box._tries);
-}
+function plStop(box){ if(plRO) plRO.unobserve(box); box._on=0; box.innerHTML=""; }
 function startPlayers(root){ $$("[data-pl]",root).forEach(plStart); }
 function stopPlayers(root){ $$("[data-pl]",root).forEach(plStop); }
 
@@ -901,17 +919,23 @@ async function viewVideos(){
   $$("[data-vm]").forEach(function(b){ b.onclick=function(){ vdMem=b.dataset.vm; viewVideos(); }; });
 }
 
-/* ---------- 여기서 보기 (영상만) ---------- */
+/* ---------- 여기서 보기 ---------- */
 async function viewWatch(id){
   if(!/^[0-9a-f]{32}$/.test(id)){ go("home"); return; }
-  setView('<div class="w-info" id="wInfo" style="margin-top:18px"><span class="av ini">…</span><div><b>불러오는 중…</b></div></div>'+playerBox(id,"wv")+
-    '<p class="note" style="margin-top:12px">채팅 없이 영상만 보여 줘요. 채팅·후원은 <a href="'+chLive(id)+'" target="_blank" rel="noopener">치지직에서</a> 해 주세요. 처음엔 소리가 꺼져 있어요. ‘소리 켜기’를 눌러 주세요.</p>');
+  setView('<div class="wv"><div class="wv-main"><div class="wv-scr">'+playerBox(id)+'</div><div class="box wv-info" id="wInfo"><h1>불러오는 중…</h1></div></div><aside class="box wv-side" id="wSide"></aside></div>');
   try{ await load(); }catch(e){}
   if(cur!=="watch") return;
   startPlayers(view);
-  var m=byId(id)||{id:id,name:"방송"}, l=m.live, f=isFav(id);
-  $("#wInfo").innerHTML=avatar(m.image,m.name)+'<div style="min-width:0;flex:1 1 220px"><b>'+esc(m.name)+'</b><div class="mute" style="font-size:13px">'+(l?'<span class="live-b">LIVE</span> '+esc(l.title)+' · '+num(l.viewers)+'명':'지금은 방송 중이 아닐 수 있어요')+'</div></div>'+
-    '<div class="row"><a class="btn btn-main btn-sm" href="'+chLive(id)+'" target="_blank" rel="noopener">치지직 입장 ↗</a><button class="btn btn-line btn-sm" type="button" data-mv="'+id+'">+ 멀티뷰</button>'+(byId(id)?'<button class="btn btn-line btn-sm'+(f?' fav-on':'')+'" type="button" data-fav="'+id+'">'+(f?'♥ 최애':'♡ 최애로')+'</button>':'')+'</div>';
+  var m=byId(id)||{id:id,name:"방송"}, x=liveFor(m), l=x.l, f=isFav(id);
+  $("#wInfo").innerHTML='<div class="wv-top">'+(l?'<span class="live-b">LIVE</span><span>'+num(l.viewers)+'명 보는 중</span>'+(x.up?'<span>'+x.up+'</span>':'')+(l.category?'<span>'+esc(l.category)+'</span>':''):'<span>지금은 방송 중이 아닐 수 있어요</span>')+'</div>'+
+    '<h1>'+esc(l?l.title:m.name)+'</h1>'+
+    '<div class="wv-who">'+(byId(id)?'<a class="ls-ch" href="#member/'+id+'">'+avatar(m.image,m.name)+'<b>'+esc(m.name)+'</b>'+(m.gen?'<small>'+esc(m.gen)+'</small>':'')+'</a>':'<span class="ls-ch"><b>'+esc(m.name)+'</b></span>')+
+      '<span class="sp"></span><a class="btn btn-main btn-sm" href="'+chLive(id)+'" target="_blank" rel="noopener">치지직 입장 ↗</a><button class="btn btn-line btn-sm" type="button" data-mv="'+id+'">+ 멀티뷰</button>'+(byId(id)?'<button class="btn btn-line btn-sm'+(f?' fav-on':'')+'" type="button" data-fav="'+id+'">'+(f?'♥ 최애':'♡ 최애로')+'</button>':'')+'</div>'+
+    (l&&l.tags&&l.tags.length?'<div class="wv-tags">'+l.tags.map(function(t){ return '<span class="chip">#'+esc(t)+'</span>'; }).join("")+'</div>':'')+
+    '<p class="note" style="margin-top:14px">채팅은 가리고 영상만 보여 줘요. 채팅·후원은 <a href="'+chLive(id)+'" target="_blank" rel="noopener">치지직에서</a> 해 주세요. 화면이 안 나오면 ‘치지직 입장’을 눌러요.</p>';
+  var others=D?lives():[];
+  $("#wSide").innerHTML='<div class="wv-sh"><h2>지금 방송 중</h2><small>'+others.length+'</small></div>'+(others.length?'<ol class="wv-ol">'+others.map(function(o){ var y=liveFor(o);
+    return '<li><a href="#watch/'+o.id+'"'+(o.id===id?' aria-current="page"':'')+'><span class="th">'+(o.live.thumb?'<img src="'+esc(o.live.thumb)+'" alt="" loading="lazy">':'')+'<em>'+num(o.live.viewers)+'</em></span><span class="tx"><b>'+esc(o.name)+'</b><span>'+esc(o.live.title)+'</span><small>'+esc(o.live.category||"")+(y.up?' · '+y.up:'')+'</small></span></a></li>'; }).join("")+'</ol>':'<p class="mute" style="font-size:13px;margin-top:10px">지금 방송 중인 멤버가 없어요.</p>');
   if(m.name) document.title=m.name+" · "+SITE;
 }
 
@@ -929,7 +953,7 @@ async function viewMulti(arg){
       return '<div class="tile"><span class="tname">'+esc(m?m.name:"방송")+'</span>'+playerBox(id)+
         '<div class="tbtn">'+(i?'<button type="button" data-tfirst="'+i+'">크게</button>':'')+'<a href="'+chLive(id)+'" target="_blank" rel="noopener">치지직 ↗</a><button type="button" data-tdel="'+i+'">빼기</button></div></div>'; }).join("")+'</div>'
      :'<div class="empty">아직 넣은 방송이 없어요. 위에서 멤버를 누르거나 ‘방송 중인 멤버 모두 넣기’를 눌러요.</div>')+
-    '<p class="note" style="margin-top:14px">채팅 없이 영상만 나와요. 처음엔 소리가 꺼져 있어서 칸마다 <b>소리 켜기</b>를 눌러요. 방송이 끝난 멤버 칸은 안내가 떠요.</p>');
+    '<p class="note" style="margin-top:14px">채팅 없이 영상만 나와요. 소리는 칸마다 치지직 플레이어에서 켜요.</p>');
   startPlayers(view);
   if(a.length===0&&L.length===0&&!D) return;
   var allBtn=$("#mvAllLive"); if(allBtn) allBtn.onclick=function(){ setMv(L.map(function(m){ return m.id; })); route(); };
@@ -1240,7 +1264,7 @@ $("#mvCnt").textContent=mv().length||"";
 route();
 /* 열어 둔 채로 있으면 3분마다, 다른 탭에 갔다 돌아오면 바로 새 데이터를 확인해요
    (멀티뷰·보기 화면은 영상이 끊기지 않게 그대로 둬요) */
-function refresh(){ var before=D&&D.updatedAt; load(true).then(function(d){ if(d.updatedAt===before) return; if(cur==="home"||cur==="clips"||cur==="videos") route(); else $$("[data-pl]").forEach(function(b){ var m=byId(b.dataset.pl); if(!b._hls&&m&&m.live&&m.live.hls) plStart(b); }); }).catch(function(){}); }
+function refresh(){ var before=D&&D.updatedAt; load(true).then(function(d){ if(d.updatedAt===before) return; if(cur==="home"||cur==="clips"||cur==="videos") route(); else {} }).catch(function(){}); }
 setInterval(function(){ if(!document.hidden) refresh(); },180000);
 var lastVis=Date.now(); document.addEventListener("visibilitychange",function(){ if(!document.hidden&&Date.now()-lastVis>60000) refresh(); if(document.hidden) lastVis=Date.now(); });
 setInterval(function(){ if(D&&D.updatedAt) $("#upStamp").textContent=ago(D.updatedAt)+" 업데이트"; },60000);
