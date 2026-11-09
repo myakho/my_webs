@@ -1,5 +1,5 @@
 {
-  "_설명": "멤버를 넣고 빼려면 이 파일만 고치면 돼요. id는 비워 두면 이름으로 치지직에서 찾아요. 이름으로 잘 안 찾아지면 채널 주소의 32자리 id를 넣어 주세요. 졸업한 멤버는 \"graduated\": true 를 붙이면 졸업 칸으로 따로 보여요. ── 유튜브: 링크를 그대로 붙여 넣으면 돼요 (playlist?list=…, watch?v=…&list=…&index=3, youtu.be/… 다 돼요. index 숫자가 있으면 그 영상부터 재생해요). 멤버 칸의 \"playlists\": [\"링크\", …] 에 넣거나, 누구 건지 귀찮으면 맨 아래 \"playlists\" 에 몰아 넣어요 → 제목·채널에 멤버 이름이 있으면 알아서 그 멤버에게 붙어요. 이름을 직접 붙이려면 {\"url\": \"링크\", \"name\": \"내가 붙일 이름\"}. 저장해서 올리면 바로 보여요.",
+  "_설명": "멤버를 넣고 빼려면 이 파일만 고치면 돼요. id는 비워 두면 이름으로 치지직에서 찾아요. 이름으로 잘 안 찾아지면 채널 주소의 32자리 id를 넣어 주세요. 졸업한 멤버는 \"graduated\": true 를 붙이면 졸업 칸으로 따로 보여요. ── 플레이리스트: 멤버의 \"playlists\" 에 유튜브 링크를 따옴표로 감싸서 넣어요. ① list= 가 들어 있는 링크 → 그 유튜브 재생목록 통째로. ② 영상 하나짜리 링크(youtu.be/… 같은 것) → 그 멤버의 '○○ 모음' 한 묶음에 적은 순서대로 들어가요. ③ 묶음을 여러 개 만들고 이름도 붙이려면 {\"name\": \"묶음 이름\", \"videos\": [\"영상 링크\", \"영상 링크\"]}.",
   "members": [
     {"name": "강지(사장)", "gen": "0기", "id": "b5ed5db484d04faf4d150aedd362f34b", "playlists": ["https://www.youtube.com/watch?v=92zhMDrbeb4&list=PLcNhHeUzY-uhGYqnZr8YLkEfxnPOW_QNz&index=1"]},
     {"name": "아야츠노 유니", "gen": "1기", "id": "45e71a76e949e16a34764deb962f9d9f", "playlists": ["https://www.youtube.com/watch?v=bRa_zAaaCCE&list=PL3HtH_xx9h_7ZGoZ9zMUQ-MPumwe21_cc&index=1"]},
@@ -17,6 +17,5 @@
     {"name": "코가네 랑", "gen": "4기", "id": "c657aa3592260a2b59669a72ec151936", "playlists": ["https://youtu.be/iAoU1UGPoXc?si=FCmc1ykpQQTkfG7I"]},
     {"name": "하나요 히요리", "gen": "4기", "id": "49d2c3cf8f0b2843d934ec15e82bb54c", "playlists": ["https://youtu.be/ouKcRBeyKbk?si=BDoMNgzMa_nRBjH2"]},
     {"name": "토키노 메리", "gen": "4기", "id": "792acf9ca28b42918710327e14b06b68", "playlists": ["https://youtu.be/rKQptWhAvO0?si=-HdhEl5SMkszRAnt"]}
-  ],
-  "playlists": []
+  ]
 }
