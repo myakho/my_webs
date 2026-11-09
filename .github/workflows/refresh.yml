@@ -1,0 +1,68 @@
+# 스텔라이브 방송 상태를 몇 분마다 새로 받아요 (내가 Run 을 안 눌러도 돼요)
+#
+# GitHub 의 schedule(cron)은 한참 늦거나 아예 건너뛰는 일이 많아서 믿을 수 없어요.
+# 그래서 한 번 켜지면 약 5시간 40분 동안 "받기 → 저장 → 4분 쉬기"를 계속 반복하고,
+# 끝날 때 스스로 다음 회차를 다시 켜요. (끊기지 않게 이어 달리기)
+#   - 받은 결과는 'data' 브랜치의 stellive.json 하나에만 덮어써요 (기록이 쌓이지 않아요).
+#   - 사이트는 그 파일을 바로 읽어 와서, 사이트를 다시 올리지 않아도 새 방송이 보여요.
+#   - 혹시 줄이 끊겨도 아래 schedule 이 30분마다 다시 켜 줘요. (이미 돌고 있으면 그 뒤에 줄 서요)
+name: 방송 상태 계속 받기
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths: ["members.json", "fetch-stellive.mjs", ".github/workflows/refresh.yml"]
+
+permissions:
+  contents: write   # data 브랜치에 stellive.json 저장
+  actions: write    # 끝날 때 다음 회차 켜기
+
+# 한 번에 하나만 돌아요. 돌고 있는 동안 켜진 건 기다렸다가 이어서 돌아요.
+concurrency:
+  group: stellive-data
+  cancel-in-progress: false
+
+jobs:
+  loop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      RUN_MINUTES: "340"   # 한 회차에 돌 시간 (GitHub 최대 6시간보다 조금 짧게)
+      EVERY_SECONDS: "240" # 몇 초마다 새로 받을지
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 지난 결과 가져오기
+        run: git fetch --depth 1 origin data && git show origin/data:stellive.json > stellive.json || echo "아직 data 브랜치가 없어요 (처음이면 정상)"
+
+      - name: 몇 분마다 받아서 저장하기
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          end=$(( $(date +%s) + RUN_MINUTES * 60 ))
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          mkdir -p ../pub && cd ../pub && git init -q && git config user.name "github-actions[bot]" && git config user.email "41898283+github-actions[bot]@users.noreply.github.com" && cd - >/dev/null
+          n=0
+          while [ "$(date +%s)" -lt "$end" ]; do
+            n=$((n+1)); echo "::group::$n 번째 ($(TZ=Asia/Seoul date '+%H:%M'))"
+            node fetch-stellive.mjs || echo "받기 실패 — 다음 차례에 다시 해요"
+            if [ -s stellive.json ]; then
+              cp stellive.json ../pub/stellive.json
+              ( cd ../pub && git add stellive.json && git commit -q --amend --allow-empty -m "stellive.json" 2>/dev/null || git commit -q -m "stellive.json"
+                git push -q -f "$remote" HEAD:data ) || echo "저장 실패 — 다음 차례에 다시 해요"
+            fi
+            echo "::endgroup::"
+            sleep "$EVERY_SECONDS"
+          done
+
+      - name: 다음 회차 켜기
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run refresh.yml --ref "${GITHUB_REF_NAME}" || echo "다음 회차를 못 켰어요 — 30분 안에 schedule 이 다시 켜 줘요"
