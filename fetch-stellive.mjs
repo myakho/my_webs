@@ -31,13 +31,20 @@ function hlsOf(pb) {
 }
 
 const cfg = JSON.parse(await readFile("members.json", "utf8"));
-// 지난번 결과: 지금 올라가 있는 사이트에서 가져와요 (API가 잠깐 실패해도 클립이 사라지지 않게)
+// 지난번 결과 (API가 잠깐 실패해도 클립이 사라지지 않게)
+// 1) 옆에 있는 stellive.json (계속 받기 중에는 바로 전 결과) 2) 없으면 지금 올라가 있는 사이트
 let old = {}, oldAt = 0;
-try {
-  const host = (await readFile("CNAME", "utf8")).trim();
-  const r = await fetch(`https://${host}/stellive.json?t=${Date.now()}`);
-  if (r.ok) { const oj = await r.json(); oldAt = oj.updatedAt || 0; for (const m of oj.members || []) old[m.name] = m; }
-} catch (e) {}
+async function readOld() {
+  try { return JSON.parse(await readFile("stellive.json", "utf8")); } catch (e) {}
+  try {
+    const host = (await readFile("CNAME", "utf8")).trim();
+    const r = await fetch(`https://${host}/stellive.json?t=${Date.now()}`);
+    if (r.ok) return await r.json();
+  } catch (e) {}
+  return null;
+}
+const oj = await readOld();
+if (oj) { oldAt = oj.updatedAt || 0; for (const m of oj.members || []) old[m.name] = m; }
 
 const out = [];
 let liveChecked = 0, withId = 0;
