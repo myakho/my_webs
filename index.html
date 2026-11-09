@@ -454,6 +454,91 @@ main{flex:1 0 auto;padding-bottom:80px}
 .pt small{display:block;font-size:12px;color:var(--mute);margin-top:2px}
 .pt .nw{color:var(--live);font-weight:800;margin-left:6px}
 .pt-msg{margin:12px 0 0;font-size:13px;color:var(--mute)}
+/* ---------- 디스크 → 플레이리스트 입장권 ---------- */
+.jb-it.on .disc{cursor:pointer}
+/* 디스크에 가까이 대면 커지고, 누르면 쏙 빠져나와요 */
+@media (hover:hover){
+  .jb-it.on .disc:hover{transform:translateX(50%) scale(1.09);transition:transform .35s cubic-bezier(.2,.75,.2,1);box-shadow:0 26px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.08),inset 0 0 0 2px rgba(255,255,255,.04)}
+  .jb-it.on .disc:hover .lbl{animation:spin 2.4s linear infinite}
+}
+.jb-it.on.pull .disc{transform:translateX(118%) scale(1.14) rotate(200deg);transition:transform .6s cubic-bezier(.3,.1,.2,1)}
+.jb-it.on.pull .lbl{animation:spin .7s linear infinite}
+@media (max-width:620px){.jb-it.on.pull .disc{transform:translateX(70%) scale(1.1) rotate(200deg)}}
+@media (prefers-reduced-motion:reduce){.jb-it.on.pull .disc{transition:none}.jb-it.on .disc:hover .lbl,.jb-it.on.pull .lbl{animation:none}}
+.ptk-in{width:min(980px,100%)}
+.ptk-list{display:flex;flex-direction:column;gap:16px}
+.ptk{grid-template-columns:minmax(0,30%) minmax(0,1fr)}
+.ptk::before,.ptk::after{left:calc(30% - 9px)}
+.ptk-cv{flex:1;min-height:240px;background:var(--orb)}
+.ptk-ph{position:absolute;inset:0;display:grid;place-items:center;font-size:54px;color:#0C0E14}
+.ptk .ps-top .orbt{letter-spacing:.14em}
+.ptk-box{padding:14px 16px;border-radius:14px;border:1px solid var(--line2);background:rgba(0,0,0,.14)}
+.ptk-q{font-size:14.5px;font-weight:700;color:var(--ink);padding-bottom:12px;margin-bottom:10px;border-bottom:1px dashed var(--line2)}
+.ptk-ol{list-style:none;margin:0;padding:0;max-height:300px;overflow:auto}
+.ptk-ol a{display:flex;align-items:baseline;gap:10px;padding:4px 0;text-decoration:none;color:inherit;min-width:0}
+.ptk-ol .n{flex:none;font-size:13px;font-weight:800;color:var(--mute);font-variant-numeric:tabular-nums}
+.ptk-ol b{flex:0 1 auto;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptk-ol small{flex:1 1 0;min-width:40px;font-size:13px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptk-ol a:hover b{color:var(--acc)}
+.ptk-msg{padding:4px 0 0 32px;font-size:13px;color:var(--mute)}
+.ptk-more{background:rgba(245,190,143,.14);border-color:rgba(245,190,143,.35);color:var(--acc)}
+@media (max-width:620px){.ptk{grid-template-columns:minmax(0,1fr)}.ptk::before,.ptk::after{display:none}.ptk .ps-l::after{display:none}.ptk-cv{aspect-ratio:16/9}}
+/* ---------- 듣기 화면 ---------- */
+.ls{margin-top:16px}
+.ls-tabs{display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:14px}
+.ls-tabs::-webkit-scrollbar{display:none}
+.ls-back{flex:none;display:inline-flex;align-items:center;gap:4px;height:40px;padding:0 6px 0 10px;border-radius:999px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink2);text-decoration:none;font-weight:800}
+.ls-back .av{width:28px;height:28px;font-size:11px}
+.ls-tab{flex:none;display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink2);font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap}
+.ls-tab small{font-size:12px;color:var(--mute);font-weight:700}
+.ls-tab[aria-current]{background:var(--ink);border-color:var(--ink);color:var(--page)}
+.ls-tab[aria-current] small{color:var(--page);opacity:.6}
+.ls-grid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:20px;align-items:start}
+.ls-main{min-width:0}
+.ls-scr{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000;border:1px solid var(--line)}
+.ls-scr>div,.ls-scr iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ls-info{margin-top:16px;padding:20px 24px}
+.ls-ih{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.ls-ih h1{flex:1 1 300px;font-size:clamp(20px,2.2vw,26px);font-weight:900;letter-spacing:-.04em;line-height:1.3}
+.yt-ic{display:inline-block;width:18px;height:12px;border-radius:3px;background:#FF0033;position:relative}
+.yt-ic::after{content:"";position:absolute;left:7px;top:3px;border-left:5px solid #fff;border-top:3px solid transparent;border-bottom:3px solid transparent}
+.ls-who{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;font-size:13.5px}
+.ls-ch{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px 0 5px;border-radius:999px;border:1px solid var(--line2);background:var(--bg2);text-decoration:none;color:inherit}
+.ls-ch .av{width:32px;height:32px}
+.ls-side{min-width:0;position:sticky;top:80px;padding:20px;border-radius:22px;max-height:calc(100vh - 100px);display:flex;flex-direction:column;min-height:0}
+.ls-h{display:flex;align-items:center;gap:10px;min-width:0}
+.ls-h img{width:36px;height:36px;border-radius:8px;object-fit:cover;flex:none}
+.ls-h b{font-size:16px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ls-pos{flex:none;height:24px;padding:0 8px;border-radius:7px;background:rgba(245,190,143,.16);color:var(--acc);font-size:12.5px;font-weight:900;display:inline-flex;align-items:center;font-variant-numeric:tabular-nums}
+.ls-sw{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:14px;font-weight:600;color:var(--ink2);cursor:pointer;user-select:none}
+.ls-sw input{position:absolute;opacity:0;pointer-events:none}
+.ls-tg{position:relative;width:46px;height:26px;border-radius:999px;background:var(--card2);border:1px solid var(--line2);transition:background .2s}
+.ls-tg::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s}
+.ls-sw input:checked+.ls-tg{background:#8E80F5;border-color:#8E80F5}
+.ls-sw input:checked+.ls-tg::after{transform:translateX(20px)}
+.ls-sw input:focus-visible+.ls-tg{outline:2px solid var(--ink);outline-offset:2px}
+.ls-opt[aria-pressed="true"]{background:var(--ink);color:var(--page);border-color:var(--ink)}
+.ls-next{margin-top:14px;padding:14px 16px;border-radius:14px;background:var(--bg2);border:1px solid var(--line)}
+.ls-next small{display:block;font-size:13px;font-weight:800;color:var(--ink)}
+.ls-next b{display:block;margin-top:3px;font-size:13px;font-weight:500;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ls-ol{list-style:none;margin:12px -8px 0;padding:0;overflow:auto;flex:1;min-height:120px}
+.ls-ol button{display:grid;grid-template-columns:28px 112px minmax(0,1fr);gap:12px;align-items:center;width:100%;padding:8px;border:0;border-radius:12px;background:none;color:inherit;text-align:left;font:inherit;cursor:pointer}
+.ls-ol button:hover{background:var(--bg2)}
+.ls-ol button[aria-current]{background:rgba(245,190,143,.1)}
+.ls-ol .n{font-size:13px;color:var(--mute);text-align:center;font-variant-numeric:tabular-nums}
+.ls-ol .th{position:relative;display:block;border-radius:8px;overflow:hidden;background:var(--card2)}
+.ls-ol .th img{width:112px;aspect-ratio:16/9;object-fit:cover;display:block}
+.ls-ol .tx b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;font-weight:700;line-height:1.4}
+.ls-ol .tx small{display:block;margin-top:3px;font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ls-ol button[aria-current] .tx b{color:var(--acc)}
+.eq{display:none;position:absolute;inset:0;align-items:center;justify-content:center;gap:3px;background:rgba(0,0,0,.45)}
+.eq b{width:4px;height:40%;border-radius:2px;background:#fff;animation:eq .9s ease-in-out infinite}
+.eq b:nth-child(2){animation-delay:-.3s}.eq b:nth-child(3){animation-delay:-.6s}
+.ls-ol button[aria-current] .eq{display:flex}
+@keyframes eq{0%,100%{height:25%}50%{height:55%}}
+@media (max-width:1100px){.ls-grid{grid-template-columns:minmax(0,1fr) 340px}.ls-ol button{grid-template-columns:24px 92px minmax(0,1fr)}.ls-ol .th img{width:92px}}
+@media (max-width:900px){.ls-grid{grid-template-columns:minmax(0,1fr)}.ls-side{position:static;max-height:none}.ls-ol{max-height:440px;flex:none}}
+@media (prefers-reduced-motion:reduce){.eq b{animation:none}}
 </style>
 </head>
 <body>
@@ -777,6 +862,9 @@ async function viewMembers(id){
       '<section class="sec"><div class="sec-h"><h2>'+esc(m.name)+'의 다시보기</h2><a href="'+chHome(m.id)+'/videos" target="_blank" rel="noopener">치지직에서 전체 ↗</a></div>'+((m.videos||[]).length?'<div class="lgrid">'+m.videos.slice(0,4).map(videoCard).join("")+'</div>':'<div class="empty">아직 받아 온 다시보기가 없어요.</div>')+'</section><div id="mPl"></div>'; fillMemberPl(m);
   });
   $$("[data-pick]",el).forEach(function(b){ b.onclick=function(){ F.sel(+b.dataset.pick); }; });
+  /* 가운데 앨범의 디스크(멤버 사진)를 누르면 플레이리스트 입장권이 떠요 */
+  $$(".jb-it .disc",el).forEach(function(dc){ dc.title="플레이리스트 보기"; dc.addEventListener("click",function(e){ var it=dc.closest(".jb-it"); if(!it||!it.classList.contains("on")) return; e.preventDefault(); e.stopPropagation(); if(it.classList.contains("pull")) return;
+    it.classList.add("pull"); setTimeout(function(){ openTickets(L[+it.dataset.fi],function(){ it.classList.remove("pull"); }); },520); }); });
 }
 
 /* ---------- 클립 ---------- */
@@ -882,19 +970,19 @@ function cachePut(k,v){ ls(k,{at:Date.now(),v:v}); }
 /* 제목·표지·개수: 재생목록 전부를 API 한 번으로 물어요 (30분 동안 이 브라우저에 기억) */
 async function plMeta(lists){
   var ids=[]; lists.forEach(function(l){ if(ids.indexOf(l.id)<0) ids.push(l.id); });
-  var meta=cacheGet("st.plmeta",1800000)||{}, need=ids.filter(function(id){ return !meta[id]; });
+  var meta=cacheGet("st.plmeta2",1800000)||{}, need=ids.filter(function(id){ return !meta[id]; });
   if(need.length&&ytKeys().length){
     try{
       for(var i=0;i<need.length;i+=50){
         var part=need.slice(i,i+50), got={};
         var j=await ytApi("playlists",{part:"snippet,contentDetails",maxResults:"50",id:part.join(",")});
-        (j.items||[]).forEach(function(p){ var t=(p.snippet&&p.snippet.thumbnails)||{}; meta[p.id]={name:(p.snippet&&p.snippet.title)||"",cover:((t.medium||t.high||t.default)||{}).url||"",count:(p.contentDetails&&p.contentDetails.itemCount)||0}; got[p.id]=1; });
+        (j.items||[]).forEach(function(p){ var t=(p.snippet&&p.snippet.thumbnails)||{}; meta[p.id]={name:(p.snippet&&p.snippet.title)||"",cover:((t.medium||t.high||t.default)||{}).url||"",count:(p.contentDetails&&p.contentDetails.itemCount)||0,desc:(p.snippet&&p.snippet.description)||""}; got[p.id]=1; });
         part.forEach(function(id){ if(!got[id]) meta[id]={gone:1}; });
       }
-      cachePut("st.plmeta",meta);
+      cachePut("st.plmeta2",meta);
     }catch(e){}
   }
-  lists.forEach(function(l){ var m=meta[l.id]||{}; l.gone=!!m.gone; l.title=l.name||m.name||"플레이리스트"; l.cover=m.cover||""; l.count=m.count||0; });
+  lists.forEach(function(l){ var m=meta[l.id]||{}; l.gone=!!m.gone; l.title=l.name||m.name||"플레이리스트"; l.cover=m.cover||""; l.count=m.count||0; l.desc=m.desc||""; });
 }
 /* 영상 목록: 열었을 때만 받아요 (10분 동안 기억) */
 async function plItems(id){
@@ -953,7 +1041,150 @@ function openPl(pk){
       return '<li><button type="button" data-pt="'+esc(it.id)+'"><img src="'+plThumb(it.id)+'" alt="" loading="lazy"><span><b>'+esc(it.title||"제목 없음")+'</b><small>'+esc(it.ch||"")+(nw?'<span class="nw">NEW</span>':'')+'</small></span></button></li>'; }).join("")+'</ol>':'';
   }).catch(function(){ var el=$("#plTr",box); if(el) el.innerHTML='<p class="pt-msg">영상 목록은 지금 못 불러왔어요. 위 플레이어에서 그대로 볼 수 있어요.</p>'; });
 }
-document.addEventListener("click",function(e){ var b=e.target.closest("[data-plist]"); if(b&&!b.disabled) openPl(b.dataset.plist); });
+document.addEventListener("click",function(e){ var b=e.target.closest("[data-plist]"); if(!b||b.disabled) return; var k=b.dataset.plist.split("|"), m=memByName(k[0]); if(m&&m.id) go(listenHref(m.id,k[1]).slice(1)); else openPl(b.dataset.plist); });
+/* ==================================================================
+   디스크 → 플레이리스트 입장권 → 듣기 화면
+   멤버 화면에서 가운데 앨범 옆 디스크를 누르면 그 멤버의 플레이리스트가 입장권으로 떠요.
+   '전체 재생'이나 곡을 누르면 듣기 화면(#listen/멤버id/재생목록id/영상id)으로 가요.
+   ================================================================== */
+function memByName(n){ return D&&D.members.filter(function(m){ return m.name===n; })[0]; }
+function listenHref(mid,list,vid){ return "#listen/"+mid+"/"+encodeURIComponent(list)+(vid?"/"+encodeURIComponent(vid):""); }
+var VI={};
+async function vInfo(id){
+  if(VI[id]) return VI[id];
+  try{ var j=await ytApi("videos",{part:"snippet,statistics",id:id}), v=(j.items||[])[0]; if(!v) return null; var sn=v.snippet||{}, st=v.statistics||{};
+    VI[id]={title:sn.title||"",ch:sn.channelTitle||"",at:sn.publishedAt||"",views:+st.viewCount||0}; return VI[id]; }catch(e){ return null; }
+}
+function lastAt(items){ var t=0; (items||[]).forEach(function(x){ var d=toDate(x.at); if(d&&+d>t) t=+d; }); return t; }
+function tkNo(i,t){ var d=t?new Date(t):new Date(); return "MB-"+String(i+1).padStart(2,"0")+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0"); }
+function quoteOf(L){ var s=String(L.desc||"").split(/\n/).map(function(x){ return x.trim(); }).filter(Boolean)[0]||""; return s.length>90?s.slice(0,88)+"…":s; }
+function plTicket(m,L,i){
+  return '<article class="pass ptk" data-tk="'+i+'">'+
+    '<div class="ps-l"><a class="ps-cover ptk-cv" href="'+listenHref(m.id,L.id)+'" aria-label="'+esc(L.title)+' 전체 재생">'+(L.cover?'<img src="'+esc(L.cover)+'" alt="">':'<span class="ptk-ph" aria-hidden="true">♪</span>')+'</a>'+
+      '<div class="ps-tk"><div><small>TICKET NO.</small><b data-tkno>'+tkNo(i,0)+'</b></div>'+barcode(L.id)+'</div></div>'+
+    '<div class="ps-r"><div class="ps-top"><span class="orbt">PLAYLIST '+String(i+1).padStart(2,"0")+'</span><time data-tkup></time></div>'+
+      '<h3>'+esc(L.title)+'</h3><div><span class="chip ptk-n">'+(L.count?L.count+'곡':'플레이리스트')+'</span></div>'+
+      '<div class="ptk-box">'+(quoteOf(L)?'<p class="ptk-q">“'+esc(quoteOf(L))+'”</p>':'')+'<ol class="ptk-ol" data-tkol><li class="ptk-msg">'+(ytKeys().length?'곡 목록을 불러오는 중…':'유튜브에서 바로 재생돼요')+'</li></ol></div>'+
+      '<div class="ps-foot"><span class="sp"></span><a class="btn btn-main" href="'+listenHref(m.id,L.id)+'">▶ 전체 재생</a><button type="button" class="btn ptk-more" data-tkx'+(ytKeys().length?'':' hidden')+'>플레이리스트 보기 <span aria-hidden="true">›</span></button></div></div></article>';
+}
+function openTickets(m,onClose){
+  loadPl().then(function(){
+    var P=(PL||[]).filter(function(l){ return l.member===m.name&&!l.gone; });
+    if(!P.length){ toast(m.name+"의 플레이리스트가 아직 없어요"); if(onClose) onClose(); return; }
+    var box=document.createElement("div"); box.className="modal"; box.setAttribute("role","dialog"); box.setAttribute("aria-modal","true");
+    box.innerHTML='<div class="modal-in ptk-in"><div class="modal-h"><div style="display:flex;align-items:center;gap:10px">'+avatar(m.image,m.name)+'<div><h2>'+esc(m.name)+'의 플레이리스트</h2><p class="mute" style="font-size:13px">'+P.length+'개 · 입장권을 골라 주세요</p></div></div><button class="btn btn-line btn-sm" type="button" data-x>닫기</button></div>'+
+      '<div class="ptk-list">'+P.map(function(L,i){ return plTicket(m,L,i); }).join("")+'</div></div>';
+    document.body.appendChild(box);
+    var prev=document.activeElement;
+    function close(){ box.remove(); if(onClose) onClose(); document.removeEventListener("keydown",onKey); window.removeEventListener("hashchange",close); if(prev&&prev.focus&&prev.isConnected) prev.focus(); }
+    function onKey(e){ if(e.key==="Escape") close(); }
+    document.addEventListener("keydown",onKey); window.addEventListener("hashchange",close);
+    box.onclick=function(e){ if(e.target===box||e.target.closest("[data-x]")) close(); };
+    $("[data-x]",box).focus();
+    if(!ytKeys().length) return;
+    P.forEach(function(L,i){
+      var card=$('[data-tk="'+i+'"]',box);
+      plItems(L.id).then(function(items){
+        if(!box.isConnected) return;
+        var t=lastAt(items); if(t){ $("[data-tkup]",card).textContent=dateK(t)+" 업데이트"; $("[data-tkno]",card).textContent=tkNo(i,t); }
+        if(items.length) $(".ptk-n",card).textContent=items.length+"곡";
+        var ol=$("[data-tkol]",card), open=false;
+        function draw(){ ol.innerHTML=items.length?(open?items:items.slice(0,2)).map(function(it,k){ return '<li><a href="'+listenHref(m.id,L.id,it.id)+'"><span class="n">'+String(k+1).padStart(2,"0")+'</span><b>'+esc(it.title||"제목 없음")+'</b><small>'+esc(it.ch||"")+'</small></a></li>'; }).join("")+(!open&&items.length>2?'<li class="ptk-msg">외 '+(items.length-2)+'곡</li>':''):'<li class="ptk-msg">곡이 없어요</li>'; }
+        draw();
+        var b=$("[data-tkx]",card); if(items.length<=2) b.hidden=true;
+        b.onclick=function(){ open=!open; draw(); b.innerHTML=open?'접기 <span aria-hidden="true">‹</span>':'플레이리스트 보기 <span aria-hidden="true">›</span>'; };
+      }).catch(function(){ var ol=$("[data-tkol]",card); if(ol) ol.innerHTML='<li class="ptk-msg">곡 목록은 못 불러왔어요. 전체 재생은 돼요.</li>'; });
+    });
+  });
+}
+
+/* ---------- 듣기 화면 ---------- */
+var ytApiP=null;
+function loadYtApi(){
+  if(window.YT&&YT.Player) return Promise.resolve();
+  if(!ytApiP) ytApiP=new Promise(function(res,rej){
+    var prev=window.onYouTubeIframeAPIReady; window.onYouTubeIframeAPIReady=function(){ if(prev) try{ prev(); }catch(e){} res(); };
+    var sc=document.createElement("script"); sc.src="https://www.youtube.com/iframe_api"; sc.onerror=function(){ ytApiP=null; rej(new Error("yt")); }; document.head.appendChild(sc);
+    setTimeout(function(){ if(!(window.YT&&YT.Player)){ ytApiP=null; rej(new Error("yt-timeout")); } },12000);
+  });
+  return ytApiP;
+}
+async function viewListen(arg){
+  var p=String(arg||"").split("/").map(function(x){ try{ return decodeURIComponent(x); }catch(e){ return x; } });
+  var mid=p[0], list=p[1]||"", want=/^[\w-]{11}$/.test(p[2]||"")?p[2]:"";
+  setView('<div class="ls"><div class="ls-tabs" id="lsTabs"></div><div class="ls-grid"><div class="ls-main"><div class="ls-scr"><div id="ytp"></div></div><div class="box ls-info" id="lsInfo"><h1>불러오는 중…</h1></div></div><aside class="ls-side box" id="lsSide"><div class="mute" style="font-size:13px">불러오는 중이에요…</div></aside></div></div>');
+  try{ await load(); }catch(e){}
+  await loadPl();
+  if(cur!=="listen") return;
+  var m=byId(mid)||{id:mid,name:""}, P=(PL||[]).filter(function(l){ return l.member===m.name&&!l.gone; }), L=P.filter(function(l){ return l.id===list; })[0];
+  if(!L){ L=(PL||[]).filter(function(l){ return l.id===list; })[0]; if(L&&!m.name){ m=memByName(L.member)||m; P=(PL||[]).filter(function(l){ return l.member===L.member&&!l.gone; }); } }
+  if(!L){ if(P[0]){ go(listenHref(m.id,P[0].id).slice(1)); return; } go(m.id?"member/"+m.id:"members"); return; }
+  document.title=L.title+" · "+SITE;
+  var S={dead:false,player:null,items:[],order:[],pos:0,cur:"",auto:ls("st.auto")!==false,shuf:!!ls("st.shuf"),rep:!!ls("st.rep")};
+  cleanups.push(function(){ S.dead=true; try{ S.player&&S.player.destroy(); }catch(e){} });
+
+  $("#lsTabs").innerHTML=(m.id?'<a class="ls-back" href="#member/'+m.id+'" aria-label="'+esc(m.name)+' 멤버 화면으로">‹ '+avatar(m.image,m.name)+'</a>':'')+
+    P.map(function(x){ return '<a class="ls-tab" href="'+listenHref(m.id,x.id)+'"'+(x===L?' aria-current="page"':'')+'>'+esc(x.title)+'<small>'+(x.count||"")+'</small></a>'; }).join("");
+
+  try{ if(ytKeys().length) S.items=await plItems(L.id); }catch(e){ S.items=[]; }
+  if(S.dead) return;
+  var ids=S.items.map(function(x){ return x.id; });
+  function mkOrder(first){ var o=ids.slice(); if(S.shuf){ for(var i=o.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), t=o[i]; o[i]=o[j]; o[j]=t; } if(first){ o.splice(o.indexOf(first),1); o.unshift(first); } } S.order=o; S.pos=Math.max(0,o.indexOf(first||o[0])); }
+  var start=want&&ids.indexOf(want)>-1?want:ids[0]||"";
+  mkOrder(start);
+
+  var side=$("#lsSide");
+  if(!S.items.length){
+    side.innerHTML='<div class="ls-h">'+(L.cover?'<img src="'+esc(L.cover)+'" alt="">':'')+'<b>'+esc(L.title)+'</b></div><p class="mute" style="font-size:13px;margin-top:12px">'+(ytKeys().length?'곡 목록을 못 불러왔어요. 플레이어에서 넘겨 들을 수 있어요.':'유튜브 API 키가 없어서 곡 목록은 못 보여 줘요. 플레이어에서 넘겨 들을 수 있어요.')+'</p>';
+  } else {
+    side.innerHTML='<div class="ls-h">'+(L.cover?'<img src="'+esc(L.cover)+'" alt="">':'')+'<b>'+esc(L.title)+'</b><span class="ls-pos" id="lsPos"></span></div>'+
+      '<label class="ls-sw"><input type="checkbox" id="lsAuto"'+(S.auto?' checked':'')+'><span class="ls-tg" aria-hidden="true"></span>다음 곡 자동 재생</label>'+
+      '<div class="row" style="margin-top:12px"><button type="button" class="btn btn-line btn-sm ls-opt" id="lsShuf" aria-pressed="'+S.shuf+'">섞기</button><button type="button" class="btn btn-line btn-sm ls-opt" id="lsRep" aria-pressed="'+S.rep+'">반복</button></div>'+
+      '<div class="ls-next" id="lsNext"></div>'+
+      '<ol class="ls-ol">'+S.items.map(function(it,i){ return '<li><button type="button" data-lv="'+esc(it.id)+'"><span class="n">'+String(i+1).padStart(2,"0")+'</span><span class="th"><img src="https://i.ytimg.com/vi/'+encodeURIComponent(it.id)+'/mqdefault.jpg" alt="" loading="lazy"><i class="eq" aria-hidden="true"><b></b><b></b><b></b></i></span><span class="tx"><b>'+esc(it.title||"제목 없음")+'</b><small>'+esc(it.ch||"")+'</small></span></button></li>'; }).join("")+'</ol>';
+    $("#lsAuto").onchange=function(){ S.auto=this.checked; ls("st.auto",S.auto); drawNext(); };
+    $("#lsShuf").onclick=function(){ S.shuf=!S.shuf; ls("st.shuf",S.shuf); this.setAttribute("aria-pressed",S.shuf); mkOrder(S.cur); drawNext(); toast(S.shuf?"섞어서 들어요":"순서대로 들어요"); };
+    $("#lsRep").onclick=function(){ S.rep=!S.rep; ls("st.rep",S.rep); this.setAttribute("aria-pressed",S.rep); drawNext(); toast(S.rep?"끝나면 처음부터 다시 들어요":"반복을 껐어요"); };
+    $$("[data-lv]",side).forEach(function(b){ b.onclick=function(){ play(b.dataset.lv); }; });
+  }
+  function nextId(){ if(!S.order.length) return ""; var n=S.pos+1; if(n>=S.order.length){ if(!S.rep) return ""; n=0; } return S.order[n]; }
+  function drawNext(){ var el=$("#lsNext"); if(!el) return; var n=nextId(), it=S.items.filter(function(x){ return x.id===n; })[0];
+    el.innerHTML='<small>다음 곡</small><b>'+(it?esc(it.title):(S.auto?'마지막 곡이에요':'자동 재생이 꺼져 있어요'))+'</b>'; }
+  function setCur(v){
+    if(!v||S.dead) return; S.cur=v; var k=S.order.indexOf(v); if(k>-1) S.pos=k;
+    history.replaceState(null,"",listenHref(m.id,L.id,v));
+    var n=ids.indexOf(v), pos=$("#lsPos"); if(pos) pos.textContent=(n+1)+" / "+ids.length;
+    $$("[data-lv]").forEach(function(b){ var on=b.dataset.lv===v; b.toggleAttribute("aria-current",on); if(on){ var ol=b.closest(".ls-ol"); if(ol) ol.scrollTo({top:b.offsetTop-ol.offsetTop-ol.clientHeight/2+b.offsetHeight/2,behavior:"smooth"}); } });
+    drawNext(); drawInfo(v);
+  }
+  function drawInfo(v){
+    var it=S.items.filter(function(x){ return x.id===v; })[0]||{}, el=$("#lsInfo");
+    el.innerHTML='<div class="ls-ih"><h1>'+esc(it.title||L.title)+'</h1><div class="row"><button type="button" class="btn btn-line btn-sm" id="lsShare">공유</button><a class="btn btn-line btn-sm" href="https://www.youtube.com/watch?v='+encodeURIComponent(v)+'&list='+encodeURIComponent(L.id)+'" target="_blank" rel="noopener"><span class="yt-ic" aria-hidden="true"></span>유튜브</a></div></div>'+
+      '<div class="ls-who">'+(m.id?'<a class="ls-ch" href="#member/'+m.id+'">'+avatar(m.image,m.name)+'<b>'+esc(m.name)+'</b></a>':'')+'<span class="mute" id="lsMeta">'+esc(it.ch||"")+'</span></div>';
+    $("#lsShare").onclick=function(){ var u=location.href; (navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){ toast("링크를 복사했어요"); },function(){ prompt("링크를 복사해 주세요",u); }); };
+    if(ytKeys().length) vInfo(v).then(function(d){ if(!d||S.dead||S.cur!==v) return; var x=$("#lsMeta"); if(x) x.textContent=[d.ch,"조회수 "+num(d.views)+"회",dateK(d.at)].filter(Boolean).join(" · "); });
+  }
+  function play(v){ if(!v) return; if(S.player&&S.player.loadVideoById) S.player.loadVideoById(v); setCur(v); }
+  if(start) setCur(start); else drawInfo("");
+
+  try{ await loadYtApi(); }catch(e){
+    if(S.dead) return;
+    var f=$("#ytp"); if(f) f.outerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+(start?encodeURIComponent(start)+"?":"videoseries?")+'list='+encodeURIComponent(L.id)+'&autoplay=1&rel=0" title="유튜브 플레이어" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+    return;
+  }
+  if(S.dead||!$("#ytp")) return;
+  /* 곡 목록이 있으면 순서·섞기·반복을 사이트가 직접 정해요. 없으면 유튜브 재생목록 그대로 틀어요. */
+  var vars={autoplay:1,rel:0,playsinline:1};
+  if(!start){ vars.listType="playlist"; vars.list=L.id; }
+  S.player=new YT.Player("ytp",{width:"100%",height:"100%",videoId:start||undefined,host:"https://www.youtube-nocookie.com",playerVars:vars,events:{
+    onReady:function(e){ try{ e.target.playVideo(); }catch(x){} },
+    onStateChange:function(e){
+      if(e.data===0&&start){ if(S.auto){ var n=nextId(); if(n) play(n); } return; }
+      try{ var v=S.player.getVideoData().video_id; if(v&&v!==S.cur&&ids.indexOf(v)>-1) setCur(v); }catch(x){}
+    }
+  }});
+}
+
 function fillMemberPl(m){
   loadPl().then(function(){
     if((cur!=="member"&&cur!=="members")||memKey!==m.id) return;
@@ -967,13 +1198,14 @@ function fillMemberPl(m){
 function route(){
   var h=(location.hash||"#home").slice(1), parts=h.split("/"), r=parts[0]||"home", arg=parts.slice(1).join("/");
   cur=r; document.title=SITE;
-  $$(".nav a").forEach(function(a){ var on=a.dataset.r===r||(r==="member"&&a.dataset.r==="members")||(r==="watch"&&a.dataset.r==="home"); if(on) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  $$(".nav a").forEach(function(a){ var on=a.dataset.r===r||(r==="member"&&a.dataset.r==="members")||(r==="watch"&&a.dataset.r==="home")||(r==="listen"&&a.dataset.r==="members"); if(on) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
   window.scrollTo(0,0);
   if(r==="members"||r==="member") return viewMembers(arg);
   if(r==="clips") return viewClips(arg);
   if(r==="videos") return viewVideos();
   if(r==="multi") return viewMulti(arg);
   if(r==="watch") return viewWatch(arg);
+  if(r==="listen") return viewListen(arg);
   return viewHome();
 }
 window.addEventListener("hashchange",route);
