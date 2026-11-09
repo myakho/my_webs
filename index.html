@@ -468,9 +468,10 @@ main{flex:1 0 auto;padding-bottom:80px}
 </div></header>
 <main id="view" class="wrap" tabindex="-1"></main>
 <footer class="gf"><p><b id="siteName2">스타트</b>는 스텔라이브 팬이 만든 <b>비공식</b> 팬사이트예요. 스텔라이브·치지직·네이버의 공식 서비스가 아니에요.</p>
-<p>방송 상태·클립·다시보기는 치지직에서 10분마다 새로 받아 와요. 플레이리스트는 유튜브에서 바로 불러와요. 최애·하트·최근 본 기록은 이 브라우저에만 저장돼요.</p></footer>
+<p>방송 상태·클립·다시보기는 치지직에서 몇 분마다 새로 받아 와요. 플레이리스트는 유튜브에서 바로 불러와요. 최애·하트·최근 본 기록은 이 브라우저에만 저장돼요.</p></footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="site-config.js"></script>
+<script src="data-source.js" onerror="void 0"></script>
 <script>
 (function(){
 "use strict";
@@ -501,14 +502,21 @@ $("#themeBtn").onclick=function(){ var n=document.documentElement.dataset.theme=
 themeLabel();
 
 /* ==================================================================
-   데이터 — GitHub Actions가 10분마다 stellive.json 을 새로 만들어요
+   데이터 — GitHub Actions(refresh.yml)가 몇 분마다 data 브랜치의 stellive.json 을 새로 만들어요.
+   사이트에 같이 올라간 stellive.json 도 함께 받아서, 둘 중 더 최신 것을 써요.
    ================================================================== */
 var D=null, DAt=0, loading=null;
+var DATA_URLS=[].concat(CFG.dataUrl||[],window.DATA_URLS||[],"stellive.json");
+function getJson(u){ return fetch(u+(u.indexOf("?")<0?"?":"&")+"t="+Date.now(),{cache:"no-store"}).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); }); }
 function load(force){
   if(!force&&D&&Date.now()-DAt<120000) return Promise.resolve(D);
   if(loading) return loading;
-  loading=fetch((CFG.dataUrl||"stellive.json")+"?t="+Date.now(),{cache:"no-store"})
-    .then(function(r){ if(!r.ok) throw new Error("데이터 파일이 아직 없어요"); return r.json(); })
+  loading=Promise.all(DATA_URLS.map(function(u){ return getJson(u).catch(function(){ return null; }); }))
+    .then(function(list){
+      var j=list.filter(function(x){ return x&&x.members; }).sort(function(a,b){ return (b.updatedAt||0)-(a.updatedAt||0); })[0];
+      if(!j) throw new Error("데이터 파일이 아직 없어요");
+      return j;
+    })
     .then(function(j){
       var ms=(j.members||[]).filter(function(m){ return m&&m.name; });
       ms.forEach(function(m,i){ m.order=i; (m.clips||[]).forEach(function(c){ c.m=m; }); (m.videos||[]).forEach(function(v){ v.m=m; }); });
@@ -705,7 +713,7 @@ function collabBox(c){ return '<div class="collab"><span class="avs">'+c.ms.map(
 /* ---------- 홈 ---------- */
 var homeTag="", passKey="";
 async function viewHome(){
-  setView('<section class="hero"><div class="hero-l"><small class="orbt">STELLIVE FAN LOUNGE</small><h1>오늘은 누구 방송 볼까요?</h1><p>스텔라이브 멤버가 지금 방송 중인지, 합방은 누구랑 하는지, 새 클립과 다시보기까지 한곳에서 봐요. 10분마다 새로 받아 와요.</p><div class="row"><a class="btn btn-main" href="#multi">멀티뷰 열기</a><a class="btn btn-line" href="#members">멤버 보기</a></div></div>'+
+  setView('<section class="hero"><div class="hero-l"><small class="orbt">STELLIVE FAN LOUNGE</small><h1>오늘은 누구 방송 볼까요?</h1><p>스텔라이브 멤버가 지금 방송 중인지, 합방은 누구랑 하는지, 새 클립과 다시보기까지 한곳에서 봐요. 몇 분마다 새로 받아 와요.</p><div class="row"><a class="btn btn-main" href="#multi">멀티뷰 열기</a><a class="btn btn-line" href="#members">멤버 보기</a></div></div>'+
     '<div class="hero-r"><a class="qk" href="#home" id="qkLive"><b>방송 중</b><em>-</em><span>불러오는 중…</span></a><a class="qk" href="#members"><b>멤버</b><em id="qkMem">-</em><span id="qkGen">&nbsp;</span></a><a class="qk" href="#clips"><b>새 클립</b><em id="qkClip">-</em><span>오늘 올라온 클립</span></a><a class="qk" href="#multi"><b>멀티뷰</b><em>'+mv().length+' / '+MAXMV+'</em><span>영상만 여러 개 같이 보기</span></a></div></section>'+
     '<div id="hBody"><div class="empty" style="margin-top:30px">불러오는 중이에요…</div></div>');
   try{ await load(); }catch(e){ $("#hBody").innerHTML=errBox(e); return; }
@@ -971,8 +979,12 @@ function route(){
 window.addEventListener("hashchange",route);
 $("#mvCnt").textContent=mv().length||"";
 route();
-/* 열어 둔 채로 있으면 5분마다 새 데이터를 확인해요 (멀티뷰·보기 화면은 영상이 끊기지 않게 그대로 둬요) */
-setInterval(function(){ var before=D&&D.updatedAt; load(true).then(function(d){ if(d.updatedAt===before) return; if(cur==="home"||cur==="clips"||cur==="videos") route(); else $$("[data-pl]").forEach(function(b){ var m=byId(b.dataset.pl); if(!b._hls&&m&&m.live&&m.live.hls) plStart(b); }); }).catch(function(){}); },300000);
+/* 열어 둔 채로 있으면 3분마다, 다른 탭에 갔다 돌아오면 바로 새 데이터를 확인해요
+   (멀티뷰·보기 화면은 영상이 끊기지 않게 그대로 둬요) */
+function refresh(){ var before=D&&D.updatedAt; load(true).then(function(d){ if(d.updatedAt===before) return; if(cur==="home"||cur==="clips"||cur==="videos") route(); else $$("[data-pl]").forEach(function(b){ var m=byId(b.dataset.pl); if(!b._hls&&m&&m.live&&m.live.hls) plStart(b); }); }).catch(function(){}); }
+setInterval(function(){ if(!document.hidden) refresh(); },180000);
+var lastVis=Date.now(); document.addEventListener("visibilitychange",function(){ if(!document.hidden&&Date.now()-lastVis>60000) refresh(); if(document.hidden) lastVis=Date.now(); });
+setInterval(function(){ if(D&&D.updatedAt) $("#upStamp").textContent=ago(D.updatedAt)+" 업데이트"; },60000);
 })();
 </script>
 </body>
