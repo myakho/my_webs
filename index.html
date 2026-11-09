@@ -1026,6 +1026,10 @@ function loadPl(){
           if(seen[m.name+"|"+cid]) return; seen[m.name+"|"+cid]=1; MY[cid]=ent;
           lists.push({member:m.name,id:cid,name:nm,custom:true,desc:String(o.desc||"").trim(),cover:String(o.cover||"").trim()}); return; }
         var id=plId(o.url||o.id), k=m.name+"|"+id;
+        /* 재생목록이 아닌 영상 링크 하나만 적었으면 → 그 멤버의 '모음' 한 묶음에 차례대로 넣어요 */
+        if(!id){ var v1=vidId(o.url||o.id); if(!v1) return; var bid="my"+hsh(m.name+"|모음").toString(36);
+          if(!MY[bid]){ MY[bid]=[]; lists.push({member:m.name,id:bid,name:m.name+" 모음",custom:true,desc:"",cover:""}); }
+          if(!MY[bid].some(function(x){ return x.v===v1; })) MY[bid].push({v:v1}); return; }
         if(!id||seen[k]) return; seen[k]=1; lists.push({member:m.name,id:id,name:String(o.name||"").trim()}); }); });
       await plMeta(lists);
       PL=lists; return PL;
