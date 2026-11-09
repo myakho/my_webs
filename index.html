@@ -662,11 +662,11 @@ function addMv(id){ var a=mv(), m=byId(id), nm=m?m.name:"방송"; if(a.indexOf(i
    (m3u8 영상 주소는 안 써요)
    치지직 화면을 정해진 크기(1280px)로 띄운 다음, 영상이 있는 칸만 잘라서 우리 칸 크기에 맞춰 키워요.
    치지직 화면 배치가 바뀌어서 채팅이 삐져나오면 site-config.js 에 chzzkCrop 으로 숫자만 고치면 돼요.
-     chzzkCrop: { w: 1280, top: 60, left: 0, right: 353 }
+     chzzkCrop: { w: 1280, top: 60, left: 240, right: 353 }   (1280px 일 때 치지직: 위 메뉴 60 · 왼쪽 메뉴 240 · 채팅 353)
        w     = 치지직 화면을 띄울 너비      top   = 위쪽 메뉴 높이
        left  = 왼쪽 메뉴 너비              right = 오른쪽 채팅창 너비
    ================================================================== */
-var CROP=Object.assign({w:1280,top:60,left:0,right:353},CFG.chzzkCrop||{});
+var CROP=Object.assign({w:1280,top:60,left:240,right:353},CFG.chzzkCrop||{});
 function liveFor(m){ var l=m&&m.live; return {l:l, up:l?since(l.openDate):""}; }
 function playerBox(id,cls){ return '<div class="pl'+(cls?' '+cls:'')+'" data-pl="'+id+'"></div>'; }
 var plRO=window.ResizeObserver?new ResizeObserver(function(es){ es.forEach(function(e){ plFit(e.target); }); }):null;
