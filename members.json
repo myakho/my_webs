@@ -1,22 +1,22 @@
 {
   "_설명": "멤버를 넣고 빼려면 이 파일만 고치면 돼요. id는 비워 두면 이름으로 치지직에서 찾아요. 이름으로 잘 안 찾아지면 채널 주소의 32자리 id를 넣어 주세요. 졸업한 멤버는 \"graduated\": true 를 붙이면 졸업 칸으로 따로 보여요. ── 유튜브: 링크를 그대로 붙여 넣으면 돼요 (playlist?list=…, watch?v=…&list=…&index=3, youtu.be/… 다 돼요. index 숫자가 있으면 그 영상부터 재생해요). 멤버 칸의 \"playlists\": [\"링크\", …] 에 넣거나, 누구 건지 귀찮으면 맨 아래 \"playlists\" 에 몰아 넣어요 → 제목·채널에 멤버 이름이 있으면 알아서 그 멤버에게 붙어요. 이름을 직접 붙이려면 {\"url\": \"링크\", \"name\": \"내가 붙일 이름\"}. 저장해서 올리면 바로 보여요.",
   "members": [
-    {"name": "강지(사장)", "gen": "0기", "id": "b5ed5db484d04faf4d150aedd362f34b", "playlists": []},
-    {"name": "아야츠노 유니", "gen": "1기", "id": "45e71a76e949e16a34764deb962f9d9f", "playlists": []},
-    {"name": "사키하네 후야", "gen": "1기", "id": "36ddb9bb4f17593b60f1b63cec86611d", "playlists": []},
+    {"name": "강지(사장)", "gen": "0기", "id": "b5ed5db484d04faf4d150aedd362f34b", "playlists": ["https://www.youtube.com/watch?v=92zhMDrbeb4&list=PLcNhHeUzY-uhGYqnZr8YLkEfxnPOW_QNz&index=1"]},
+    {"name": "아야츠노 유니", "gen": "1기", "id": "45e71a76e949e16a34764deb962f9d9f", "playlists": ["https://www.youtube.com/watch?v=bRa_zAaaCCE&list=PL3HtH_xx9h_7ZGoZ9zMUQ-MPumwe21_cc&index=1"]},
+    {"name": "사키하네 후야", "gen": "1기", "id": "36ddb9bb4f17593b60f1b63cec86611d", "playlists": ["https://www.youtube.com/watch?v=Zetk77I6_s8&list=PL3rF5rqFNO48ZMgPuZ6XbQ1J9IT3TQtcs&index=1"]},
     {"name": "아이리 칸나", "gen": "1기", "id": "", "graduated": true, "playlists": []},
-    {"name": "시라유키 히나", "gen": "2기", "id": "b044e3a3b9259246bc92e863e7d3f3b8", "playlists": []},
-    {"name": "네네코 마시로", "gen": "2기", "id": "4515b179f86b67b4981e16190817c580", "playlists": []},
-    {"name": "아카네 리제", "gen": "2기", "id": "4325b1d5bbc321fad3042306646e2e50", "playlists": []},
-    {"name": "아라하시 타비", "gen": "2기", "id": "a6c4ddb09cdb160478996007bff35296", "playlists": []},
-    {"name": "텐코 시부키", "gen": "3기", "id": "64d76089fba26b180d9c9e48a32600d9", "playlists": []},
+    {"name": "시라유키 히나", "gen": "2기", "id": "b044e3a3b9259246bc92e863e7d3f3b8", "playlists": ["https://www.youtube.com/watch?v=LmOl01G4DR4&list=PLzdLDJsHzz2NiuwjyW6QgSck4PrwlSyOc&index=1"]},
+    {"name": "네네코 마시로", "gen": "2기", "id": "4515b179f86b67b4981e16190817c580", "playlists": ["https://www.youtube.com/watch?v=pnU-h63twZM&list=PLWwhuXFHGLvhgZZb5_rmQEMI1B0ysKJxG&index=1"]},
+    {"name": "아카네 리제", "gen": "2기", "id": "4325b1d5bbc321fad3042306646e2e50", "playlists": ["https://www.youtube.com/watch?v=liPEQZJLQh4&list=PL-DHk0WpiRNSM5oI19ImJ8sSV65mnGseX&index=1"]},
+    {"name": "아라하시 타비", "gen": "2기", "id": "a6c4ddb09cdb160478996007bff35296", "playlists": ["https://www.youtube.com/watch?v=uBtFoUXR9Qc&list=PLbIDsfX2JRA0oawGN209gpd_nz9IMvUlb&index=1"]},
+    {"name": "텐코 시부키", "gen": "3기", "id": "64d76089fba26b180d9c9e48a32600d9", "playlists": ["https://www.youtube.com/watch?v=3Xf1Wt7Z-RY&list=PLKVNBOcsLJlVii-8YwoZTD3o4gh5CnIND&index=1"]},
     {"name": "아오쿠모 린", "gen": "3기", "id": "516937b5f85cbf2249ce31b0ad046b0f", "playlists": ["https://www.youtube.com/watch?v=JLM7z8afU4s&list=PLSDRWR15h-o4uWNeoLv0upOUUGj12f-yU&index=1"]},
-    {"name": "하나코 나나", "gen": "3기", "id": "4d812b586ff63f8a2946e64fa860bbf5", "playlists": []},
-    {"name": "유즈하 리코", "gen": "3기", "id": "8fd39bb8de623317de90654718638b10", "playlists": []},
-    {"name": "시즈키 토아", "gen": "4기", "id": "2299fad4bebb504b0978e1ec08b2f7d3", "playlists": []},
-    {"name": "코가네 랑", "gen": "4기", "id": "c657aa3592260a2b59669a72ec151936", "playlists": []},
-    {"name": "하나요 히요리", "gen": "4기", "id": "49d2c3cf8f0b2843d934ec15e82bb54c", "playlists": []},
-    {"name": "토키노 메리", "gen": "4기", "id": "792acf9ca28b42918710327e14b06b68", "playlists": []}
+    {"name": "하나코 나나", "gen": "3기", "id": "4d812b586ff63f8a2946e64fa860bbf5", "playlists": ["https://www.youtube.com/watch?v=Zetk77I6_s8&list=PLJWmDIpvwe7Cri29xtAyQXLC1RLwOChpA&index=1"]},
+    {"name": "유즈하 리코", "gen": "3기", "id": "8fd39bb8de623317de90654718638b10", "playlists": ["https://www.youtube.com/watch?v=TM-uVDKQxhg&list=PL_D2YrKeYY2UvRIw_SW3lQXzBDO7aBeii&index=1"]},
+    {"name": "시즈키 토아", "gen": "4기", "id": "2299fad4bebb504b0978e1ec08b2f7d3", "playlists": ["https://youtu.be/MZNKiadMo3U?si=xIW-tA5Xwe0NK2ZT"]},
+    {"name": "코가네 랑", "gen": "4기", "id": "c657aa3592260a2b59669a72ec151936", "playlists": ["https://youtu.be/iAoU1UGPoXc?si=FCmc1ykpQQTkfG7I"]},
+    {"name": "하나요 히요리", "gen": "4기", "id": "49d2c3cf8f0b2843d934ec15e82bb54c", "playlists": ["https://youtu.be/ouKcRBeyKbk?si=BDoMNgzMa_nRBjH2"]},
+    {"name": "토키노 메리", "gen": "4기", "id": "792acf9ca28b42918710327e14b06b68", "playlists": ["https://youtu.be/rKQptWhAvO0?si=-HdhEl5SMkszRAnt"]}
   ],
   "playlists": []
 }
