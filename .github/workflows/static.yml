@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  issues: read
   pages: write
   id-token: write
 
@@ -32,6 +33,8 @@ jobs:
           node-version: 20
       - name: 스텔라이브 멤버 방송·클립 받기
         continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git fetch --depth 1 origin data && git show origin/data:stellive.json > stellive.json || true
           node fetch-stellive.mjs
