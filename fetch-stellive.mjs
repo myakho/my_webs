@@ -7,6 +7,15 @@ const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const pick = (o, keys, d = "") => { for (const k of keys) if (o && o[k] != null && o[k] !== "") return o[k]; return d; };
 
+const CLIP_KEEP = 200, CLIP_PAGES = 4, VIDEO_KEEP = 60;
+// 새로 받은 것(fresh)을 앞에, 지난번 것(old)을 뒤에 두고 겹치는 건 새 것만 남겨요. 최신 순으로 keep 개까지.
+function mergeNew(fresh, old, key, keep) {
+  const seen = new Set(), out = [];
+  for (const x of [...fresh, ...(old || [])]) { const k = key(x); if (!k || seen.has(k)) continue; seen.add(k); out.push(x); }
+  const t = x => Date.parse(String(x.date || "").replace(" ", "T")) || 0;
+  return out.sort((a, b) => t(b) - t(a)).slice(0, keep);
+}
+
 const fails = []; // 끝내 실패한 요청 기록
 async function get(path) {
   let last = "";
@@ -89,20 +98,37 @@ for (const m of cfg.members || []) {
     console.log("  방송 상태 확인 실패 → 지난 상태 유지 (" + mem.liveMiss + "회째)");
   }
 
-  // 4) 클립 (최근 순)
-  const cl = await get(`/service/v1/channels/${id}/clips?filterType=ALL&orderType=RECENT&size=12`);
-  if (cl && Array.isArray(cl.data)) mem.clips = cl.data.map(c => ({
-    id: pick(c, ["clipUID", "clipId"]), title: pick(c, ["clipTitle", "title"]), thumb: pick(c, ["thumbnailImageUrl"]),
-    duration: pick(c, ["duration"], 0), views: pick(c, ["readCount"], 0), date: pick(c, ["createdDate", "createdAt"])
-  })).filter(c => c.id);
+  // 4) 클립 — 새로 받은 것과 지난번까지 쌓인 것을 합쳐요 (멤버마다 최근 CLIP_KEEP개까지)
+  //    처음(쌓인 게 적을 때)은 여러 쪽을 받아 오고, 그다음부터는 첫 쪽만 받아서 새 클립·조회수만 고쳐요.
+  {
+    const deep = (prev.clips || []).length < 60;
+    let got = [], next = null, ok = false;
+    for (let p = 0; p < (deep ? CLIP_PAGES : 1); p++) {
+      const q = next ? `&clipUID=${encodeURIComponent(next.clipUID || "")}&readCount=${encodeURIComponent(next.readCount ?? "")}` : "";
+      let cl = await get(`/service/v1/channels/${id}/clips?filterType=ALL&orderType=RECENT&size=50${q}`);
+      if (!cl && p === 0) cl = await get(`/service/v1/channels/${id}/clips?filterType=ALL&orderType=RECENT&size=15`);
+      if (!cl || !Array.isArray(cl.data)) break;
+      ok = true;
+      got = got.concat(cl.data.map(c => ({
+        id: pick(c, ["clipUID", "clipId"]), title: pick(c, ["clipTitle", "title"]), thumb: pick(c, ["thumbnailImageUrl"]),
+        duration: pick(c, ["duration"], 0), views: pick(c, ["readCount"], 0), date: pick(c, ["createdDate", "createdAt"])
+      })));
+      next = cl.page && cl.page.next;
+      if (!next || !cl.data.length) break;
+      await sleep(250);
+    }
+    if (ok) mem.clips = mergeNew(got, mem.clips, c => c.id, CLIP_KEEP);
+  }
 
-  // 5) 다시보기·영상 (최근 순)
-  const vd = await get(`/service/v1/channels/${id}/videos?sortType=LATEST&pagingType=PAGE&page=0&size=8&publishDateAt=&videoType=`);
-  if (vd && Array.isArray(vd.data)) mem.videos = vd.data.map(v => ({
-    no: pick(v, ["videoNo"]), title: pick(v, ["videoTitle", "title"]), thumb: pick(v, ["thumbnailImageUrl"]),
-    duration: pick(v, ["duration"], 0), views: pick(v, ["readCount"], 0), date: pick(v, ["publishDate"]), type: pick(v, ["videoType"]),
-    category: pick(v, ["videoCategoryValue"])
-  })).filter(v => v.no);
+  // 5) 다시보기·영상 — 클립과 같은 방법으로 쌓아요 (멤버마다 최근 VIDEO_KEEP개까지)
+  {
+    const vd = await get(`/service/v1/channels/${id}/videos?sortType=LATEST&pagingType=PAGE&page=0&size=30&publishDateAt=&videoType=`);
+    if (vd && Array.isArray(vd.data)) mem.videos = mergeNew(vd.data.map(v => ({
+      no: pick(v, ["videoNo"]), title: pick(v, ["videoTitle", "title"]), thumb: pick(v, ["thumbnailImageUrl"]),
+      duration: pick(v, ["duration"], 0), views: pick(v, ["readCount"], 0), date: pick(v, ["publishDate"]), type: pick(v, ["videoType"]),
+      category: pick(v, ["videoCategoryValue"])
+    })), mem.videos, v => v.no, VIDEO_KEEP);
+  }
 
   console.log("  ", mem.live ? "방송 중" : "방송 쉼", "· 클립", mem.clips.length, "· 영상", mem.videos.length);
   out.push(mem);
@@ -112,5 +138,25 @@ for (const m of cfg.members || []) {
 const allFailed = withId > 0 && liveChecked === 0;
 if (fails.length) { console.log("실패한 요청", fails.length, "건"); fails.slice(0, 15).forEach(f => console.log("  -", f)); console.log("::warning::치지직 요청 " + fails.length + "건 실패 (로그 확인)"); }
 if (allFailed) console.log("::warning::방송 상태를 한 명도 못 받았어요. 시각을 갱신하지 않아요 (치지직이 GitHub 서버를 막았을 수 있어요)");
-await writeFile("stellive.json", JSON.stringify({ updatedAt: allFailed ? oldAt : Date.now(), members: out }));
+// 공지 — 저장소 이슈 중 제목이 [공지] 로 시작하거나 '공지' 라벨이 붙은 열린 이슈 (저장소 주인·관리자가 쓴 것만)
+//        이슈를 닫으면 사이트에서도 내려가요. '고정' 라벨을 붙이면 맨 위에 고정돼요.
+async function fetchNotices() {
+  const repo = process.env.GITHUB_REPOSITORY, tok = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  if (!repo) return oj && oj.notices || [];
+  try {
+    const r = await fetch(`https://api.github.com/repos/${repo}/issues?state=open&per_page=50&sort=created&direction=desc`, {
+      headers: { "Accept": "application/vnd.github+json", "User-Agent": "stellive-fan-site", ...(tok ? { "Authorization": "Bearer " + tok } : {}) }
+    });
+    if (!r.ok) throw new Error("http " + r.status);
+    const list = await r.json();
+    const labels = i => (i.labels || []).map(l => typeof l === "string" ? l : l.name);
+    return list.filter(i => !i.pull_request && ["OWNER", "MEMBER", "COLLABORATOR"].includes(i.author_association) && (/^\s*\[공지\]/.test(i.title) || labels(i).includes("공지")))
+      .map(i => ({ id: i.number, title: i.title.replace(/^\s*\[공지\]\s*/, ""), body: String(i.body || "").slice(0, 5000), at: i.created_at, edited: i.updated_at, pin: labels(i).includes("고정") }))
+      .sort((a, b) => (b.pin - a.pin) || (Date.parse(b.at) - Date.parse(a.at)));
+  } catch (e) { console.log("공지 받기 실패:", e.message); return oj && oj.notices || []; }
+}
+const notices = await fetchNotices();
+console.log("공지", notices.length, "개");
+
+await writeFile("stellive.json", JSON.stringify({ updatedAt: allFailed ? oldAt : Date.now(), members: out, notices }));
 console.log("저장 완료:", out.length, "명");
