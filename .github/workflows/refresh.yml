@@ -19,6 +19,7 @@ on:
 permissions:
   contents: write   # data 브랜치에 stellive.json 저장
   actions: write    # 끝날 때 다음 회차 켜기
+  issues: read      # [공지] 이슈 읽기
 
 # 한 번에 하나만 돌아요. 돌고 있는 동안 켜진 건 기다렸다가 이어서 돌아요.
 concurrency:
